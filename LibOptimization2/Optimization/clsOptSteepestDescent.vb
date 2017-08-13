@@ -21,7 +21,7 @@ Namespace Optimization
     ''' 最大値を求めることを山登り法、最小値の場合は最急降下法とよばれる。
     ''' </remarks>
     Public Class clsOptSteepestDescent : Inherits absOptimization
-#Region "Member(Original parameter forSteepestDescent)"
+#Region "Member(Original parameter for SteepestDescent)"
         ''' <summary>Rate</summary>
         Public Property ALPHA As Double = 0.3
 #End Region
@@ -56,8 +56,8 @@ Namespace Optimization
             'Do Iteration
             Dim vector As New clsEasyVector(_populations(0))
             Dim gradent As New clsEasyVector(MyBase.ObjectiveFunction.NumberOfVariable)
-            ai_iteration = If(ai_iteration = 0, Me.Iteration - 1, ai_iteration - 1)
             Try
+                ai_iteration = If(ai_iteration = 0, Me.Iteration - 1, ai_iteration - 1)
                 For iterate As Integer = 0 To ai_iteration
                     'Calculate Gradient vector
                     gradent.RawVector = Me.ObjectiveFunction.Gradient(vector)
@@ -70,11 +70,10 @@ Namespace Optimization
                     'Update
                     vector = vector - Me.ALPHA * gradent
 
-                    'Check Iteration count
+                    'Check and Update Iteration count
                     If Iteration = _IterationCount Then
                         Return True
                     End If
-
                     _IterationCount += 1
                 Next
 

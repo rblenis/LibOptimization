@@ -84,6 +84,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Optimization\absOptimization.vb" />
+    <Compile Include="Optimization\clsOptSimulatedAnnealing.vb" />
     <Compile Include="Optimization\clsOptSteepestDescent.vb" />
     <Compile Include="Math\clsEasyMatrix.vb" />
     <Compile Include="Math\clsEasyVector.vb" />

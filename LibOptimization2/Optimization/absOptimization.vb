@@ -125,7 +125,7 @@ Namespace Optimization
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public ReadOnly Property BestResult As clsPoint
+        Public Overridable ReadOnly Property BestResult As clsPoint
             Get
                 Return clsUtil.GetBestPoint(_populations, True)
             End Get
@@ -135,7 +135,7 @@ Namespace Optimization
         ''' All Sorted Results
         ''' </summary>
         ''' <returns></returns>
-        Public ReadOnly Property Results As List(Of clsPoint)
+        Public Overridable ReadOnly Property Results As List(Of clsPoint)
             Get
                 Return clsUtil.GetSortedResultsByEval(_populations)
             End Get

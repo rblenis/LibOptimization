@@ -29,11 +29,14 @@ Module Module1
 
         'test LibOptimization2
         With Nothing
-            Dim optimization As New LibOptimization2.Optimization.clsOptSteepestDescent()
+            Dim optimization As New LibOptimization2.Optimization.clsOptSimulatedAnnealing()
             optimization.ObjectiveFunction = New LibOptimization2.BenchmarkFunction.clsBenchSphere(2)
+            optimization.Iteration = 100000
             optimization.Init()
-            While (optimization.DoIteration(5) = False)
+            While (optimization.DoIteration(1000) = False)
                 LibOptimization2.Util.clsUtil.DebugValue(optimization.BestResult)
+                LibOptimization2.Util.clsUtil.DebugValue(optimization.DebugNowPoint)
+                optimization.DebugSAParametes()
             End While
             LibOptimization2.Util.clsUtil.DebugValue(optimization.BestResult)
         End With
