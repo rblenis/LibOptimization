@@ -27,6 +27,17 @@ Module Module1
         '    Return
         'End With
 
+        'test LibOptimization2
+        With Nothing
+            Dim optimization As New LibOptimization2.Optimization.clsOptSteepestDescent()
+            optimization.ObjectiveFunction = New LibOptimization2.BenchmarkFunction.clsBenchSphere(2)
+            optimization.Init()
+            While (optimization.DoIteration(5) = False)
+                LibOptimization2.Util.clsUtil.DebugValue(optimization.BestResult)
+            End While
+            LibOptimization2.Util.clsUtil.DebugValue(optimization.BestResult)
+        End With
+
         With Nothing
             Dim optimization As New clsOptDEJADE(New clsBenchTest2())
             optimization.LowerBounds = New Double() {0, 0}
