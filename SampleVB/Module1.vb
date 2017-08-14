@@ -29,14 +29,35 @@ Module Module1
 
         'test LibOptimization2
         With Nothing
-            Dim optimization As New LibOptimization2.Optimization.clsOptSimulatedAnnealing()
-            optimization.ObjectiveFunction = New LibOptimization2.BenchmarkFunction.clsBenchSphere(2)
-            optimization.Iteration = 100000
+            Dim opts As New List(Of LibOptimization2.Optimization.absOptimization)
+            opts.Add(New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution_best_1_bin())
+            Threading.Thread.Sleep(10)
+            opts.Add(New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution_best_2_bin())
+            Threading.Thread.Sleep(10)
+            opts.Add(New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution_current_1_bin())
+            Threading.Thread.Sleep(10)
+            opts.Add(New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution_current_to_Best_1_bin())
+            Threading.Thread.Sleep(10)
+            opts.Add(New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution_rand_1_bin())
+            Threading.Thread.Sleep(10)
+            opts.Add(New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution_rand_2_bin())
+            Threading.Thread.Sleep(10)
+            opts.Add(New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution_rand_to_Best_1_bin())
+            Threading.Thread.Sleep(10)
+            For Each o In opts
+                o.ObjectiveFunction = New LibOptimization2.BenchmarkFunction.clsBenchRosenblock(5)
+                o.Init()
+                LibOptimization2.Util.clsUtil.DebugValue(o.BestResult)
+                o.DoIteration()
+                LibOptimization2.Util.clsUtil.DebugValue(o.BestResult)
+            Next
+            Dim optimization As New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution()
+            optimization.ObjectiveFunction = New LibOptimization2.BenchmarkFunction.clsBenchRosenblock(10)
+            optimization.DEStrategy = LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution.EnumDEStrategyType.DE_rand_to_Best_1_bin
             optimization.Init()
-            While (optimization.DoIteration(1000) = False)
+            LibOptimization2.Util.clsUtil.DebugValue(optimization.BestResult)
+            While (optimization.DoIteration(100) = False)
                 LibOptimization2.Util.clsUtil.DebugValue(optimization.BestResult)
-                LibOptimization2.Util.clsUtil.DebugValue(optimization.DebugNowPoint)
-                optimization.DebugSAParametes()
             End While
             LibOptimization2.Util.clsUtil.DebugValue(optimization.BestResult)
         End With

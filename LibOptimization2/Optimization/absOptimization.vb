@@ -46,8 +46,11 @@ Namespace Optimization
         ''' <summary>Range of initial value(This parameters to use when generate a variable)</summary>
         Public Property InitialValueRange As Double = 5
 
-        ''' <summary>Upper and lower bound(limit solution space)</summary>
-        Public Property Bounds As Double()() = Nothing
+        ''' <summary>Upper bound(limit solution space)</summary>
+        Public Property UpperBounds As Double() = Nothing
+
+        ''' <summary>Lower bound(limit solution space)</summary>
+        Public Property LowerBounds As Double() = Nothing
 #End Region
 
 #Region "Public"
@@ -66,7 +69,23 @@ Namespace Optimization
             'check
             If ObjectiveFunction Is Nothing Then
                 clsError.SetError(clsError.ErrorType.ERR_INIT, "Not exist ObjectiveFunction")
-                Return clsError.IsRecentError()
+                Return False
+            End If
+
+            'Bound check
+            If UseBounds = True Then
+                If UpperBounds Is Nothing OrElse LowerBounds Is Nothing Then
+                    clsError.SetError(clsError.ErrorType.ERR_INIT, "Bounds setting error")
+                    Return False
+                End If
+                If ObjectiveFunction.NumberOfVariable <> UpperBounds.Length Then
+                    clsError.SetError(clsError.ErrorType.ERR_INIT, "Bounds setting error")
+                    Return False
+                End If
+                If ObjectiveFunction.NumberOfVariable <> LowerBounds.Length Then
+                    clsError.SetError(clsError.ErrorType.ERR_INIT, "Bounds setting error")
+                    Return False
+                End If
             End If
 
             'init
@@ -92,7 +111,7 @@ Namespace Optimization
 
                     Dim tempPoint = New clsPoint(New clsPoint(Me.ObjectiveFunction, temp))
                     If UseBounds = True Then
-                        clsUtil.LimitSolutionSpace(tempPoint, Bounds)
+                        clsUtil.LimitSolutionSpace(tempPoint, LowerBounds, UpperBounds)
                     End If
 
                     Me._populations.Add(tempPoint)
