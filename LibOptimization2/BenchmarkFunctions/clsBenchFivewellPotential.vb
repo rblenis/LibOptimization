@@ -32,7 +32,7 @@ Namespace BenchmarkFunction
                 Return 0
             End If
 
-            If Me.NumberOfVariable <> x.Count Then
+            If NumberOfVariable <> x.Count Then
                 Return 0
             End If
 

@@ -23,7 +23,7 @@ Namespace Optimization.RequireDerivative
     Public Class SteepestDescent : Inherits absOptimization
 #Region "Member(Original parameter for SteepestDescent)"
         ''' <summary>gradient coefficient</summary>
-        Public Property ALPHA As Double = 0.3
+        Public Property ALPHA As Double = 0.2
 #End Region
 
 #Region "Public"
@@ -49,26 +49,33 @@ Namespace Optimization.RequireDerivative
         ''' <param name="ai_iteration"></param>
         ''' <returns></returns>
         Public Overrides Function DoIteration(Optional ai_iteration As Integer = 0) As Boolean
-            If ai_iteration = 0 Then
-                ai_iteration = Me.Iteration - 1
-            End If
-
             'Do Iteration
-            Dim vector As New clsEasyVector(_populations(0))
-            Dim gradient As New clsEasyVector(MyBase.ObjectiveFunction.NumberOfVariable)
+            Dim vector1 As New clsEasyVector(_populations(0))
+            Dim vector2 As New clsEasyVector(_populations(0))
             Try
-                ai_iteration = If(ai_iteration = 0, Me.Iteration - 1, ai_iteration - 1)
+                ai_iteration = If(ai_iteration = 0, Iteration - 1, ai_iteration - 1)
+                Dim gradient As New clsEasyVector(ObjectiveFunction.NumberOfVariable)
                 For iterate As Integer = 0 To ai_iteration
                     'Calculate Gradient vector
-                    gradient.RawVector = Me.ObjectiveFunction.Gradient(vector)
+                    gradient.RawVector = ObjectiveFunction.Gradient(vector1)
 
-                    'Check conversion
+                    'Check conversion1
                     If gradient.NormL1() < EPS Then
                         Return True
                     End If
 
                     'Update
-                    vector = vector - Me.ALPHA * gradient
+                    vector2 = vector1 - ALPHA * gradient
+
+                    'limit solution space
+                    LimitSolutionSpace(vector2)
+
+                    'Check conversion2
+                    Dim diff = vector2 - vector1
+                    vector1 = vector2
+                    If diff.NormL2() = 0 Then
+                        Return True
+                    End If
 
                     'Check and Update Iteration count
                     If Iteration = _IterationCount Then
@@ -80,8 +87,8 @@ Namespace Optimization.RequireDerivative
                 Return False
             Finally
                 'return member
-                For i As Integer = 0 To vector.Count - 1
-                    _populations(0)(i) = vector(i)
+                For i As Integer = 0 To vector1.Count - 1
+                    _populations(0)(i) = vector1(i)
                 Next
                 _populations(0).ReEvaluate()
             End Try

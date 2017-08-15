@@ -43,7 +43,7 @@ Namespace Optimization.DerivativeFree
         ''' <returns></returns>
         Public Overrides Function DoIteration(Optional ai_iteration As Integer = 0) As Boolean
             'Do Iterate
-            ai_iteration = If(ai_iteration = 0, Me.Iteration - 1, ai_iteration - 1)
+            ai_iteration = If(ai_iteration = 0, Iteration - 1, ai_iteration - 1)
             For iterate As Integer = 0 To ai_iteration
                 'Sort Evaluate
                 MyBase._populations.Sort()
@@ -51,7 +51,7 @@ Namespace Optimization.DerivativeFree
                 'check criterion
                 If MyBase.UseCriterion = True Then
                     'higher N percentage particles are finished at the time of same evaluate value.
-                    If clsUtil.IsCriterion(Me.EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
+                    If clsUtil.IsCriterion(EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
                         Return True
                     End If
                 End If
@@ -60,7 +60,7 @@ Namespace Optimization.DerivativeFree
                 Dim best = _populations(0).Copy()
 
                 'DE
-                For i As Integer = 0 To Me.PopulationSize - 1
+                For i As Integer = 0 To PopulationSize - 1
                     'pick different parent without i
                     Dim randIndex As List(Of Integer) = clsUtil.RandomPermutaion(_populations.Count, i)
                     Dim xi = _populations(i)
@@ -74,8 +74,8 @@ Namespace Optimization.DerivativeFree
                     Dim D = ObjectiveFunction.NumberOfVariable - 1
                     'DE/rand/1/bin
                     For k = 0 To ObjectiveFunction.NumberOfVariable - 1
-                        If Random.NextDouble() < Me.CrossOverRatio OrElse k = D Then
-                            child(j) = p1(j) + Me.F * (p2(j) - p3(j))
+                        If Random.NextDouble() < CrossOverRatio OrElse k = D Then
+                            child(j) = p1(j) + F * (p2(j) - p3(j))
                         Else
                             child(j) = xi(k)
                         End If
@@ -84,7 +84,7 @@ Namespace Optimization.DerivativeFree
                     child.ReEvaluate() 'Evaluate child
 
                     'Limit solution space
-                    clsUtil.LimitSolutionSpace(child, Me.LowerBounds, Me.UpperBounds)
+                    LimitSolutionSpace(child)
 
                     'Survive
                     If child.Eval < _populations(i).Eval Then
@@ -151,7 +151,7 @@ Namespace Optimization.DerivativeFree
         ''' <returns></returns>
         Public Overrides Function DoIteration(Optional ai_iteration As Integer = 0) As Boolean
             'Do Iterate
-            ai_iteration = If(ai_iteration = 0, Me.Iteration - 1, ai_iteration - 1)
+            ai_iteration = If(ai_iteration = 0, Iteration - 1, ai_iteration - 1)
             For iterate As Integer = 0 To ai_iteration
                 'Sort Evaluate
                 MyBase._populations.Sort()
@@ -159,7 +159,7 @@ Namespace Optimization.DerivativeFree
                 'check criterion
                 If MyBase.UseCriterion = True Then
                     'higher N percentage particles are finished at the time of same evaluate value.
-                    If clsUtil.IsCriterion(Me.EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
+                    If clsUtil.IsCriterion(EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
                         Return True
                     End If
                 End If
@@ -168,7 +168,7 @@ Namespace Optimization.DerivativeFree
                 Dim best = _populations(0).Copy()
 
                 'DE
-                For i As Integer = 0 To Me.PopulationSize - 1
+                For i As Integer = 0 To PopulationSize - 1
                     'pick different parent without i
                     Dim randIndex As List(Of Integer) = clsUtil.RandomPermutaion(_populations.Count, i)
                     Dim xi = _populations(i)
@@ -184,8 +184,8 @@ Namespace Optimization.DerivativeFree
                     Dim D = ObjectiveFunction.NumberOfVariable - 1
                     'DE/rand/2/bin
                     For k = 0 To ObjectiveFunction.NumberOfVariable - 1
-                        If Random.NextDouble() < Me.CrossOverRatio OrElse k = D Then
-                            child(j) = p1(j) + Me.F * (p2(j) + p3(j) - p4(j) - p5(j))
+                        If Random.NextDouble() < CrossOverRatio OrElse k = D Then
+                            child(j) = p1(j) + F * (p2(j) + p3(j) - p4(j) - p5(j))
                         Else
                             child(j) = xi(k)
                         End If
@@ -194,7 +194,7 @@ Namespace Optimization.DerivativeFree
                     child.ReEvaluate() 'Evaluate child
 
                     'Limit solution space
-                    clsUtil.LimitSolutionSpace(child, Me.LowerBounds, Me.UpperBounds)
+                    LimitSolutionSpace(child)
 
                     'Survive
                     If child.Eval < _populations(i).Eval Then
@@ -261,7 +261,7 @@ Namespace Optimization.DerivativeFree
         ''' <returns></returns>
         Public Overrides Function DoIteration(Optional ai_iteration As Integer = 0) As Boolean
             'Do Iterate
-            ai_iteration = If(ai_iteration = 0, Me.Iteration - 1, ai_iteration - 1)
+            ai_iteration = If(ai_iteration = 0, Iteration - 1, ai_iteration - 1)
             For iterate As Integer = 0 To ai_iteration
                 'Sort Evaluate
                 MyBase._populations.Sort()
@@ -269,7 +269,7 @@ Namespace Optimization.DerivativeFree
                 'check criterion
                 If MyBase.UseCriterion = True Then
                     'higher N percentage particles are finished at the time of same evaluate value.
-                    If clsUtil.IsCriterion(Me.EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
+                    If clsUtil.IsCriterion(EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
                         Return True
                     End If
                 End If
@@ -278,7 +278,7 @@ Namespace Optimization.DerivativeFree
                 Dim best = _populations(0).Copy()
 
                 'DE
-                For i As Integer = 0 To Me.PopulationSize - 1
+                For i As Integer = 0 To PopulationSize - 1
                     'pick different parent without i
                     Dim randIndex As List(Of Integer) = clsUtil.RandomPermutaion(_populations.Count, i)
                     Dim xi = _populations(i)
@@ -294,8 +294,8 @@ Namespace Optimization.DerivativeFree
                     Dim D = ObjectiveFunction.NumberOfVariable - 1
                     'DE/best/1/bin
                     For k = 0 To ObjectiveFunction.NumberOfVariable - 1
-                        If Random.NextDouble() < Me.CrossOverRatio OrElse k = D Then
-                            child(j) = best(j) + Me.F * (p1(j) - p2(j))
+                        If Random.NextDouble() < CrossOverRatio OrElse k = D Then
+                            child(j) = best(j) + F * (p1(j) - p2(j))
                         Else
                             child(j) = xi(k)
                         End If
@@ -304,7 +304,7 @@ Namespace Optimization.DerivativeFree
                     child.ReEvaluate() 'Evaluate child
 
                     'Limit solution space
-                    clsUtil.LimitSolutionSpace(child, Me.LowerBounds, Me.UpperBounds)
+                    LimitSolutionSpace(child)
 
                     'Survive
                     If child.Eval < _populations(i).Eval Then
@@ -371,7 +371,7 @@ Namespace Optimization.DerivativeFree
         ''' <returns></returns>
         Public Overrides Function DoIteration(Optional ai_iteration As Integer = 0) As Boolean
             'Do Iterate
-            ai_iteration = If(ai_iteration = 0, Me.Iteration - 1, ai_iteration - 1)
+            ai_iteration = If(ai_iteration = 0, Iteration - 1, ai_iteration - 1)
             For iterate As Integer = 0 To ai_iteration
                 'Sort Evaluate
                 MyBase._populations.Sort()
@@ -379,7 +379,7 @@ Namespace Optimization.DerivativeFree
                 'check criterion
                 If MyBase.UseCriterion = True Then
                     'higher N percentage particles are finished at the time of same evaluate value.
-                    If clsUtil.IsCriterion(Me.EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
+                    If clsUtil.IsCriterion(EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
                         Return True
                     End If
                 End If
@@ -388,7 +388,7 @@ Namespace Optimization.DerivativeFree
                 Dim best = _populations(0).Copy()
 
                 'DE
-                For i As Integer = 0 To Me.PopulationSize - 1
+                For i As Integer = 0 To PopulationSize - 1
                     'pick different parent without i
                     Dim randIndex As List(Of Integer) = clsUtil.RandomPermutaion(_populations.Count, i)
                     Dim xi = _populations(i)
@@ -404,8 +404,8 @@ Namespace Optimization.DerivativeFree
                     Dim D = ObjectiveFunction.NumberOfVariable - 1
                     'DE/best/2/bin
                     For k = 0 To ObjectiveFunction.NumberOfVariable - 1
-                        If Random.NextDouble() < Me.CrossOverRatio OrElse k = D Then
-                            child(j) = best(j) + Me.F * (p1(j) + p2(j) - p3(j) - p4(j))
+                        If Random.NextDouble() < CrossOverRatio OrElse k = D Then
+                            child(j) = best(j) + F * (p1(j) + p2(j) - p3(j) - p4(j))
                         Else
                             child(j) = xi(k)
                         End If
@@ -414,7 +414,7 @@ Namespace Optimization.DerivativeFree
                     child.ReEvaluate() 'Evaluate child
 
                     'Limit solution space
-                    clsUtil.LimitSolutionSpace(child, Me.LowerBounds, Me.UpperBounds)
+                    LimitSolutionSpace(child)
 
                     'Survive
                     If child.Eval < _populations(i).Eval Then
@@ -481,7 +481,7 @@ Namespace Optimization.DerivativeFree
         ''' <returns></returns>
         Public Overrides Function DoIteration(Optional ai_iteration As Integer = 0) As Boolean
             'Do Iterate
-            ai_iteration = If(ai_iteration = 0, Me.Iteration - 1, ai_iteration - 1)
+            ai_iteration = If(ai_iteration = 0, Iteration - 1, ai_iteration - 1)
             For iterate As Integer = 0 To ai_iteration
                 'Sort Evaluate
                 MyBase._populations.Sort()
@@ -489,7 +489,7 @@ Namespace Optimization.DerivativeFree
                 'check criterion
                 If MyBase.UseCriterion = True Then
                     'higher N percentage particles are finished at the time of same evaluate value.
-                    If clsUtil.IsCriterion(Me.EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
+                    If clsUtil.IsCriterion(EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
                         Return True
                     End If
                 End If
@@ -498,7 +498,7 @@ Namespace Optimization.DerivativeFree
                 Dim best = _populations(0).Copy()
 
                 'DE
-                For i As Integer = 0 To Me.PopulationSize - 1
+                For i As Integer = 0 To PopulationSize - 1
                     'pick different parent without i
                     Dim randIndex As List(Of Integer) = clsUtil.RandomPermutaion(_populations.Count, i)
                     Dim xi = _populations(i)
@@ -514,8 +514,8 @@ Namespace Optimization.DerivativeFree
                     Dim D = ObjectiveFunction.NumberOfVariable - 1
                     'DE/current-to(target-to)/1/bin
                     For k = 0 To ObjectiveFunction.NumberOfVariable - 1
-                        If Random.NextDouble() < Me.CrossOverRatio OrElse k = D Then
-                            child(j) = xi(j) + Me.F * (p2(j) - p3(j))
+                        If Random.NextDouble() < CrossOverRatio OrElse k = D Then
+                            child(j) = xi(j) + F * (p2(j) - p3(j))
                         Else
                             child(j) = xi(k)
                         End If
@@ -524,7 +524,7 @@ Namespace Optimization.DerivativeFree
                     child.ReEvaluate() 'Evaluate child
 
                     'Limit solution space
-                    clsUtil.LimitSolutionSpace(child, Me.LowerBounds, Me.UpperBounds)
+                    LimitSolutionSpace(child)
 
                     'Survive
                     If child.Eval < _populations(i).Eval Then
@@ -591,7 +591,7 @@ Namespace Optimization.DerivativeFree
         ''' <returns></returns>
         Public Overrides Function DoIteration(Optional ai_iteration As Integer = 0) As Boolean
             'Do Iterate
-            ai_iteration = If(ai_iteration = 0, Me.Iteration - 1, ai_iteration - 1)
+            ai_iteration = If(ai_iteration = 0, Iteration - 1, ai_iteration - 1)
             For iterate As Integer = 0 To ai_iteration
                 'Sort Evaluate
                 MyBase._populations.Sort()
@@ -599,7 +599,7 @@ Namespace Optimization.DerivativeFree
                 'check criterion
                 If MyBase.UseCriterion = True Then
                     'higher N percentage particles are finished at the time of same evaluate value.
-                    If clsUtil.IsCriterion(Me.EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
+                    If clsUtil.IsCriterion(EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
                         Return True
                     End If
                 End If
@@ -608,7 +608,7 @@ Namespace Optimization.DerivativeFree
                 Dim best = _populations(0).Copy()
 
                 'DE
-                For i As Integer = 0 To Me.PopulationSize - 1
+                For i As Integer = 0 To PopulationSize - 1
                     'pick different parent without i
                     Dim randIndex As List(Of Integer) = clsUtil.RandomPermutaion(_populations.Count, i)
                     Dim xi = _populations(i)
@@ -624,8 +624,8 @@ Namespace Optimization.DerivativeFree
                     Dim D = ObjectiveFunction.NumberOfVariable - 1
                     'DE/current-to-best/1/bin
                     For k = 0 To ObjectiveFunction.NumberOfVariable - 1
-                        If Random.NextDouble() < Me.CrossOverRatio OrElse k = D Then
-                            child(j) = xi(j) + Me.Fdash * (best(j) - p1(j)) + Me.F * (p2(j) - p3(j))
+                        If Random.NextDouble() < CrossOverRatio OrElse k = D Then
+                            child(j) = xi(j) + Fdash * (best(j) - p1(j)) + F * (p2(j) - p3(j))
                         Else
                             child(j) = xi(k)
                         End If
@@ -634,7 +634,7 @@ Namespace Optimization.DerivativeFree
                     child.ReEvaluate() 'Evaluate child
 
                     'Limit solution space
-                    clsUtil.LimitSolutionSpace(child, Me.LowerBounds, Me.UpperBounds)
+                    LimitSolutionSpace(child)
 
                     'Survive
                     If child.Eval < _populations(i).Eval Then
@@ -701,7 +701,7 @@ Namespace Optimization.DerivativeFree
         ''' <returns></returns>
         Public Overrides Function DoIteration(Optional ai_iteration As Integer = 0) As Boolean
             'Do Iterate
-            ai_iteration = If(ai_iteration = 0, Me.Iteration - 1, ai_iteration - 1)
+            ai_iteration = If(ai_iteration = 0, Iteration - 1, ai_iteration - 1)
             For iterate As Integer = 0 To ai_iteration
                 'Sort Evaluate
                 MyBase._populations.Sort()
@@ -709,7 +709,7 @@ Namespace Optimization.DerivativeFree
                 'check criterion
                 If MyBase.UseCriterion = True Then
                     'higher N percentage particles are finished at the time of same evaluate value.
-                    If clsUtil.IsCriterion(Me.EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
+                    If clsUtil.IsCriterion(EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
                         Return True
                     End If
                 End If
@@ -718,7 +718,7 @@ Namespace Optimization.DerivativeFree
                 Dim best = _populations(0).Copy()
 
                 'DE
-                For i As Integer = 0 To Me.PopulationSize - 1
+                For i As Integer = 0 To PopulationSize - 1
                     'pick different parent without i
                     Dim randIndex As List(Of Integer) = clsUtil.RandomPermutaion(_populations.Count, i)
                     Dim xi = _populations(i)
@@ -734,8 +734,8 @@ Namespace Optimization.DerivativeFree
                     Dim D = ObjectiveFunction.NumberOfVariable - 1
                     'DE/rand-to-best/1/bin
                     For k = 0 To ObjectiveFunction.NumberOfVariable - 1
-                        If Random.NextDouble() < Me.CrossOverRatio OrElse k = D Then
-                            child(j) = p1(j) + Me.Fdash * (best(j) - p1(j)) + Me.F * (p2(j) - p3(j))
+                        If Random.NextDouble() < CrossOverRatio OrElse k = D Then
+                            child(j) = p1(j) + Fdash * (best(j) - p1(j)) + F * (p2(j) - p3(j))
                         Else
                             child(j) = xi(k)
                         End If
@@ -744,7 +744,7 @@ Namespace Optimization.DerivativeFree
                     child.ReEvaluate() 'Evaluate child
 
                     'Limit solution space
-                    clsUtil.LimitSolutionSpace(child, Me.LowerBounds, Me.UpperBounds)
+                    LimitSolutionSpace(child)
 
                     'Survive
                     If child.Eval < _populations(i).Eval Then

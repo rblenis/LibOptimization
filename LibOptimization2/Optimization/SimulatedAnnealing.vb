@@ -46,7 +46,7 @@ Namespace Optimization.DerivativeFree
                 Return False
             End If
 
-            Me._bestPoint = New clsPoint(_populations(0))
+            _bestPoint = New clsPoint(_populations(0))
 
             Return True
         End Function
@@ -57,13 +57,9 @@ Namespace Optimization.DerivativeFree
         ''' <param name="ai_iteration"></param>
         ''' <returns></returns>
         Public Overrides Function DoIteration(Optional ai_iteration As Integer = 0) As Boolean
-            If ai_iteration = 0 Then
-                ai_iteration = Me.Iteration - 1
-            End If
-
             'Do Iteration
             Try
-                ai_iteration = If(ai_iteration = 0, Me.Iteration - 1, ai_iteration - 1)
+                ai_iteration = If(ai_iteration = 0, Iteration - 1, ai_iteration - 1)
                 For iterate As Integer = 0 To ai_iteration
                     'neighbor function
                     Dim temp As New clsPoint(_populations(0))
@@ -72,6 +68,9 @@ Namespace Optimization.DerivativeFree
                         temp(i) += tempNeighbor
                     Next
                     temp.ReEvaluate()
+
+                    'limit solution space
+                    LimitSolutionSpace(temp)
 
                     'transition
                     Dim evalNow As Double = _populations(0).Eval
@@ -89,13 +88,13 @@ Namespace Optimization.DerivativeFree
                     End If
 
                     'cooling
-                    If Me.Temperature > EndTemperature Then
-                        Me.Temperature *= Me.CoolingRatio
+                    If Temperature > EndTemperature Then
+                        Temperature *= CoolingRatio
                     End If
 
                     'reserve best
-                    If _populations(0).Eval < Me._bestPoint.Eval Then
-                        Me._bestPoint = _populations(0).Copy()
+                    If _populations(0).Eval < _bestPoint.Eval Then
+                        _bestPoint = _populations(0).Copy()
                     End If
 
                     'Check and Update Iteration count
@@ -129,7 +128,7 @@ Namespace Optimization.DerivativeFree
             Return _populations(0)
         End Function
 
-        Public Sub DebugSAParametes()
+        Public Sub DebugNowTemperature()
             Console.WriteLine("{0}", Temperature)
         End Sub
 #End Region

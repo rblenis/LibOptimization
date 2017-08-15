@@ -30,7 +30,7 @@
         ''' <param name="ai_seed">seed for random algorithm</param>
         ''' <remarks></remarks>
         Public Sub New(ByVal ai_seed As UInteger)
-            Me.SetSeed(ai_seed)
+            SetSeed(ai_seed)
         End Sub
 
         ''' <summary>
@@ -39,7 +39,7 @@
         ''' <param name="ai_isUseTickCount">TickCount seed for random algorithm</param>
         ''' <remarks></remarks>
         Public Sub New(ByVal ai_isUseTickCount As Boolean)
-            Me.SetSeed(BitConverter.ToUInt32(BitConverter.GetBytes(Environment.TickCount), 0))
+            SetSeed(BitConverter.ToUInt32(BitConverter.GetBytes(Environment.TickCount), 0))
         End Sub
 
         ''' <summary>
@@ -50,9 +50,9 @@
         Public Sub SetSeed(Optional ByVal ai_seed As UInteger = 88675123)
             'Init parameter. rorate seed.
             '全パラメータにseedの影響を与えないと初期の乱数が同じ傾向になる。8bitずつ回転左シフト
-            x = x Xor Me.RotateLeftShiftForUInteger(ai_seed, 8)
-            y = y Xor Me.RotateLeftShiftForUInteger(ai_seed, 16)
-            z = z Xor Me.RotateLeftShiftForUInteger(ai_seed, 24)
+            x = x Xor RotateLeftShiftForUInteger(ai_seed, 8)
+            y = y Xor RotateLeftShiftForUInteger(ai_seed, 16)
+            z = z Xor RotateLeftShiftForUInteger(ai_seed, 24)
             w = w Xor ai_seed 'Set seed
             t = 0
 
@@ -73,7 +73,7 @@
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Overrides Function [Next]() As Integer
-            Return CInt(Me.Xor128 And &H7FFFFFFF)
+            Return CInt(Xor128 And &H7FFFFFFF)
         End Function
 
         ''' <summary>
@@ -83,7 +83,7 @@
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Overrides Function [Next](maxValue As Integer) As Integer
-            Return Me.Next(0, maxValue)
+            Return [Next](0, maxValue)
         End Function
 
         ''' <summary>
@@ -94,7 +94,7 @@
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Overrides Function [Next](minValue As Integer, maxValue As Integer) As Integer
-            Return CInt(minValue + Me.Xor128() Mod (maxValue - minValue))
+            Return CInt(minValue + Xor128() Mod (maxValue - minValue))
         End Function
 
         ''' <summary>
@@ -103,7 +103,7 @@
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Overrides Function NextDouble() As Double
-            Return Me.Xor128() / UInteger.MaxValue
+            Return Xor128() / UInteger.MaxValue
         End Function
 
         ''' <summary>

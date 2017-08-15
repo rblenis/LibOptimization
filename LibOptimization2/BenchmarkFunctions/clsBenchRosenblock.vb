@@ -21,7 +21,7 @@ Namespace BenchmarkFunction
             If ai_dim <= 1 Then
                 Throw New NotImplementedException
             End If
-            Me.dimension = ai_dim
+            dimension = ai_dim
         End Sub
 
         ''' <summary>
@@ -35,12 +35,12 @@ Namespace BenchmarkFunction
                 Return 0
             End If
 
-            If Me.dimension <> x.Count Then
+            If dimension <> x.Count Then
                 Return 0
             End If
 
             Dim ret As Double = 0.0
-            For i As Integer = 0 To Me.dimension - 2
+            For i As Integer = 0 To dimension - 2
                 ret += 100 * (x(i + 1) - x(i) ^ 2) ^ 2 + (x(i) - 1) ^ 2
             Next
 
@@ -56,13 +56,13 @@ Namespace BenchmarkFunction
             gradVec.Add(grad)
 
             'i1 ~ in-1
-            For i As Integer = 1 To Me.dimension - 2
+            For i As Integer = 1 To dimension - 2
                 grad = -400 * x(i) * (x(i + 1) - x(i) ^ 2) + 200 * (x(i) - x(i - 1) ^ 2) - 2
                 gradVec.Add(grad)
             Next
 
             'in
-            grad = 200 * (x(Me.dimension - 1) - x(Me.dimension - 2) ^ 2)
+            grad = 200 * (x(dimension - 1) - x(dimension - 2) ^ 2)
             gradVec.Add(grad)
 
             Return gradVec
@@ -70,16 +70,16 @@ Namespace BenchmarkFunction
 
         Public Overrides Function Hessian(ByVal x As List(Of Double)) As List(Of List(Of Double))
             Dim hesse As New List(Of List(Of Double))
-            Dim tempVect(Me.dimension - 1) As Double
-            For i As Integer = 0 To Me.dimension - 1
+            Dim tempVect(dimension - 1) As Double
+            For i As Integer = 0 To dimension - 1
                 hesse.Add(New List(Of Double)(tempVect))
             Next
 
-            If Me.dimension = 2 Then
-                For i As Integer = 0 To Me.dimension - 1
-                    For j As Integer = 0 To Me.dimension - 1
+            If dimension = 2 Then
+                For i As Integer = 0 To dimension - 1
+                    For j As Integer = 0 To dimension - 1
                         If i = j Then
-                            If i <> Me.dimension - 1 Then
+                            If i <> dimension - 1 Then
                                 hesse(i)(j) = -400 * (x(i + 1) - x(i) ^ 2) + 800 * x(i) ^ 2 - 2
                             Else
                                 hesse(i)(j) = 200
@@ -90,12 +90,12 @@ Namespace BenchmarkFunction
                     Next
                 Next
             Else
-                For i As Integer = 0 To Me.dimension - 1
-                    For j As Integer = 0 To Me.dimension - 1
+                For i As Integer = 0 To dimension - 1
+                    For j As Integer = 0 To dimension - 1
                         If i = j Then
                             If i = 0 Then
                                 hesse(i)(j) = -400 * (x(i + 1) - x(i) ^ 2) + 800 * x(i) ^ 2 - 2
-                            ElseIf i = Me.dimension - 1 Then
+                            ElseIf i = dimension - 1 Then
                                 hesse(i)(j) = 200
                             Else
                                 hesse(i)(j) = -400 * (x(i + 1) - x(i) ^ 2) + 800 * x(i) ^ 2 + 198
@@ -116,7 +116,7 @@ Namespace BenchmarkFunction
 
         Public Overrides ReadOnly Property NumberOfVariable As Integer
             Get
-                Return Me.dimension
+                Return dimension
             End Get
         End Property
     End Class

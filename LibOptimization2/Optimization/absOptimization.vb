@@ -64,7 +64,7 @@ Namespace Optimization
         ''' <summary>
         ''' Initialize optimizer
         ''' </summary>
-        ''' <remarks></remarks>
+        ''' <returns></returns>
         Public Overridable Function Init() As Boolean
             'check
             If ObjectiveFunction Is Nothing Then
@@ -89,8 +89,8 @@ Namespace Optimization
             End If
 
             'init
-            Me._IterationCount = 0
-            Me._populations.Clear()
+            _IterationCount = 0
+            _populations.Clear()
 
             'error manage reset
             clsError.Clear()
@@ -99,22 +99,22 @@ Namespace Optimization
             Try
                 'adaptive population size
                 If UseAdaptivePopulationSize = True Then
-                    Me.PopulationSize = CInt(50 * Math.Log(Me.ObjectiveFunction.NumberOfVariable) + 15)
+                    PopulationSize = CInt(50 * Math.Log(ObjectiveFunction.NumberOfVariable) + 15)
                 End If
 
                 'generate initial position
-                Dim temp(Me.ObjectiveFunction.NumberOfVariable - 1) As Double
-                For i As Integer = 0 To Me.PopulationSize - 1
-                    For j As Integer = 0 To Me.ObjectiveFunction.NumberOfVariable - 1
-                        temp(j) = clsUtil.GenRandomRange(Me.Random, -Me.InitialValueRange, Me.InitialValueRange)
+                Dim temp(ObjectiveFunction.NumberOfVariable - 1) As Double
+                For i As Integer = 0 To PopulationSize - 1
+                    For j As Integer = 0 To ObjectiveFunction.NumberOfVariable - 1
+                        temp(j) = clsUtil.GenRandomRange(Random, -InitialValueRange, InitialValueRange)
                     Next
 
-                    Dim tempPoint = New clsPoint(New clsPoint(Me.ObjectiveFunction, temp))
+                    Dim tempPoint = New clsPoint(New clsPoint(ObjectiveFunction, temp))
                     If UseBounds = True Then
-                        clsUtil.LimitSolutionSpace(tempPoint, LowerBounds, UpperBounds)
+                        LimitSolutionSpace(tempPoint)
                     End If
 
-                    Me._populations.Add(tempPoint)
+                    _populations.Add(tempPoint)
                 Next
 
                 'calc criterion index
@@ -123,12 +123,56 @@ Namespace Optimization
                 End If
 
                 'Sort Evaluate
-                Me._populations.Sort()
+                _populations.Sort()
             Catch ex As Exception
                 clsError.SetError(clsError.ErrorType.ERR_INIT, ex.Message)
             End Try
 
             Return True
+        End Function
+
+        ''' <summary>
+        ''' Initialize optimizer with any point 
+        ''' </summary>
+        ''' <param name="anyPoint"></param>
+        ''' <returns></returns>
+        Public Function Init(ByVal anyPoint As clsPoint) As Boolean
+            If anyPoint Is Nothing Then
+                clsError.SetError(clsError.ErrorType.ERR_INIT)
+                Return False
+            End If
+
+            If ObjectiveFunction.NumberOfVariable <> anyPoint.Count Then
+                clsError.SetError(clsError.ErrorType.ERR_INIT)
+                Return False
+            End If
+
+            Dim flg As Boolean = Init(False)
+            If flg = True Then
+                _populations(0) = anyPoint 'replace
+            End If
+            Return flg
+        End Function
+
+        ''' <summary>
+        ''' Initialize optimizer with best result (Initialize leave best result. This method Is an Elite strategy.)
+        ''' </summary>
+        ''' <param name="isReuseBestResult">Reuse best result</param>
+        ''' <returns></returns>
+        Public Function Init(ByVal isReuseBestResult As Boolean) As Boolean
+            Dim best As clsPoint = Nothing
+            Dim flg As Boolean = False
+            If isReuseBestResult = True And _populations.Count > 0 Then
+                best = clsUtil.GetBestPoint(_populations)
+                flg = Init(False)
+                If flg = True Then
+                    _populations(0) = best
+                End If
+            Else
+                flg = Init(False)
+            End If
+
+            Return flg
         End Function
 
         ''' <summary>
@@ -176,7 +220,54 @@ Namespace Optimization
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub ResetIterationCount()
-            Me._IterationCount = 0
+            _IterationCount = 0
+        End Sub
+
+        ''' <summary>
+        ''' Limit solution space
+        ''' </summary>
+        ''' <param name="temp"></param>
+        ''' <remarks></remarks>
+        Public Sub LimitSolutionSpace(ByRef temp As MathUtil.clsEasyVector)
+            If UseBounds = False Then
+                Return
+            End If
+
+            If UpperBounds IsNot Nothing AndAlso LowerBounds IsNot Nothing Then
+                For ii As Integer = 0 To temp.Count - 1
+                    Dim upper As Double = 0
+                    Dim lower As Double = 0
+                    If UpperBounds(ii) > LowerBounds(ii) Then
+                        upper = UpperBounds(ii)
+                        lower = LowerBounds(ii)
+                    ElseIf UpperBounds(ii) < LowerBounds(ii) Then
+                        upper = LowerBounds(ii)
+                        lower = UpperBounds(ii)
+                    Else
+                        Throw New Exception("Error! upper bound and lower bound are same.")
+                    End If
+
+                    If temp(ii) > lower AndAlso temp(ii) < upper Then
+                        'in
+                    ElseIf temp(ii) >= lower AndAlso temp(ii) >= upper Then
+                        temp(ii) = upper
+                    ElseIf temp(ii) <= lower AndAlso temp(ii) <= upper Then
+                        temp(ii) = lower
+                    Else
+                        Throw New Exception("Error!")
+                    End If
+                Next
+            End If
+        End Sub
+
+        ''' <summary>
+        ''' Limit solution space
+        ''' </summary>
+        ''' <param name="temp"></param>
+        ''' <remarks></remarks>
+        Public Sub LimitSolutionSpace(ByRef temp As clsPoint)
+            LimitSolutionSpace(DirectCast(temp, MathUtil.clsEasyVector))
+            temp.ReEvaluate()
         End Sub
 #End Region
     End Class

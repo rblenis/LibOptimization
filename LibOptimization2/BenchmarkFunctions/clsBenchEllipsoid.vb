@@ -22,7 +22,7 @@ Namespace BenchmarkFunction
         ''' <param name="ai_dim">Set dimension</param>
         ''' <remarks></remarks>
         Public Sub New(ByVal ai_dim As Integer)
-            Me.dimension = ai_dim
+            dimension = ai_dim
         End Sub
 
         ''' <summary>
@@ -36,13 +36,13 @@ Namespace BenchmarkFunction
                 Return 0
             End If
 
-            If Me.dimension <> ai_var.Count Then
+            If dimension <> ai_var.Count Then
                 Return 0
             End If
 
             Dim ret As Double = 0.0
-            For i As Integer = 0 To Me.dimension - 1
-                Dim temp As Double = (1000 ^ (i / (Me.dimension - 1))) * ai_var(i)
+            For i As Integer = 0 To dimension - 1
+                Dim temp As Double = (1000 ^ (i / (dimension - 1))) * ai_var(i)
                 ret += temp ^ 2
             Next
 
@@ -59,7 +59,7 @@ Namespace BenchmarkFunction
 
         Public Overrides ReadOnly Property NumberOfVariable As Integer
             Get
-                Return Me.dimension
+                Return dimension
             End Get
         End Property
     End Class

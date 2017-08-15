@@ -27,12 +27,49 @@ Module Module1
         '    Return
         'End With
 
+        With Nothing
+            Dim optimization As New clsOptRealGAUNDX(New clsBenchSphere(2))
+            optimization.Init()
+            While (optimization.DoIteration(100) = False)
+                clsUtil.DebugValue(optimization, ai_isOutValue:=False)
+            End While
+            clsUtil.DebugValue(optimization)
+        End With
+
+        With Nothing
+            For i As Integer = 0 To 9
+                Dim optimization As New LibOptimization2.Optimization.DerivativeFree.SimulatedAnnealing()
+                optimization.ObjectiveFunction = New LibOptimization2.BenchmarkFunction.clsBenchSphere(2)
+                'optimization.ALPHA = 0.2
+                optimization.PopulationSize = 100
+                optimization.Iteration = 10000
+                optimization.InitialValueRange = 20.48
+                optimization.LowerBounds = New Double() {1, 1}
+                optimization.UpperBounds = New Double() {60, 60}
+                optimization.UseBounds = True
+                optimization.UseAdaptivePopulationSize = False
+                optimization.Init()
+                LibOptimization2.Util.clsUtil.DebugValue(optimization.BestResult)
+                optimization.DoIteration()
+                LibOptimization2.Util.clsUtil.DebugValue(optimization.BestResult)
+            Next
+            Return
+        End With
+
         'test LibOptimization2
         With Nothing
             Dim opts As New List(Of LibOptimization2.Optimization.absOptimization)
+            opts.Add(New LibOptimization2.Optimization.RequireDerivative.SteepestDescent())
+            Threading.Thread.Sleep(10)
+            opts.Add(New LibOptimization2.Optimization.RequireDerivative.NewtonMethod())
+            Threading.Thread.Sleep(10)
+            opts.Add(New LibOptimization2.Optimization.DerivativeFree.SimulatedAnnealing())
+            Threading.Thread.Sleep(10)
             opts.Add(New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution_best_1_bin())
             Threading.Thread.Sleep(10)
-            opts.Add(New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution_best_2_bin())
+            opts.Add(New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution_best_1_bin())
+            Threading.Thread.Sleep(10)
+            opts.Add(New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution_best_1_bin())
             Threading.Thread.Sleep(10)
             opts.Add(New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution_current_1_bin())
             Threading.Thread.Sleep(10)
@@ -44,22 +81,24 @@ Module Module1
             Threading.Thread.Sleep(10)
             opts.Add(New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution_rand_to_Best_1_bin())
             Threading.Thread.Sleep(10)
+            'GA
+            opts.Add(New LibOptimization2.Optimization.DerivativeFree.ReadlCodedGA.RealGABLXAlpha())
+            Threading.Thread.Sleep(10)
+            opts.Add(New LibOptimization2.Optimization.DerivativeFree.ReadlCodedGA.RealGAPCX())
+            Threading.Thread.Sleep(10)
+            opts.Add(New LibOptimization2.Optimization.DerivativeFree.ReadlCodedGA.RealGAREX())
+            Threading.Thread.Sleep(10)
+            opts.Add(New LibOptimization2.Optimization.DerivativeFree.ReadlCodedGA.RealGASPX())
+            Threading.Thread.Sleep(10)
+            opts.Add(New LibOptimization2.Optimization.DerivativeFree.ReadlCodedGA.RealGAUNDX())
+            Threading.Thread.Sleep(10)
             For Each o In opts
-                o.ObjectiveFunction = New LibOptimization2.BenchmarkFunction.clsBenchRosenblock(5)
+                o.ObjectiveFunction = New LibOptimization2.BenchmarkFunction.clsBenchSphere(2)
                 o.Init()
                 LibOptimization2.Util.clsUtil.DebugValue(o.BestResult)
                 o.DoIteration()
                 LibOptimization2.Util.clsUtil.DebugValue(o.BestResult)
             Next
-            Dim optimization As New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution()
-            optimization.ObjectiveFunction = New LibOptimization2.BenchmarkFunction.clsBenchRosenblock(10)
-            optimization.DEStrategy = LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution.EnumDEStrategyType.DE_rand_to_Best_1_bin
-            optimization.Init()
-            LibOptimization2.Util.clsUtil.DebugValue(optimization.BestResult)
-            While (optimization.DoIteration(100) = False)
-                LibOptimization2.Util.clsUtil.DebugValue(optimization.BestResult)
-            End While
-            LibOptimization2.Util.clsUtil.DebugValue(optimization.BestResult)
         End With
 
         With Nothing

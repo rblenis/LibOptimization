@@ -28,7 +28,7 @@
         Public Sub New(ByVal ai_base As clsEasyMatrix)
             For i As Integer = 0 To ai_base.Count - 1
                 Dim temp As New clsEasyVector(ai_base(i))
-                Me.Add(temp)
+                Add(temp)
             Next
         End Sub
 
@@ -44,7 +44,7 @@
                 If ai_isIdentity Then
                     temp(i) = 1.0
                 End If
-                Me.Add(temp)
+                Add(temp)
             Next
         End Sub
 
@@ -56,7 +56,7 @@
         ''' <remarks></remarks>
         Public Sub New(ByVal ai_rowSize As Integer, ByVal ai_colSize As Integer)
             For i As Integer = 0 To ai_rowSize - 1
-                Me.Add(New clsEasyVector(ai_colSize))
+                Add(New clsEasyVector(ai_colSize))
             Next
         End Sub
 
@@ -67,7 +67,7 @@
         ''' <remarks></remarks>
         Public Sub New(ByVal ai_val As List(Of List(Of Double)))
             For i As Integer = 0 To ai_val.Count - 1
-                Me.Add(New clsEasyVector(ai_val(i)))
+                Add(New clsEasyVector(ai_val(i)))
             Next
         End Sub
 
@@ -78,7 +78,7 @@
         ''' <remarks></remarks>
         Public Sub New(ByVal ai_val()() As Double)
             For i As Integer = 0 To ai_val.Length - 1
-                Me.Add(New clsEasyVector(ai_val(i)))
+                Add(New clsEasyVector(ai_val(i)))
             Next
         End Sub
 
@@ -91,19 +91,19 @@
         Public Sub New(ByVal ai_val As List(Of Double), ByVal ai_direction As clsEasyVector.VectorDirection)
             If ai_direction = clsEasyVector.VectorDirection.ROW Then
                 Dim temp As New clsEasyVector(ai_val)
-                Me.Add(temp)
+                Add(temp)
             Else
                 For i As Integer = 0 To ai_val.Count - 1
-                    Me.Add(New clsEasyVector({ai_val(i)}))
+                    Add(New clsEasyVector({ai_val(i)}))
                 Next
             End If
         End Sub
 
         Public Sub New(ByVal data As List(Of Double), ByVal order As Integer)
-            Me.Clear()
+            Clear()
             For i As Integer = 0 To order - 1
                 Dim temp(order - 1) As Double
-                Me.Add(New clsEasyVector(temp))
+                Add(New clsEasyVector(temp))
             Next
             Dim index As Integer = 0
             For i As Integer = 0 To order - 1
@@ -125,7 +125,7 @@
         ''' <remarks></remarks>
         Public Shared Operator +(ByVal ai_source As clsEasyMatrix, ByVal ai_dest As clsEasyMatrix) As clsEasyMatrix
             If IsSameDimension(ai_source, ai_dest) = False Then
-                Throw New clsException(clsException.Series.DifferRowNumberAndCollumnNumber)
+                Throw New clsExceptionForMath(clsExceptionForMath.Series.DifferRowNumberAndCollumnNumber)
             End If
             Dim ret As New clsEasyMatrix(ai_source)
             For i As Integer = 0 To ret.RowCount() - 1
@@ -143,7 +143,7 @@
         ''' <remarks></remarks>
         Public Shared Operator +(ByVal ai_source As clsEasyMatrix, ByVal ai_dest As clsEasyVector) As clsEasyVector
             If IsComputableMatrixVector(ai_source, ai_dest) = False Then
-                Throw New clsException(clsException.Series.NotComputable)
+                Throw New clsExceptionForMath(clsExceptionForMath.Series.NotComputable)
             End If
             Dim ret As New clsEasyVector(ai_dest)
             For i As Integer = 0 To ai_dest.Count - 1
@@ -161,7 +161,7 @@
         ''' <remarks></remarks>
         Public Shared Operator +(ByVal ai_source As clsEasyVector, ByVal ai_dest As clsEasyMatrix) As clsEasyVector
             If IsComputableMatrixVector(ai_dest, ai_source) = False Then
-                Throw New clsException(clsException.Series.NotComputable)
+                Throw New clsExceptionForMath(clsExceptionForMath.Series.NotComputable)
             End If
             Dim ret As New clsEasyVector(ai_source)
             For i As Integer = 0 To ai_source.Count - 1
@@ -179,7 +179,7 @@
         ''' <remarks></remarks>
         Public Shared Operator -(ByVal ai_source As clsEasyMatrix, ByVal ai_dest As clsEasyMatrix) As clsEasyMatrix
             If IsSameDimension(ai_source, ai_dest) = False Then
-                Throw New clsException(clsException.Series.DifferRowNumberAndCollumnNumber)
+                Throw New clsExceptionForMath(clsExceptionForMath.Series.DifferRowNumberAndCollumnNumber)
             End If
             Dim ret As New clsEasyMatrix(ai_source)
             For i As Integer = 0 To ret.RowCount() - 1
@@ -197,7 +197,7 @@
         ''' <remarks></remarks>
         Public Shared Operator -(ByVal ai_source As clsEasyMatrix, ByVal ai_dest As clsEasyVector) As clsEasyVector
             If IsComputableMatrixVector(ai_source, ai_dest) = False Then
-                Throw New clsException(clsException.Series.NotComputable)
+                Throw New clsExceptionForMath(clsExceptionForMath.Series.NotComputable)
             End If
             Dim ret As New clsEasyVector(ai_dest)
             For i As Integer = 0 To ai_dest.Count - 1
@@ -215,7 +215,7 @@
         ''' <remarks></remarks>
         Public Shared Operator -(ByVal ai_source As clsEasyVector, ByVal ai_dest As clsEasyMatrix) As clsEasyVector
             If IsComputableMatrixVector(ai_dest, ai_source) = False Then
-                Throw New clsException(clsException.Series.NotComputable)
+                Throw New clsExceptionForMath(clsExceptionForMath.Series.NotComputable)
             End If
             Dim ret As New clsEasyVector(ai_source)
             For i As Integer = 0 To ai_source.Count - 1
@@ -259,7 +259,7 @@
                 Return ret
             End If
 
-            Throw New clsException(clsException.Series.NotComputable, "Matrix * Matrix")
+            Throw New clsExceptionForMath(clsExceptionForMath.Series.NotComputable, "Matrix * Matrix")
         End Operator
 
         ''' <summary>
@@ -279,7 +279,7 @@
                 row = 1
             End If
             If ai_source.ColCount <> row Then
-                Throw New clsException(clsException.Series.NotComputable, "Matrix * Vector")
+                Throw New clsExceptionForMath(clsExceptionForMath.Series.NotComputable, "Matrix * Vector")
             End If
 
             Dim temp As clsEasyMatrix = ai_source * ai_dest.ToMatrix()
@@ -302,7 +302,7 @@
                 row = 1
             End If
             If col <> ai_dest.RowCount Then
-                Throw New clsException(clsException.Series.NotComputable, "Vector * Matrix")
+                Throw New clsExceptionForMath(clsExceptionForMath.Series.NotComputable, "Vector * Matrix")
             End If
 
             Dim temp As clsEasyMatrix = ai_source.ToMatrix() * ai_dest
@@ -344,9 +344,9 @@
         ''' </summary>
         ''' <remarks></remarks>
         Public Function T() As clsEasyMatrix
-            Dim ret As New clsEasyMatrix(Me.ColCount, Me.RowCount)
+            Dim ret As New clsEasyMatrix(ColCount, RowCount)
             For rowIndex As Integer = 0 To ret.RowCount - 1
-                ret.Row(rowIndex) = Me.Column(rowIndex)
+                ret.Row(rowIndex) = Column(rowIndex)
             Next
             Return ret
         End Function
@@ -356,10 +356,10 @@
         ''' </summary>
         ''' <remarks></remarks>
         Public Function Det(Optional ByVal ai_isDebug As Boolean = False) As Double
-            If Me.RowCount <> Me.ColCount Then
+            If RowCount <> ColCount Then
                 Return 0
             End If
-            Return CalcDeterminant(Me, Me.RowCount(), ai_isDebug)
+            Return CalcDeterminant(Me, RowCount(), ai_isDebug)
         End Function
 
         ''' <summary>
@@ -368,8 +368,8 @@
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function Diag() As clsEasyMatrix
-            Dim ret As New clsEasyMatrix(Me.Count)
-            For i As Integer = 0 To Me.Count - 1
+            Dim ret As New clsEasyMatrix(Count)
+            For i As Integer = 0 To Count - 1
                 ret(i)(i) = Me(i)(i)
             Next
             Return ret
@@ -380,11 +380,11 @@
         ''' </summary>
         ''' <remarks></remarks>
         Public Function Inverse() As clsEasyMatrix
-            If Me.RowCount <> Me.ColCount Then
+            If RowCount <> ColCount Then
                 Return New clsEasyMatrix(0)
             End If
 
-            Dim n As Integer = Me.RowCount
+            Dim n As Integer = RowCount
             Dim source As New clsEasyMatrix(Me)
             Dim retInverse As New clsEasyMatrix(n, True)
             If n = 0 Then
@@ -434,7 +434,7 @@
 
                     'check 正則性の判定
                     If amax < SAME_ZERO Then
-                        Return New clsEasyMatrix(Me.ColCount)
+                        Return New clsEasyMatrix(ColCount)
                     End If
 
                     'change row
@@ -471,9 +471,9 @@
         ''' <param name="ai_destRowIndex"></param>
         ''' <remarks></remarks>
         Public Sub SwapRow(ByVal ai_sourceRowIndex As Integer, ByVal ai_destRowIndex As Integer)
-            Dim temp As clsEasyVector = Me.Row(ai_sourceRowIndex)
-            Me.Row(ai_sourceRowIndex) = Me.Row(ai_destRowIndex)
-            Me.Row(ai_destRowIndex) = temp
+            Dim temp As clsEasyVector = Row(ai_sourceRowIndex)
+            Row(ai_sourceRowIndex) = Row(ai_destRowIndex)
+            Row(ai_destRowIndex) = temp
         End Sub
 
         ''' <summary>
@@ -483,9 +483,9 @@
         ''' <param name="ai_destColIndex"></param>
         ''' <remarks></remarks>
         Public Sub SwapCol(ByVal ai_sourceColIndex As Integer, ByVal ai_destColIndex As Integer)
-            Dim temp As clsEasyVector = Me.Column(ai_sourceColIndex)
-            Me.Column(ai_sourceColIndex) = Me.Row(ai_destColIndex)
-            Me.Column(ai_destColIndex) = temp
+            Dim temp As clsEasyVector = Column(ai_sourceColIndex)
+            Column(ai_sourceColIndex) = Row(ai_destColIndex)
+            Column(ai_destColIndex) = temp
         End Sub
 
         ''' <summary>
@@ -511,13 +511,13 @@
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function ToVector() As clsEasyVector
-            If Me.RowCount = 1 Then
-                Return Me.Row(0)
-            ElseIf Me.ColCount = 1 Then
-                Return Me.Column(0)
+            If RowCount = 1 Then
+                Return Row(0)
+            ElseIf ColCount = 1 Then
+                Return Column(0)
             End If
 
-            Throw New clsException(clsException.Series.NotComputable, "Matrix")
+            Throw New clsExceptionForMath(clsExceptionForMath.Series.NotComputable, "Matrix")
         End Function
 
         ''' <summary>
@@ -526,11 +526,11 @@
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function IsSquare() As Boolean
-            If Me.Count = 0 Then
+            If Count = 0 Then
                 Return False
             End If
 
-            If Me.Count = Me(0).Count Then
+            If Count = Me(0).Count Then
                 Return True
             End If
 
@@ -546,7 +546,7 @@
         ''' <remarks></remarks>
         Public ReadOnly Property RowCount() As Integer
             Get
-                Return Me.Count
+                Return Count
             End Get
         End Property
 
@@ -586,9 +586,9 @@
         ''' <remarks></remarks>
         Public Property Column(ByVal ai_colIndex As Integer) As clsEasyVector
             Get
-                Dim temp(Me.RowCount - 1) As Double
+                Dim temp(RowCount - 1) As Double
                 For i As Integer = 0 To temp.Length - 1
-                    temp(i) = Me.Row(i)(ai_colIndex)
+                    temp(i) = Row(i)(ai_colIndex)
                 Next
                 Dim tempVector As New clsEasyVector(temp)
                 tempVector.Direction = clsEasyVector.VectorDirection.COL
@@ -612,8 +612,8 @@
                 Return Me
             End Get
             Set(ByVal value As List(Of List(Of Double)))
-                Me.Clear()
-                Me.AddRange(value)
+                Clear()
+                AddRange(value)
             End Set
         End Property
 #End Region

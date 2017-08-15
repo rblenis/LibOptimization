@@ -85,10 +85,16 @@
     <Compile Include="BenchmarkFunctions\clsBenchSchwefel.vb" />
     <Compile Include="BenchmarkFunctions\clsBenchShubertsFunction.vb" />
     <Compile Include="BenchmarkFunctions\clsBenchSphere.vb" />
+    <Compile Include="Optimization\Point.vb" />
+    <Compile Include="Optimization\RealGABLXAlpha.vb" />
+    <Compile Include="Optimization\RealGAPCX.vb" />
+    <Compile Include="Optimization\RealGAREX.vb" />
+    <Compile Include="Optimization\RealGASPX.vb" />
+    <Compile Include="Optimization\RealGAUNDX.vb" />
     <Compile Include="Optimization\DifferentialEvolutionGroup.vb" />
     <Compile Include="Optimization\DifferentialEvolution.vb" />
     <Compile Include="Optimization\NewtonMethod.vb" />
-    <Compile Include="Math\clsException.vb" />
+    <Compile Include="Math\clsExceptionForMath.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -110,7 +116,6 @@
     <Compile Include="Math\clsEasyMatrix.vb" />
     <Compile Include="Math\clsEasyVector.vb" />
     <Compile Include="Util\clsError.vb" />
-    <Compile Include="Optimization\clsPoint.vb" />
     <Compile Include="Util\clsEval.vb" />
     <Compile Include="Util\clsRandomXorshift.vb" />
     <Compile Include="Util\clsUtil.vb" />

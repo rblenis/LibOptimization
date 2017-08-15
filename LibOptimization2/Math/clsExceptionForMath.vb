@@ -1,5 +1,5 @@
 ﻿Namespace MathUtil
-    Public Class clsException : Inherits Exception
+    Public Class clsExceptionForMath : Inherits Exception
         Public Enum Series
             UnknownError
             NotImpementaion

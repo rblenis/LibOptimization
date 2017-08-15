@@ -48,30 +48,37 @@ Namespace Optimization.RequireDerivative
         ''' <param name="ai_iteration"></param>
         ''' <returns></returns>
         Public Overrides Function DoIteration(Optional ai_iteration As Integer = 0) As Boolean
-            If ai_iteration = 0 Then
-                ai_iteration = Me.Iteration - 1
-            End If
-
             'Do Iteration
-            Dim vector As New clsEasyVector(_populations(0))
-            Dim gradient As New clsEasyVector(MyBase.ObjectiveFunction.NumberOfVariable, clsEasyVector.VectorDirection.COL)
-            Dim h As New clsEasyMatrix()
+            Dim vector1 As New clsEasyVector(_populations(0))
+            Dim vector2 As New clsEasyVector(_populations(0))
             Try
-                ai_iteration = If(ai_iteration = 0, Me.Iteration - 1, ai_iteration - 1)
+                ai_iteration = If(ai_iteration = 0, Iteration - 1, ai_iteration - 1)
+                Dim gradient As New clsEasyVector(ObjectiveFunction.NumberOfVariable, clsEasyVector.VectorDirection.COL)
+                Dim h As New clsEasyMatrix()
                 For iterate As Integer = 0 To ai_iteration
                     'Calculate Gradient vector
-                    gradient.RawVector = Me.ObjectiveFunction.Gradient(vector)
+                    gradient.RawVector = ObjectiveFunction.Gradient(vector1)
 
-                    'Check conversion
+                    'Check criterion (gradient base)
                     If gradient.NormL1() < EPS Then
                         Return True
                     End If
 
                     'Calculate Hessian matrix
-                    h.RawMatrix = Me.ObjectiveFunction.Hessian(vector)
+                    h.RawMatrix = ObjectiveFunction.Hessian(vector1)
 
                     'Update
-                    vector = vector - Me.ALPHA * h.Inverse() * gradient 'H^-1 calulate heavy...
+                    vector2 = vector1 - ALPHA * h.Inverse() * gradient 'H^-1 calulate heavy...
+
+                    'limit solution space
+                    LimitSolutionSpace(vector2)
+
+                    'Check conversion2
+                    Dim diff = vector2 - vector1
+                    vector1 = vector2
+                    If diff.NormL2() = 0 Then
+                        Return True
+                    End If
 
                     'Check and Update Iteration count
                     If Iteration = MyBase._IterationCount Then
@@ -83,8 +90,8 @@ Namespace Optimization.RequireDerivative
                 Return False
             Finally
                 'return member
-                For i As Integer = 0 To vector.Count - 1
-                    _populations(0)(i) = vector(i)
+                For i As Integer = 0 To vector1.Count - 1
+                    _populations(0)(i) = vector1(i)
                 Next
                 _populations(0).ReEvaluate()
             End Try

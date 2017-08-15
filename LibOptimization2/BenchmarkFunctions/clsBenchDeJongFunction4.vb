@@ -22,7 +22,7 @@ Namespace BenchmarkFunction
         ''' <remarks></remarks>
         Public Sub New()
             For i As Integer = 0 To 29
-                Me.normRand.Add(Util.clsUtil.NormRand())
+                normRand.Add(Util.clsUtil.NormRand())
             Next
         End Sub
 
@@ -40,7 +40,7 @@ Namespace BenchmarkFunction
             Dim ret As Double = 0
             For i As Integer = 0 To 29
                 If (x(i) >= -1.28) AndAlso (x(i) <= 1.28) Then
-                    ret += (i + 1) * x(i) * x(i) * x(i) * x(i) + Me.normRand(i)
+                    ret += (i + 1) * x(i) * x(i) * x(i) * x(i) + normRand(i)
                 Else
                     'out of range
                     ret += Math.Abs(i) 'penarty

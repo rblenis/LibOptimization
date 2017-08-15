@@ -10,8 +10,8 @@ Namespace Optimization
         Inherits clsEasyVector
         Implements IComparable
 
-        Private m_func As absObjectiveFunction = Nothing
-        Private m_evaluateValue As Double = 0.0
+        Private _func As absObjectiveFunction = Nothing
+        Private _evaluateValue As Double = 0.0
 
         ''' <summary>
         ''' Default constructor
@@ -27,9 +27,9 @@ Namespace Optimization
         ''' <param name="ai_vertex"></param>
         ''' <remarks></remarks>
         Public Sub New(ByVal ai_vertex As clsPoint)
-            Me.m_func = ai_vertex.GetFunc()
-            Me.AddRange(ai_vertex) 'ok
-            Me.m_evaluateValue = ai_vertex.Eval
+            _func = ai_vertex.GetFunc()
+            AddRange(ai_vertex) 'ok
+            _evaluateValue = ai_vertex.Eval
         End Sub
 
         ''' <summary>
@@ -38,9 +38,9 @@ Namespace Optimization
         ''' <param name="ai_func"></param>
         ''' <remarks></remarks>
         Public Sub New(ByVal ai_func As absObjectiveFunction)
-            Me.m_func = ai_func
-            Me.AddRange(New Double(ai_func.NumberOfVariable - 1) {}) 'ok
-            Me.m_evaluateValue = Me.m_func.F(Me)
+            _func = ai_func
+            AddRange(New Double(ai_func.NumberOfVariable - 1) {}) 'ok
+            _evaluateValue = _func.F(Me)
         End Sub
 
         ''' <summary>
@@ -50,9 +50,9 @@ Namespace Optimization
         ''' <param name="ai_vars"></param>
         ''' <remarks></remarks>
         Public Sub New(ByVal ai_func As absObjectiveFunction, ByVal ai_vars As List(Of Double))
-            Me.m_func = ai_func
-            Me.AddRange(ai_vars) 'ok
-            Me.m_evaluateValue = Me.m_func.F(Me)
+            _func = ai_func
+            AddRange(ai_vars) 'ok
+            _evaluateValue = _func.F(Me)
         End Sub
 
         ''' <summary>
@@ -62,9 +62,9 @@ Namespace Optimization
         ''' <param name="ai_vars"></param>
         ''' <remarks></remarks>
         Public Sub New(ByVal ai_func As absObjectiveFunction, ByVal ai_vars() As Double)
-            Me.m_func = ai_func
-            Me.AddRange(ai_vars) 'ok
-            Me.m_evaluateValue = Me.m_func.F(Me)
+            _func = ai_func
+            AddRange(ai_vars) 'ok
+            _evaluateValue = _func.F(Me)
         End Sub
 
         ''' <summary>
@@ -74,8 +74,8 @@ Namespace Optimization
         ''' <param name="ai_dim"></param>
         ''' <remarks></remarks>
         Public Sub New(ByVal ai_func As absObjectiveFunction, ByVal ai_dim As Integer)
-            Me.m_func = ai_func
-            Me.AddRange(New Double(ai_dim - 1) {}) 'ok
+            _func = ai_func
+            AddRange(New Double(ai_dim - 1) {}) 'ok
         End Sub
 
         ''' <summary>
@@ -94,12 +94,12 @@ Namespace Optimization
             End If
 
             'Type check
-            If Not Me.GetType() Is ai_obj.GetType() Then
+            If Not [GetType]() Is ai_obj.GetType() Then
                 Throw New ArgumentException("Different type", "obj")
             End If
 
             'Compare
-            Dim mineValue As Double = Me.m_evaluateValue
+            Dim mineValue As Double = _evaluateValue
             Dim compareValue As Double = DirectCast(ai_obj, clsPoint).Eval
             If mineValue = compareValue Then
                 Return 0
@@ -115,7 +115,7 @@ Namespace Optimization
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub ReEvaluate()
-            Me.m_evaluateValue = Me.m_func.F(Me)
+            _evaluateValue = _func.F(Me)
         End Sub
 
         ''' <summary>
@@ -124,7 +124,7 @@ Namespace Optimization
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function GetFunc() As absObjectiveFunction
-            Return Me.m_func
+            Return _func
         End Function
 
         ''' <summary>
@@ -135,7 +135,7 @@ Namespace Optimization
         ''' <remarks></remarks>
         Public ReadOnly Property Eval() As Double
             Get
-                Return Me.m_evaluateValue
+                Return _evaluateValue
             End Get
         End Property
 
@@ -146,8 +146,8 @@ Namespace Optimization
         ''' <param name="ai_rand">Random object</param>
         ''' <remarks></remarks>
         Public Sub InitValue(ByVal ai_range As Double, ByVal ai_rand As System.Random)
-            For i As Integer = 0 To Me.m_func.NumberOfVariable - 1
-                Me.Add(Math.Abs(2.0 * ai_range) * ai_rand.NextDouble() - ai_range)
+            For i As Integer = 0 To _func.NumberOfVariable - 1
+                Add(Math.Abs(2.0 * ai_range) * ai_rand.NextDouble() - ai_range)
             Next
         End Sub
 
@@ -169,7 +169,7 @@ Namespace Optimization
             For i As Integer = 0 To ai_point.Count - 1
                 Me(i) = ai_point(i)
             Next
-            Me.m_evaluateValue = ai_point.Eval
+            _evaluateValue = ai_point.Eval
         End Sub
     End Class
 End Namespace

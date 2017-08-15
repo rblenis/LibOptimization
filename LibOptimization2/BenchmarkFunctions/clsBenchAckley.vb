@@ -21,7 +21,7 @@ Namespace BenchmarkFunction
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub New(ByVal ai_dim As Integer)
-            Me.dimension = ai_dim
+            dimension = ai_dim
         End Sub
 
         ''' <summary>
@@ -35,17 +35,17 @@ Namespace BenchmarkFunction
                 Return 0
             End If
 
-            If Me.dimension <> ai_var.Count Then
+            If dimension <> ai_var.Count Then
                 Return 0
             End If
 
             Dim a As Double = 0.0
             Dim b As Double = 0.0
-            For i As Integer = 0 To Me.dimension - 1
+            For i As Integer = 0 To dimension - 1
                 a += ai_var(i) ^ 2
                 b += Math.Cos(2 * Math.PI * ai_var(i))
             Next
-            Dim ret As Double = 20 - 20 * Math.Exp(-0.2 * Math.Sqrt((1 / Me.dimension) * a)) + Math.E - Math.Exp((1 / Me.dimension) * b)
+            Dim ret As Double = 20 - 20 * Math.Exp(-0.2 * Math.Sqrt((1 / dimension) * a)) + Math.E - Math.Exp((1 / dimension) * b)
 
             Return ret
         End Function
@@ -60,7 +60,7 @@ Namespace BenchmarkFunction
 
         Public Overrides ReadOnly Property NumberOfVariable As Integer
             Get
-                Return Me.dimension
+                Return dimension
             End Get
         End Property
     End Class

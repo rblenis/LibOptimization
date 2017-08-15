@@ -6,7 +6,7 @@
     ''' Inherits List(of double)
     ''' </remarks>
     Public Class clsEasyVector : Inherits List(Of Double)
-        Private m_direcition As VectorDirection = VectorDirection.ROW
+        Private _direcition As VectorDirection = VectorDirection.ROW
 
         ''' <summary>
         ''' Vector direction.
@@ -33,8 +33,8 @@
         ''' <param name="ai_base"></param>
         ''' <remarks></remarks>
         Public Sub New(ByVal ai_base As clsEasyVector)
-            Me.AddRange(ai_base)
-            Me.m_direcition = ai_base.Direction
+            AddRange(ai_base)
+            _direcition = ai_base.Direction
         End Sub
 
         ''' <summary>
@@ -43,8 +43,8 @@
         ''' <param name="ai_dim"></param>
         ''' <remarks></remarks>
         Public Sub New(ByVal ai_dim As Integer, Optional ByVal ai_direction As VectorDirection = VectorDirection.ROW)
-            Me.AddRange(New Double(ai_dim - 1) {})
-            Me.m_direcition = ai_direction
+            AddRange(New Double(ai_dim - 1) {})
+            _direcition = ai_direction
         End Sub
 
         ''' <summary>
@@ -53,8 +53,8 @@
         ''' <param name="ai_val"></param>
         ''' <remarks></remarks>
         Public Sub New(ByVal ai_val As List(Of Double), Optional ByVal ai_direction As VectorDirection = VectorDirection.ROW)
-            Me.AddRange(ai_val)
-            Me.m_direcition = ai_direction
+            AddRange(ai_val)
+            _direcition = ai_direction
         End Sub
 
         ''' <summary>
@@ -63,8 +63,8 @@
         ''' <param name="ai_val"></param>
         ''' <remarks></remarks>
         Public Sub New(ByVal ai_val() As Double, Optional ByVal ai_direction As VectorDirection = VectorDirection.ROW)
-            Me.AddRange(ai_val)
-            Me.m_direcition = ai_direction
+            AddRange(ai_val)
+            _direcition = ai_direction
         End Sub
 #End Region
 
@@ -90,7 +90,7 @@
         ''' <remarks></remarks>
         Public Shared Operator +(ByVal ai_source As clsEasyVector, ByVal ai_dest As clsEasyVector) As clsEasyVector
             If IsSameDimension(ai_source, ai_dest) = False Then
-                Throw New clsException(clsException.Series.DifferElementNumber)
+                Throw New clsExceptionForMath(clsExceptionForMath.Series.DifferElementNumber)
             End If
 
             Dim ret As New clsEasyVector(ai_source)
@@ -109,7 +109,7 @@
         ''' <remarks></remarks>
         Public Shared Operator -(ByVal ai_source As clsEasyVector, ByVal ai_dest As clsEasyVector) As clsEasyVector
             If IsSameDimension(ai_source, ai_dest) = False Then
-                Throw New clsException(clsException.Series.DifferElementNumber)
+                Throw New clsExceptionForMath(clsExceptionForMath.Series.DifferElementNumber)
             End If
 
             Dim ret As New clsEasyVector(ai_source)
@@ -129,7 +129,7 @@
         ''' </remarks>
         Public Function InnerProduct(ByVal ai_source As clsEasyVector) As Double
             If IsSameDimension(ai_source, Me) = False Then
-                Throw New clsException(clsException.Series.DifferElementNumber)
+                Throw New clsExceptionForMath(clsExceptionForMath.Series.DifferElementNumber)
             End If
             Dim ret As Double = 0
             For i As Integer = 0 To ai_source.Count - 1
@@ -221,9 +221,9 @@
         ''' <param name="ai_list"></param>
         ''' <remarks></remarks>
         Public Sub SetList(ByVal ai_list As List(Of Double))
-            Me.Clear()
+            Clear()
             For i As Integer = 0 To ai_list.Count - 1
-                Me.Add(ai_list(i))
+                Add(ai_list(i))
             Next
         End Sub
 
@@ -233,9 +233,9 @@
         ''' <param name="ai_list"></param>
         ''' <remarks></remarks>
         Public Sub SetList(ByVal ai_list() As Double)
-            Me.Clear()
+            Clear()
             For i As Integer = 0 To ai_list.Length - 1
-                Me.Add(ai_list(i))
+                Add(ai_list(i))
             Next
         End Sub
 
@@ -245,7 +245,7 @@
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function ToMatrix() As clsEasyMatrix
-            If Me.m_direcition = VectorDirection.ROW Then
+            If _direcition = VectorDirection.ROW Then
                 Return New clsEasyMatrix(Me, VectorDirection.ROW)
             Else
                 Return New clsEasyMatrix(Me, VectorDirection.COL)
@@ -338,7 +338,7 @@
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function Average() As Double
-            Return Me.Sum / Me.Count
+            Return Sum() / Count
         End Function
 
         ''' <summary>
@@ -348,13 +348,13 @@
         ''' <remarks></remarks>
         Public Sub PrintValue(Optional ByVal ai_preci As Integer = 3)
             Dim str As New System.Text.StringBuilder()
-            If Me.m_direcition = VectorDirection.ROW Then
-                For i As Integer = 0 To Me.Count - 1
+            If _direcition = VectorDirection.ROW Then
+                For i As Integer = 0 To Count - 1
                     str.Append(Me(i).ToString("F" & ai_preci.ToString()) & ControlChars.Tab)
                 Next
                 str.AppendLine("")
             Else
-                For i As Integer = 0 To Me.Count - 1
+                For i As Integer = 0 To Count - 1
                     str.Append(Me(i).ToString("F" & ai_preci.ToString()))
                     str.AppendLine("")
                 Next
@@ -375,8 +375,8 @@
                 Return Me
             End Get
             Set(ByVal value As List(Of Double))
-                Me.Clear()
-                Me.AddRange(value)
+                Clear()
+                AddRange(value)
             End Set
         End Property
 
@@ -388,10 +388,10 @@
         ''' <remarks></remarks>
         Public Property Direction() As VectorDirection
             Get
-                Return Me.m_direcition
+                Return _direcition
             End Get
             Set(ByVal value As VectorDirection)
-                Me.m_direcition = value
+                _direcition = value
             End Set
         End Property
 #End Region

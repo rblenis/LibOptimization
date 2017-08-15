@@ -1,4 +1,5 @@
-﻿Imports LibOptimization2.Optimization
+﻿Imports LibOptimization2.MathUtil
+Imports LibOptimization2.Optimization
 
 Namespace Util
     ''' <summary>
@@ -274,69 +275,72 @@ Namespace Util
         End Function
 
         ''' <summary>
-        ''' Limit solution space
+        ''' Select Parent
         ''' </summary>
-        ''' <param name="temp"></param>
-        ''' <param name="LowerBounds"></param>
-        ''' <param name="UpperBounds"></param>
+        ''' <param name="ai_population"></param>
+        ''' <param name="ai_parentSize"></param>
+        ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Sub LimitSolutionSpace(ByVal temp As clsPoint, ByVal LowerBounds As Double(), ByVal UpperBounds As Double())
-            If UpperBounds IsNot Nothing AndAlso LowerBounds IsNot Nothing Then
-                For ii As Integer = 0 To temp.Count - 1
-                    Dim upper As Double = 0
-                    Dim lower As Double = 0
-                    If UpperBounds(ii) > LowerBounds(ii) Then
-                        upper = UpperBounds(ii)
-                        lower = LowerBounds(ii)
-                    ElseIf UpperBounds(ii) < LowerBounds(ii) Then
-                        upper = LowerBounds(ii)
-                        lower = UpperBounds(ii)
-                    Else
-                        Throw New Exception("Error! upper bound and lower bound are same.")
-                    End If
+        Public Shared Function SelectParent(ByVal ai_population As List(Of clsPoint), ByVal ai_parentSize As Integer) As List(Of KeyValuePair(Of Integer, clsPoint))
+            Dim ret As New List(Of KeyValuePair(Of Integer, clsPoint))
 
-                    If temp(ii) > lower AndAlso temp(ii) < upper Then
-                        'in
-                    ElseIf temp(ii) > lower Then
-                        temp(ii) = lower
-                    ElseIf temp(ii) < upper Then
-                        temp(ii) = upper
-                    End If
-                Next
-                temp.ReEvaluate()
-            End If
-        End Sub
+            'Index
+            Dim randIndex As List(Of Integer) = clsUtil.RandomPermutaion(ai_population.Count)
+
+            'PickParents
+            For i As Integer = 0 To ai_parentSize - 1
+                ret.Add(New KeyValuePair(Of Integer, clsPoint)(randIndex(i), ai_population(randIndex(i))))
+            Next
+
+            Return ret
+        End Function
 
         ''' <summary>
-        ''' Limit solution space
+        ''' calc length from each points
         ''' </summary>
-        ''' <param name="temp"></param>
-        ''' <param name="Bounds"></param>
-        Public Shared Sub LimitSolutionSpace(ByVal temp As clsPoint, ByVal Bounds As Double()())
-            'check of number of variables
-            If Bounds(0).Length <> temp.Count Then
-                Return
-            End If
-
-            For ii As Integer = 0 To temp.Count - 1
-                Dim upper As Double = Bounds(ii)(0)
-                Dim lower As Double = Bounds(ii)(1)
-                If upper < lower Then
-                    upper = Bounds(ii)(1)
-                    lower = Bounds(ii)(0)
-                ElseIf upper = lower Then
-                    Throw New Exception("upper bound and lower bound are same.")
-                End If
-
-                If temp(ii) > lower AndAlso temp(ii) < upper Then
-                    'in
-                ElseIf temp(ii) > lower Then
-                    temp(ii) = lower
-                ElseIf temp(ii) < upper Then
-                    temp(ii) = upper
+        ''' <param name="points"></param>
+        ''' <returns></returns>
+        Public Shared Function IsExistZeroLength(ByVal points As List(Of clsPoint)) As Boolean
+            Dim isCanCrossover As Boolean = True
+            Dim vec As clsEasyVector = Nothing
+            For i As Integer = 0 To points.Count - 2
+                vec = points(i) - points(i + 1)
+                If vec.NormL1() = 0 Then
+                    Return True
                 End If
             Next
-            temp.ReEvaluate()
-        End Sub
+            vec = points(points.Count - 1) - points(0)
+            If vec.NormL1() = 0 Then
+                Return True
+            End If
+
+            Return False
+        End Function
+
+        ''' <summary>
+        ''' Overflow check for debug
+        ''' </summary>
+        ''' <param name="p"></param>
+        ''' <returns></returns>
+        Public Shared Function CheckOverflow(ByVal p As List(Of clsPoint)) As Boolean
+            For Each temp In p
+                For Each v In temp
+                    If Double.IsInfinity(v) = True Then
+                        Return True
+                    End If
+                    If Double.IsNaN(v) = True Then
+                        Return True
+                    End If
+                    If Double.IsNegativeInfinity(v) = True Then
+                        Return True
+                    End If
+                    If Double.IsPositiveInfinity(v) = True Then
+                        Return True
+                    End If
+                Next
+            Next
+
+            Return False
+        End Function
     End Class
 End Namespace

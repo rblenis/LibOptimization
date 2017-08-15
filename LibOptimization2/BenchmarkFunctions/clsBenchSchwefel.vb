@@ -21,7 +21,7 @@ Namespace BenchmarkFunction
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub New(ByVal ai_dim As Integer)
-            Me.dimension = ai_dim
+            dimension = ai_dim
         End Sub
 
         ''' <summary>
@@ -35,12 +35,12 @@ Namespace BenchmarkFunction
                 Return 0
             End If
 
-            If Me.dimension <> x.Count Then
+            If dimension <> x.Count Then
                 Return 0
             End If
 
             Dim ret As Double = 0.0
-            For i As Integer = 0 To Me.dimension - 1
+            For i As Integer = 0 To dimension - 1
                 If (x(i) >= -512) AndAlso (x(i) <= 512) Then
                     ret += -x(i) * Math.Sin(Math.Sqrt(Math.Abs(x(i))))
                 Else
@@ -48,7 +48,7 @@ Namespace BenchmarkFunction
                     ret += Math.Abs(x(i))
                 End If
             Next
-            ret = ret + 418.982887272434 * Me.dimension
+            ret = ret + 418.982887272434 * dimension
 
             Return ret
         End Function
@@ -63,7 +63,7 @@ Namespace BenchmarkFunction
 
         Public Overrides ReadOnly Property NumberOfVariable As Integer
             Get
-                Return Me.dimension
+                Return dimension
             End Get
         End Property
     End Class

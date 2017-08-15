@@ -15,8 +15,8 @@
         ''' <param name="ai_eval"></param>
         ''' <remarks></remarks>
         Public Sub New(ByVal ai_index As Integer, ByVal ai_eval As Double)
-            Me.m_index = ai_index
-            Me.m_eval = ai_eval
+            m_index = ai_index
+            m_eval = ai_eval
         End Sub
 
         ''' <summary>
@@ -26,8 +26,8 @@
         ''' <param name="ai_eval"></param>
         ''' <remarks></remarks>
         Public Sub SetEval(ByVal ai_index As Integer, ByVal ai_eval As Double)
-            Me.m_index = ai_index
-            Me.m_eval = ai_eval
+            m_index = ai_index
+            m_eval = ai_eval
         End Sub
 
         ''' <summary>
@@ -38,7 +38,7 @@
         ''' <remarks></remarks>
         Public ReadOnly Property Eval() As Double
             Get
-                Return Me.m_eval
+                Return m_eval
             End Get
         End Property
 
@@ -50,7 +50,7 @@
         ''' <remarks></remarks>
         Public ReadOnly Property Index() As Integer
             Get
-                Return Me.m_index
+                Return m_index
             End Get
         End Property
 
@@ -70,12 +70,12 @@
             End If
 
             'Type check
-            If Not Me.GetType() Is ai_obj.GetType() Then
+            If Not [GetType]() Is ai_obj.GetType() Then
                 Throw New ArgumentException("Different type", "obj")
             End If
 
             'Compare
-            Dim mineValue As Double = Me.m_eval
+            Dim mineValue As Double = m_eval
             Dim compareValue As Double = DirectCast(ai_obj, clsEval).Eval
             If mineValue = compareValue Then
                 Return 0
