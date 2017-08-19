@@ -85,6 +85,8 @@
     <Compile Include="BenchmarkFunctions\clsBenchSchwefel.vb" />
     <Compile Include="BenchmarkFunctions\clsBenchShubertsFunction.vb" />
     <Compile Include="BenchmarkFunctions\clsBenchSphere.vb" />
+    <Compile Include="Optimization\NelderMeadWiki.vb" />
+    <Compile Include="Optimization\NelderMead.vb" />
     <Compile Include="Optimization\PatternSearch.vb" />
     <Compile Include="Optimization\DE_current_1_bin.vb" />
     <Compile Include="Optimization\DE_current_to_Best_1_bin.vb" />

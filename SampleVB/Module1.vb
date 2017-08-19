@@ -6,7 +6,7 @@ Imports LibOptimization.BenchmarkFunction
 Module Module1
     Sub Main()
         'Sample code.
-        'LibOptimization is optimization algorithm library for .NET Framework.
+        'LibOptimization is numerical optimization algorithm library for .NET Framework.
         'This library will probably simplify the optimization using C# and VB.Net and other .NET Framework language.
 
         'How to use
@@ -37,11 +37,11 @@ Module Module1
         End With
 
         With Nothing
-            Dim optimization As New LibOptimization2.Optimization.DerivativeFree.SimulatedAnnealing()
+            Dim optimization As New LibOptimization2.Optimization.DerivativeFree.NelderMeadWiki()
             optimization.ObjectiveFunction = New LibOptimization2.BenchmarkFunction.clsBenchSphere(2)
-            optimization.LowerBounds = New Double() {1, 1}
-            optimization.UpperBounds = New Double() {60, 60}
-            optimization.UseBounds = True
+            'optimization.LowerBounds = New Double() {1, 1}
+            'optimization.UpperBounds = New Double() {60, 60}
+            'optimization.UseBounds = True
             optimization.Init()
             LibOptimization2.Util.clsUtil.DebugValue(optimization.BestResult)
             optimization.DoIteration()
