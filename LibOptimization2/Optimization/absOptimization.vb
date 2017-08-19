@@ -228,7 +228,7 @@ Namespace Optimization
         ''' </summary>
         ''' <param name="temp"></param>
         ''' <remarks></remarks>
-        Public Sub LimitSolutionSpace(ByRef temp As MathUtil.clsEasyVector)
+        Protected Sub LimitSolutionSpace(ByRef temp As MathUtil.clsEasyVector)
             If UseBounds = False Then
                 Return
             End If
@@ -265,10 +265,32 @@ Namespace Optimization
         ''' </summary>
         ''' <param name="temp"></param>
         ''' <remarks></remarks>
-        Public Sub LimitSolutionSpace(ByRef temp As clsPoint)
+        Protected Sub LimitSolutionSpace(ByRef temp As clsPoint)
             LimitSolutionSpace(DirectCast(temp, MathUtil.clsEasyVector))
             temp.ReEvaluate()
         End Sub
+
+        ''' <summary>
+        ''' Get remaining number of iterarion count
+        ''' </summary>
+        ''' <param name="iterationCount"></param>
+        Protected Function GetRemainingIterationCount(ByRef iterationCount As Integer) As Integer
+            Dim remain = Me.Iteration - Me._IterationCount
+            If remain <= 0 Then
+                Return 0
+            End If
+
+            If iterationCount = 0 Then
+                Return remain
+            End If
+
+            Dim diff = remain - iterationCount
+            If diff > 0 Then
+                Return iterationCount
+            Else
+                Return remain
+            End If
+        End Function
 #End Region
     End Class
 End Namespace

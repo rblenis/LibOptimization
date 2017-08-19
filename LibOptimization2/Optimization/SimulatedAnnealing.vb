@@ -17,7 +17,7 @@ Namespace Optimization.DerivativeFree
     Public Class SimulatedAnnealing : Inherits LibOptimization2.Optimization.absOptimization
 #Region "Member(Original parameter for Simulated Annealing)"
         ''' <summary>cooling ratio</summary>
-        Public Property CoolingRatio As Double = 0.9995
+        Public Property CoolingRatio As Double = 0.99
 
         ''' <summary>range of neighbor search</summary>
         Public Property NeighborRange As Double = 0.1
@@ -25,11 +25,8 @@ Namespace Optimization.DerivativeFree
         ''' <summary>start temperature</summary>
         Public Property Temperature As Double = 1000.0
 
-        ''' <summary>end temperature</summary>
-        Public Property EndTemperature As Double = 10.0
-
-        ''' <summary>reserve best point</summary>
-        Private _bestPoint As clsPoint = Nothing
+        ''' <summary>stop temperature</summary>
+        Public Property StopTemperature As Double = 0.00000001
 #End Region
 
 #Region "Public"
@@ -46,8 +43,6 @@ Namespace Optimization.DerivativeFree
                 Return False
             End If
 
-            _bestPoint = New clsPoint(_populations(0))
-
             Return True
         End Function
 
@@ -58,16 +53,15 @@ Namespace Optimization.DerivativeFree
         ''' <returns></returns>
         Public Overrides Function DoIteration(Optional ai_iteration As Integer = 0) As Boolean
             'Do Iteration
+            Dim _bestPoint = _populations(0).Copy()
             Try
-                ai_iteration = If(ai_iteration = 0, Iteration - 1, ai_iteration - 1)
-                For iterate As Integer = 0 To ai_iteration
+                Dim count = GetRemainingIterationCount(ai_iteration)
+                For iterate As Integer = 0 To count - 1
+                    'Update Iteration count
+                    _IterationCount += 1
+
                     'neighbor function
-                    Dim temp As New clsPoint(_populations(0))
-                    For i As Integer = 0 To temp.Count - 1
-                        Dim tempNeighbor = Math.Abs(2.0 * NeighborRange) * MyBase.Random.NextDouble() - NeighborRange
-                        temp(i) += tempNeighbor
-                    Next
-                    temp.ReEvaluate()
+                    Dim temp As clsPoint = Neighbor(_populations(0))
 
                     'limit solution space
                     LimitSolutionSpace(temp)
@@ -88,49 +82,46 @@ Namespace Optimization.DerivativeFree
                     End If
 
                     'cooling
-                    If Temperature > EndTemperature Then
-                        Temperature *= CoolingRatio
+                    Temperature *= CoolingRatio
+                    If Temperature < StopTemperature Then
+                        Return True 'stop iteration
                     End If
 
                     'reserve best
                     If _populations(0).Eval < _bestPoint.Eval Then
                         _bestPoint = _populations(0).Copy()
                     End If
-
-                    'Check and Update Iteration count
-                    If Iteration = _IterationCount Then
-                        Return True
-                    End If
-                    _IterationCount += 1
                 Next
 
-                Return False
+                If GetRemainingIterationCount(ai_iteration) = 0 Then
+                    Return True 'stop iteration
+                Else
+                    Return False
+                End If
             Finally
-
+                'return member
+                _populations(0) = _bestPoint
             End Try
         End Function
-
-        Public Overrides ReadOnly Property Results As List(Of clsPoint)
-            Get
-                Dim ret As New List(Of clsPoint)
-                ret.Add(_bestPoint)
-                Return ret
-            End Get
-        End Property
-
-        Public Overrides ReadOnly Property BestResult As clsPoint
-            Get
-                Return _bestPoint
-            End Get
-        End Property
-
-        Public Function DebugNowPoint() As clsPoint
-            Return _populations(0)
-        End Function
-
-        Public Sub DebugNowTemperature()
-            Console.WriteLine("{0}", Temperature)
-        End Sub
 #End Region
+
+#Region "Private"
+        ''' <summary>
+        ''' Neighbor function for local search
+        ''' </summary>
+        ''' <param name="base"></param>
+        ''' <returns></returns>
+        Private Function Neighbor(ByVal base As clsPoint) As clsPoint
+            Dim temp As New clsPoint(base)
+            For i As Integer = 0 To temp.Count - 1
+                Dim tempNeighbor = Math.Abs(2.0 * NeighborRange) * MyBase.Random.NextDouble() - NeighborRange
+                temp(i) += tempNeighbor
+            Next
+            temp.ReEvaluate()
+
+            Return temp
+        End Function
+#End Region
+
     End Class
 End Namespace
