@@ -7,6 +7,17 @@ Namespace Util
     ''' </summary>
     ''' <remarks></remarks>
     Public Class clsUtil
+        Private Shared _callCount As UInt32 = 0
+
+        ''' <summary>
+        ''' for random seed
+        ''' </summary>
+        ''' <returns></returns>
+        Public Shared Function GlobalCounter() As UInt32
+            clsUtil._callCount = clsUtil._callCount + CType(1, UInt32)
+            Return clsUtil._callCount
+        End Function
+
         ''' <summary>
         ''' Normal Distribution
         ''' </summary>
@@ -342,5 +353,13 @@ Namespace Util
 
             Return False
         End Function
+
+        ''' <summary>
+        ''' Debug mode
+        ''' </summary>
+        ''' <param name="flag"></param>
+        Public Shared Sub SetDebugMode(ByVal flag As Boolean)
+            'fix random permutation
+        End Sub
     End Class
 End Namespace

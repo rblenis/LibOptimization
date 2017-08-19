@@ -7,16 +7,14 @@
         ''' <summary>
         ''' Get number of variables
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public MustOverride ReadOnly Property NumberOfVariable() As Integer
+        ''' <returns>number of variables</returns>
+        Public MustOverride Function NumberOfVariable() As Integer
 
         ''' <summary>
         ''' Evaluate
         ''' </summary>
         ''' <param name="x"></param>
-        ''' <remarks></remarks>
+        ''' <remarks>Evalulate value</remarks>
         Public MustOverride Function F(ByVal x As List(Of Double)) As Double
 
         ''' <summary>

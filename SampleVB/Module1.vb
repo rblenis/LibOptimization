@@ -28,12 +28,25 @@ Module Module1
         'End With
 
         With Nothing
-            Dim optimization As New clsOptRealGAUNDX(New clsBenchSphere(2))
+            'Dim optimization As New clsOptRealGAUNDX(New clsBenchSphere(2))
+            'optimization.Init()
+            'While (optimization.DoIteration(100) = False)
+            '    clsUtil.DebugValue(optimization, ai_isOutValue:=False)
+            'End While
+            'clsUtil.DebugValue(optimization)
+        End With
+
+        With Nothing
+            Dim optimization As New LibOptimization2.Optimization.DerivativeFree.SimulatedAnnealing()
+            optimization.ObjectiveFunction = New LibOptimization2.BenchmarkFunction.clsBenchSphere(2)
+            optimization.LowerBounds = New Double() {1, 1}
+            optimization.UpperBounds = New Double() {60, 60}
+            optimization.UseBounds = True
             optimization.Init()
-            While (optimization.DoIteration(100) = False)
-                clsUtil.DebugValue(optimization, ai_isOutValue:=False)
-            End While
-            clsUtil.DebugValue(optimization)
+            LibOptimization2.Util.clsUtil.DebugValue(optimization.BestResult)
+            optimization.DoIteration()
+            LibOptimization2.Util.clsUtil.DebugValue(optimization.BestResult)
+            Return
         End With
 
         With Nothing
@@ -52,52 +65,6 @@ Module Module1
                 LibOptimization2.Util.clsUtil.DebugValue(optimization.BestResult)
                 optimization.DoIteration()
                 LibOptimization2.Util.clsUtil.DebugValue(optimization.BestResult)
-            Next
-            Return
-        End With
-
-        'test LibOptimization2
-        With Nothing
-            Dim opts As New List(Of LibOptimization2.Optimization.absOptimization)
-            opts.Add(New LibOptimization2.Optimization.RequireDerivative.SteepestDescent())
-            Threading.Thread.Sleep(10)
-            opts.Add(New LibOptimization2.Optimization.RequireDerivative.NewtonMethod())
-            Threading.Thread.Sleep(10)
-            opts.Add(New LibOptimization2.Optimization.DerivativeFree.SimulatedAnnealing())
-            Threading.Thread.Sleep(10)
-            opts.Add(New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution_best_1_bin())
-            Threading.Thread.Sleep(10)
-            opts.Add(New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution_best_1_bin())
-            Threading.Thread.Sleep(10)
-            opts.Add(New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution_best_1_bin())
-            Threading.Thread.Sleep(10)
-            opts.Add(New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution_current_1_bin())
-            Threading.Thread.Sleep(10)
-            opts.Add(New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution_current_to_Best_1_bin())
-            Threading.Thread.Sleep(10)
-            opts.Add(New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution_rand_1_bin())
-            Threading.Thread.Sleep(10)
-            opts.Add(New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution_rand_2_bin())
-            Threading.Thread.Sleep(10)
-            opts.Add(New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution_rand_to_Best_1_bin())
-            Threading.Thread.Sleep(10)
-            'GA
-            opts.Add(New LibOptimization2.Optimization.DerivativeFree.ReadlCodedGA.RealGABLXAlpha())
-            Threading.Thread.Sleep(10)
-            opts.Add(New LibOptimization2.Optimization.DerivativeFree.ReadlCodedGA.RealGAPCX())
-            Threading.Thread.Sleep(10)
-            opts.Add(New LibOptimization2.Optimization.DerivativeFree.ReadlCodedGA.RealGAREX())
-            Threading.Thread.Sleep(10)
-            opts.Add(New LibOptimization2.Optimization.DerivativeFree.ReadlCodedGA.RealGASPX())
-            Threading.Thread.Sleep(10)
-            opts.Add(New LibOptimization2.Optimization.DerivativeFree.ReadlCodedGA.RealGAUNDX())
-            Threading.Thread.Sleep(10)
-            For Each o In opts
-                o.ObjectiveFunction = New LibOptimization2.BenchmarkFunction.clsBenchSphere(2)
-                o.Init()
-                LibOptimization2.Util.clsUtil.DebugValue(o.BestResult)
-                o.DoIteration()
-                LibOptimization2.Util.clsUtil.DebugValue(o.BestResult)
             Next
         End With
 

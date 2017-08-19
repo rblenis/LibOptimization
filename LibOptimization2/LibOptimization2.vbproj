@@ -85,6 +85,14 @@
     <Compile Include="BenchmarkFunctions\clsBenchSchwefel.vb" />
     <Compile Include="BenchmarkFunctions\clsBenchShubertsFunction.vb" />
     <Compile Include="BenchmarkFunctions\clsBenchSphere.vb" />
+    <Compile Include="Optimization\PatternSearch.vb" />
+    <Compile Include="Optimization\DE_current_1_bin.vb" />
+    <Compile Include="Optimization\DE_current_to_Best_1_bin.vb" />
+    <Compile Include="Optimization\DE_rand_to_Best_1_bin.vb" />
+    <Compile Include="Optimization\DE_best_2_bin.vb" />
+    <Compile Include="Optimization\DE_best_1_bin.vb" />
+    <Compile Include="Optimization\DE_rand_2_bin.vb" />
+    <Compile Include="Optimization\DE_rand_1_bin.vb" />
     <Compile Include="Optimization\HillClimbing.vb" />
     <Compile Include="Optimization\Point.vb" />
     <Compile Include="Optimization\RealGABLXAlpha.vb" />
@@ -92,8 +100,6 @@
     <Compile Include="Optimization\RealGAREX.vb" />
     <Compile Include="Optimization\RealGASPX.vb" />
     <Compile Include="Optimization\RealGAUNDX.vb" />
-    <Compile Include="Optimization\DifferentialEvolutionGroup.vb" />
-    <Compile Include="Optimization\DifferentialEvolution.vb" />
     <Compile Include="Optimization\NewtonMethod.vb" />
     <Compile Include="Math\clsExceptionForMath.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -118,6 +124,7 @@
     <Compile Include="Math\clsEasyVector.vb" />
     <Compile Include="Util\clsError.vb" />
     <Compile Include="Util\clsEval.vb" />
+    <Compile Include="Util\clsRandomXorshiftSingleton.vb" />
     <Compile Include="Util\clsRandomXorshift.vb" />
     <Compile Include="Util\clsUtil.vb" />
   </ItemGroup>

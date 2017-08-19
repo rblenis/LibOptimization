@@ -9,11 +9,11 @@
     ''' </remarks>
     Public Class clsRandomXorshift : Inherits System.Random
         'DefaultParameter
-        Private x As UInteger = 123456789
-        Private y As UInteger = 362436069
-        Private z As UInteger = 521288629
-        Private w As UInteger = 88675123
-        Private t As UInteger
+        Private x As UInt32 = 123456789
+        Private y As UInt32 = 362436069
+        Private z As UInt32 = 521288629
+        Private w As UInt32 = 88675123
+        Private t As UInt32
 
 #Region "Public"
         ''' <summary>
@@ -29,27 +29,51 @@
         ''' </summary>
         ''' <param name="ai_seed">seed for random algorithm</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal ai_seed As UInteger)
+        Public Sub New(ByVal ai_seed As UInt32)
             SetSeed(ai_seed)
         End Sub
 
         ''' <summary>
-        ''' Constructor with Time(Environment.TickCount)
+        ''' Set default seed with itinitialize
         ''' </summary>
-        ''' <param name="ai_isUseTickCount">TickCount seed for random algorithm</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal ai_isUseTickCount As Boolean)
-            SetSeed(BitConverter.ToUInt32(BitConverter.GetBytes(Environment.TickCount), 0))
+        Public Sub SetDefaultSeed()
+            x = 123456789
+            y = 362436069
+            z = 521288629
+            w = 88675123
+            t = 0
         End Sub
 
         ''' <summary>
-        ''' Set random seed
+        ''' Set random seed with itinitialize
+        ''' </summary>
+        ''' <param name="x">random parameter x</param>
+        ''' <param name="y">random parameter y</param>
+        ''' <param name="z">random parameter z</param>
+        ''' <param name="w">random parameter w</param>
+        Public Sub SetSeed(ByVal x As UInteger, ByVal y As UInteger, ByVal z As UInteger, ByVal w As UInteger)
+            '"The seed set for xor128 is four 32-bit integers x,y,z,w not all 0" by refference
+            If x = 0 AndAlso y = 0 AndAlso z = 0 AndAlso w = 0 Then
+                'default parameter
+                SetDefaultSeed()
+            Else
+                Me.x = x
+                Me.y = y
+                Me.z = z
+                Me.w = w
+            End If
+        End Sub
+
+        ''' <summary>
+        ''' Set simple random seed with itinitialize
         ''' </summary>
         ''' <param name="ai_seed">seed for random algorithm</param>
         ''' <remarks></remarks>
-        Public Sub SetSeed(Optional ByVal ai_seed As UInteger = 88675123)
-            'Init parameter. rorate seed.
+        Public Sub SetSeed(ByVal ai_seed As UInt32)
+            'Init parameter and rorate seed.
             '全パラメータにseedの影響を与えないと初期の乱数が同じ傾向になる。8bitずつ回転左シフト
+            SetDefaultSeed()
             x = x Xor RotateLeftShiftForUInteger(ai_seed, 8)
             y = y Xor RotateLeftShiftForUInteger(ai_seed, 16)
             z = z Xor RotateLeftShiftForUInteger(ai_seed, 24)
@@ -73,7 +97,7 @@
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Overrides Function [Next]() As Integer
-            Return CInt(Xor128 And &H7FFFFFFF)
+            Return CInt(Xor128() And &H7FFFFFFF)
         End Function
 
         ''' <summary>
@@ -177,45 +201,6 @@
             temp = temp Or upperBit
             Return temp
         End Function
-#End Region
-    End Class
-
-    ''' <summary>
-    ''' Xorshift random algorithm singleton
-    ''' </summary>
-    ''' <remarks>
-    ''' </remarks>
-    Public Class clsRandomXorshiftSingleton
-        Private Shared m_rand As New clsRandomXorshift()
-
-#Region "Constructor"
-        ''' <summary>
-        ''' Default constructor
-        ''' </summary>
-        ''' <remarks></remarks>
-        Private Sub New()
-            'nop
-        End Sub
-#End Region
-
-#Region "Public"
-        ''' <summary>
-        ''' Instance
-        ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Shared Function GetInstance() As clsRandomXorshift
-            Return m_rand
-        End Function
-
-        ''' <summary>
-        ''' Set Seed
-        ''' </summary>
-        ''' <param name="ai_seed"></param>
-        ''' <remarks></remarks>
-        Public Sub SetSeed(Optional ByVal ai_seed As UInteger = 88675123)
-            clsRandomXorshiftSingleton.GetInstance().SetSeed(ai_seed)
-        End Sub
 #End Region
     End Class
 End Namespace
