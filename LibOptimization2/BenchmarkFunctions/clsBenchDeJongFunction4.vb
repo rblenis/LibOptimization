@@ -22,7 +22,7 @@ Namespace BenchmarkFunction
         ''' <remarks></remarks>
         Public Sub New()
             For i As Integer = 0 To 29
-                normRand.Add(Util.clsUtil.NormRand())
+                normRand.Add(Util.Util.NormRand())
             Next
         End Sub
 

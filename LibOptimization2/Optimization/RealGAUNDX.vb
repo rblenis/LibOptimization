@@ -71,13 +71,13 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
                 'check criterion
                 If MyBase.UseCriterion = True Then
                     'higher N percentage particles are finished at the time of same evaluate value.
-                    If clsUtil.IsCriterion(EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
+                    If Util.Util.IsCriterion(EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
                         Return True
                     End If
                 End If
 
                 'select parent
-                Dim randIndex As List(Of Integer) = clsUtil.RandomPermutaion(MyBase._populations.Count)
+                Dim randIndex As List(Of Integer) = Util.Util.RandomPermutaion(MyBase._populations.Count)
                 Dim p1Index As Integer = randIndex(0)
                 Dim p2Index As Integer = randIndex(1)
                 Dim p1 = MyBase._populations(p1Index)
@@ -85,7 +85,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
                 Dim p3 = MyBase._populations(randIndex(2)) 'for d2
 
                 'check length 0
-                Dim flag = clsUtil.IsExistZeroLength({p1, p2, p3}.ToList())
+                Dim flag = Util.Util.IsExistZeroLength({p1, p2, p3}.ToList())
                 'flag = False
                 'Crossover
                 If flag = False Then
@@ -213,14 +213,14 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
             Dim t = New clsEasyVector(ObjectiveFunction.NumberOfVariable)
             For genChild As Integer = 0 To CInt(ChildrenSize / 2 - 1)
                 For i As Integer = 0 To ObjectiveFunction.NumberOfVariable - 1
-                    t(i) = clsUtil.NormRand(0, sd2)
+                    t(i) = Util.Util.NormRand(0, sd2)
                 Next
                 t = t - (t.InnerProduct(e)) * e
 
                 'child
                 Dim child1(ObjectiveFunction.NumberOfVariable - 1) As Double
                 Dim child2(ObjectiveFunction.NumberOfVariable - 1) As Double
-                Dim ndRand = clsUtil.NormRand(0, sd1)
+                Dim ndRand = Util.Util.NormRand(0, sd1)
                 For i As Integer = 0 To ObjectiveFunction.NumberOfVariable - 1
                     Dim temp = t(i) + ndRand * e(i)
                     child1(i) = g(i) + temp

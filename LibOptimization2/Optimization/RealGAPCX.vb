@@ -46,7 +46,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
                 'check criterion
                 If MyBase.UseCriterion = True Then
                     'higher N percentage particles are finished at the time of same evaluate value.
-                    If clsUtil.IsCriterion(EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
+                    If Util.Util.IsCriterion(EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
                         Return True
                     End If
                 End If
@@ -57,7 +57,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
                 SelectParentsForG3(3, selectParentsIndex, selectParents) 'include best result
 
                 'check length 0
-                Dim flag = clsUtil.IsExistZeroLength(selectParents)
+                Dim flag = Util.Util.IsExistZeroLength(selectParents)
 
                 'Crossover
                 If flag = False Then
@@ -66,7 +66,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
 
                     'Replace(by G3)
                     Dim replaceParent As Integer = 2
-                    Dim randIndex As List(Of Integer) = clsUtil.RandomPermutaion(selectParentsIndex.Count)
+                    Dim randIndex As List(Of Integer) = Util.Util.RandomPermutaion(selectParentsIndex.Count)
                     For i As Integer = 0 To replaceParent - 1
                         Dim parentIndex As Integer = selectParentsIndex(randIndex(i))
                         newPopulation.Add(MyBase._populations(parentIndex))
@@ -103,7 +103,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
         ''' <remarks></remarks>
         Private Sub SelectParentsForG3(ByVal ai_pickN As Integer, ByRef ao_parentIndex As List(Of Integer), ByRef ao_retParents As List(Of clsPoint))
             'generate random permutation array without best parent index
-            Dim randIndex As List(Of Integer) = clsUtil.RandomPermutaion(MyBase._populations.Count, 0)
+            Dim randIndex As List(Of Integer) = Util.Util.RandomPermutaion(MyBase._populations.Count, 0)
 
             'generate random permutation with best parent index
             ao_parentIndex = New List(Of Integer)(ai_pickN)
@@ -133,7 +133,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
 
             'PCX
             For pNo As Integer = 0 To ai_childrenSize - 1
-                Dim randIndex As List(Of Integer) = clsUtil.RandomPermutaion(ai_parents.Count)
+                Dim randIndex As List(Of Integer) = Util.Util.RandomPermutaion(ai_parents.Count)
                 Dim parentsPoint As New List(Of clsPoint)(ai_pickParentNo)
                 For i As Integer = 0 To ai_pickParentNo - 1
                     parentsPoint.Add(ai_parents(randIndex(i)))
@@ -181,10 +181,10 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
                 Dim meanD As Double = DD.Average()
                 Dim tempV1 As New clsEasyVector(ObjectiveFunction.NumberOfVariable)
                 For i As Integer = 0 To ObjectiveFunction.NumberOfVariable - 1
-                    tempV1(i) = clsUtil.NormRand(0.0, meanD * Eta) 'original
+                    tempV1(i) = Util.Util.NormRand(0.0, meanD * Eta) 'original
                 Next
                 Dim tempInnerP As Double = tempV1.InnerProduct(d)
-                Dim tempNRand As Double = clsUtil.NormRand(0.0, Zeta)
+                Dim tempNRand As Double = Util.Util.NormRand(0.0, Zeta)
                 For i As Integer = 0 To ObjectiveFunction.NumberOfVariable - 1
                     tempV1(i) = tempV1(i) - tempInnerP * DD(i) / Math.Pow(dist, 2.0)
                     tempV1(i) += tempNRand * d(i)

@@ -38,14 +38,14 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
                 'check criterion
                 If MyBase.UseCriterion = True Then
                     'higher N percentage particles are finished at the time of same evaluate value.
-                    If clsUtil.IsCriterion(EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
+                    If Util.Util.IsCriterion(EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
                         Return True
                     End If
                 End If
 
                 'BLX-alpha cross-over with JGG
                 'Pick parent
-                Dim randIndex As List(Of Integer) = clsUtil.RandomPermutaion(MyBase._populations.Count)
+                Dim randIndex As List(Of Integer) = Util.Util.RandomPermutaion(MyBase._populations.Count)
                 Dim p1Index As Integer = randIndex(0)
                 Dim p2Index As Integer = randIndex(1)
                 Dim p1 = MyBase._populations(p1Index)
@@ -66,7 +66,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
                             min = p1(i)
                             max = p2(i)
                         End If
-                        children(numChild)(i) = clsUtil.GenRandomRange(MyBase.Random, min - Alpha * range, max + Alpha * range)
+                        children(numChild)(i) = Util.Util.GenRandomRange(MyBase.Random, min - Alpha * range, max + Alpha * range)
                     Next
                     children(numChild).ReEvaluate()
                 Next

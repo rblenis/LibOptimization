@@ -3,7 +3,7 @@
     ''' Eval
     ''' </summary>
     ''' <remarks></remarks>
-    Public Class clsEval
+    Public Class Eval
         Implements IComparable
         Private m_index As Integer = 0
         Private m_eval As Double = 0
@@ -76,7 +76,7 @@
 
             'Compare
             Dim mineValue As Double = m_eval
-            Dim compareValue As Double = DirectCast(ai_obj, clsEval).Eval
+            Dim compareValue As Double = DirectCast(ai_obj, Eval).Eval
             If mineValue = compareValue Then
                 Return 0
             ElseIf mineValue < compareValue Then

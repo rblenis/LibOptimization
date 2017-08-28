@@ -4,6 +4,53 @@ Imports LibOptimization.Util
 Imports LibOptimization.BenchmarkFunction
 
 Module Module1
+
+    Public Class IndexPair
+        Implements IComparable
+        Public Property Index As Integer = 0
+        Public Property Eval As Integer = 0
+
+        ''' <summary>
+        ''' Constructor
+        ''' </summary>
+        Private Sub New()
+            'nop
+        End Sub
+
+        ''' <summary>
+        ''' Constructor
+        ''' </summary>
+        ''' <param name="ai_index"></param>
+        ''' <param name="ai_eval"></param>
+        ''' <remarks></remarks>
+        Public Sub New(ByVal ai_index As Integer, ByVal ai_eval As Integer)
+            Index = ai_index
+            Eval = ai_eval
+        End Sub
+
+        ''' <summary>
+        ''' Compare(ICompareble)
+        ''' </summary>
+        ''' <param name="ai_obj"></param>
+        ''' <returns></returns>
+        ''' <remarks>
+        ''' larger Me than obj is -1. smaller Me than obj is 1.
+        ''' Equal is return to Zero
+        ''' </remarks>
+        Public Function CompareTo(ByVal ai_obj As Object) As Integer Implements System.IComparable.CompareTo
+            'Compare
+            Dim mineValue As Double = Eval
+            Dim compareValue As Double = DirectCast(ai_obj, IndexPair).Eval
+            If mineValue = compareValue Then
+                Return 0
+            ElseIf mineValue < compareValue Then
+                Return -1
+            Else
+                Return 1
+            End If
+        End Function
+    End Class
+
     Sub Main()
         'Sample code.
         'LibOptimization is numerical optimization algorithm library for .NET Framework.
@@ -37,15 +84,106 @@ Module Module1
         End With
 
         With Nothing
-            Dim optimization As New LibOptimization2.Optimization.DerivativeFree.NelderMeadWiki()
-            optimization.ObjectiveFunction = New LibOptimization2.BenchmarkFunction.clsBenchSphere(2)
+            'Dim itr As Integer = 999
+            'Dim sumTime1 As Long = 0
+            'Dim sumTime2 As Long = 0
+            'Dim sumTime3 As Long = 0
+
+            'Dim a As New List(Of IndexPair)(100)
+            'For j As Integer = 0 To 99
+            '    a.Add(New IndexPair(j, clsRandomXorshiftSingleton.GetInstance().Next()))
+            'Next
+
+            'For count As Integer = 0 To 99
+            '    Dim sw As New Stopwatch()
+            '    sw.Reset()
+            '    sw.Start()
+            '    Dim temp = LibOptimization2.Util.clsUtil.CreateIndexArray(100)
+            '    For i As Integer = 0 To itr
+            '        LibOptimization2.Util.clsUtil.ShuffleIndex(temp)
+            '    Next
+            '    sw.Stop()
+            '    sumTime1 += sw.ElapsedMilliseconds
+
+            '    sw.Reset()
+            '    sw.Start()
+            '    For i As Integer = 0 To itr
+            '        Dim temp2 = LibOptimization2.Util.clsUtil.RandomPermutaion(100)
+            '    Next
+            '    sw.Stop()
+            '    sumTime2 += sw.ElapsedMilliseconds
+
+            '    sw.Reset()
+            '    sw.Start()
+            '    For i As Integer = 0 To itr
+            '        Dim temp2 = LibOptimization2.Util.clsUtil.RandomPermutaion(100)
+            '    Next
+            '    sw.Stop()
+            '    sumTime2 += sw.ElapsedMilliseconds
+
+            '    sw.Reset()
+            '    sw.Start()
+            '    For i As Integer = 0 To itr
+            '        a.Sort()
+            '    Next
+            '    sw.Stop()
+            '    sumTime3 += sw.ElapsedMilliseconds
+            'Next
+            'Console.WriteLine("{0}", sumTime1)
+            'Console.WriteLine("{0}", sumTime2)
+            'Console.WriteLine("{0}", sumTime3)
+            'Console.ReadLine()
+        End With
+
+        With Nothing
+            'Dim sw As New Stopwatch()
+            'sw.Reset()
+            'sw.Start()
+            'For i As Integer = 0 To 4
+            '    Dim optimization As New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution.JADE()
+            '    optimization.ObjectiveFunction = New LibOptimization2.BenchmarkFunction.clsBenchRosenblock(10)
+            '    optimization.Init()
+            '    optimization.DoIteration()
+            '    LibOptimization2.Util.clsUtil.DebugValue(optimization.BestResult)
+            'Next
+            'sw.Stop()
+            'Console.WriteLine("{0}", sw.ElapsedMilliseconds)
+
+            'sw.Reset()
+            'sw.Start()
+            'For i As Integer = 0 To 4
+            '    Dim optimization As New LibOptimization2.Optimization.DerivativeFree.DifferentialEvolution.JADE2()
+            '    optimization.ObjectiveFunction = New LibOptimization2.BenchmarkFunction.clsBenchRosenblock(10)
+            '    optimization.Init()
+            '    optimization.DoIteration()
+            '    LibOptimization2.Util.clsUtil.DebugValue(optimization.BestResult)
+            'Next
+            'sw.Stop()
+            'Console.WriteLine("{0}", sw.ElapsedMilliseconds)
+
+            'Console.ReadLine()
+        End With
+
+        With Nothing
+            Dim optimization As New LibOptimization2.Optimization.DerivativeFree.ParticleSwarmOptmization.LDIWPSO()
+            optimization.ObjectiveFunction = New LibOptimization2.BenchmarkFunction.clsBenchRosenblock(20)
+
             'optimization.LowerBounds = New Double() {1, 1}
             'optimization.UpperBounds = New Double() {60, 60}
-            'optimization.UseBounds = True
+            'optimization.UseBounds = False
+            optimization.Iteration = 10000
+            'optimization.WeightMin = 0.1
+            'optimization.UseCriterion = False
+            'optimization.PopulationSize = 500
+
             optimization.Init()
-            LibOptimization2.Util.clsUtil.DebugValue(optimization.BestResult)
-            optimization.DoIteration()
-            LibOptimization2.Util.clsUtil.DebugValue(optimization.BestResult)
+            LibOptimization2.Util.Util.DebugValue(optimization.BestResult)
+            While (optimization.DoIteration(100) = False)
+                LibOptimization2.Util.Util.DebugValue(optimization.BestResult)
+                Console.WriteLine("Weight:{0}", optimization.Weight)
+            End While
+            LibOptimization2.Util.Util.DebugValue(optimization.BestResult)
+
             Return
         End With
 
@@ -62,9 +200,9 @@ Module Module1
                 optimization.UseBounds = True
                 optimization.UseAdaptivePopulationSize = False
                 optimization.Init()
-                LibOptimization2.Util.clsUtil.DebugValue(optimization.BestResult)
+                LibOptimization2.Util.Util.DebugValue(optimization.BestResult)
                 optimization.DoIteration()
-                LibOptimization2.Util.clsUtil.DebugValue(optimization.BestResult)
+                LibOptimization2.Util.Util.DebugValue(optimization.BestResult)
             Next
         End With
 

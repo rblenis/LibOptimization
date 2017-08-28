@@ -79,13 +79,13 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
                 'check criterion
                 If MyBase.UseCriterion = True Then
                     'higher N percentage particles are finished at the time of same evaluate value.
-                    If clsUtil.IsCriterion(EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
+                    If Util.Util.IsCriterion(EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
                         Return True
                     End If
                 End If
 
                 'REX with JGG
-                Dim parents As List(Of KeyValuePair(Of Integer, clsPoint)) = clsUtil.SelectParent(MyBase._populations, ParentSize)
+                Dim parents As List(Of KeyValuePair(Of Integer, clsPoint)) = Util.Util.SelectParent(MyBase._populations, ParentSize)
 
                 'Crossover
                 Dim children As List(Of clsPoint) = CrossOverREX(RandomMode, ChildrenSize, parents)
@@ -139,7 +139,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
                     'rand parameter
                     Dim randVal As Double = 0.0
                     If ai_randomMode = RexRandomMode.NORMAL_DIST Then
-                        randVal = clsUtil.NormRand(0, normalDistParam)
+                        randVal = Util.Util.NormRand(0, normalDistParam)
                     Else
                         randVal = Math.Abs(2.0 * uniformRandParam) * MyBase.Random.NextDouble() - MyBase.InitialValueRange
                     End If

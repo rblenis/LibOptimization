@@ -1,21 +1,30 @@
 ﻿Imports LibOptimization2.MathUtil
 Imports LibOptimization2.Optimization
+Imports LibOptimization2.Util.Random
 
 Namespace Util
     ''' <summary>
     ''' common use
     ''' </summary>
     ''' <remarks></remarks>
-    Public Class clsUtil
+    Public Class Util
         Private Shared _callCount As UInt32 = 0
+        Private Shared lock As New Object
 
         ''' <summary>
         ''' for random seed
         ''' </summary>
         ''' <returns></returns>
         Public Shared Function GlobalCounter() As UInt32
-            clsUtil._callCount = clsUtil._callCount + CType(1, UInt32)
-            Return clsUtil._callCount
+            While (True)
+                SyncLock (lock)
+                    Util._callCount = Util._callCount + CType(1, UInt32)
+                    Return Util._callCount
+                End SyncLock
+                System.Threading.Thread.Sleep(50)
+            End While
+
+            Return Util._callCount '警告抑止のため
         End Function
 
         ''' <summary>
@@ -29,11 +38,11 @@ Namespace Util
         ''' </remarks>
         Public Shared Function NormRand(Optional ByVal ai_ave As Double = 0,
                                         Optional ByVal ai_sigma2 As Double = 1) As Double
-            Dim x As Double = clsRandomXorshiftSingleton.GetInstance().NextDouble()
-            Dim y As Double = clsRandomXorshiftSingleton.GetInstance().NextDouble()
+            Dim x As Double = XorshiftSingleton.GetInstance().NextDouble()
+            Dim y As Double = XorshiftSingleton.GetInstance().NextDouble()
 
             Dim c As Double = Math.Sqrt(-2.0 * Math.Log(x))
-            If (0.5 - clsRandomXorshiftSingleton.GetInstance().NextDouble() > 0.0) Then
+            If (0.5 - XorshiftSingleton.GetInstance().NextDouble() > 0.0) Then
                 Return c * Math.Sin(2.0 * Math.PI * y) * ai_sigma2 + ai_ave
             Else
                 Return c * Math.Cos(2.0 * Math.PI * y) * ai_sigma2 + ai_ave
@@ -50,7 +59,7 @@ Namespace Util
         ''' http://www.sat.t.u-tokyo.ac.jp/~omi/random_variables_generation.html#Cauchy
         ''' </remarks>
         Public Shared Function CauchyRand(Optional ByVal ai_mu As Double = 0, Optional ByVal ai_gamma As Double = 1) As Double
-            Return ai_mu + ai_gamma * Math.Tan(Math.PI * (clsRandomXorshiftSingleton.GetInstance().NextDouble() - 0.5))
+            Return ai_mu + ai_gamma * Math.Tan(Math.PI * (XorshiftSingleton.GetInstance().NextDouble() - 0.5))
         End Function
 
         ''' <summary>
@@ -76,7 +85,7 @@ Namespace Util
                 Return New List(Of Integer)
             End If
 
-            Dim ary As New List(Of Integer)(CInt(nLength * 1.5))
+            Dim ary As New List(Of Integer)(nLength)
             If ai_removeIndex <= -1 Then
                 For ii As Integer = ai_min To ai_max - 1
                     ary.Add(ii)
@@ -93,13 +102,109 @@ Namespace Util
             Dim n As Integer = ary.Count
             While n > 1
                 n -= 1
-                Dim k As Integer = clsRandomXorshiftSingleton.GetInstance().Next(0, n + 1)
+                Dim k As Integer = XorshiftSingleton.GetInstance().Next(0, n + 1)
                 Dim tmp As Integer = ary(k)
                 ary(k) = ary(n)
                 ary(n) = tmp
             End While
             Return ary
         End Function
+
+        ''' <summary>
+        ''' Pick index
+        ''' </summary>
+        ''' <param name="idxArray"></param>
+        ''' <param name="pickNumber"></param>
+        ''' <param name="withoutIndex"></param>
+        ''' <returns></returns>
+        Public Shared Function PickIndex(ByVal idxArray As List(Of Integer), ByVal pickNumber As Integer, ByVal withoutIndex As Integer) As List(Of Integer)
+            Dim ret As New List(Of Integer)
+            Dim count As Integer = 0
+
+            For Each idx In idxArray
+                If idx = withoutIndex Then
+                    Continue For
+                End If
+                ret.Add(idx)
+                If count = pickNumber Then
+                    Exit For
+                End If
+                count += 1
+            Next
+
+            Return ret
+        End Function
+
+        ''' <summary>
+        ''' Create index array
+        ''' </summary>
+        ''' <param name="ai_max">0 to ai_max-1</param>
+        ''' <returns></returns>
+        Public Shared Function CreateIndexArray(ByVal ai_max As Integer) As List(Of Integer)
+            Dim indexArray As New List(Of Integer)(ai_max)
+            For i As Integer = 0 To ai_max - 1
+                indexArray.Add(i)
+            Next
+            Return indexArray
+        End Function
+
+        ''' <summary>
+        ''' Shuffle index array
+        ''' </summary>
+        ''' <param name="ary"></param>
+        Public Shared Sub ShuffleIndex(ByRef ary As List(Of Integer))
+            'Fisher–Yates shuffle / フィッシャー - イェーツのシャッフル
+            Dim n As Integer = ary.Count
+            While n > 1
+                n -= 1
+                Dim k As Integer = XorshiftSingleton.GetInstance().Next(0, n + 1)
+                Dim tmp As Integer = ary(k)
+                ary(k) = ary(n)
+                ary(n) = tmp
+            End While
+        End Sub
+
+        ''' <summary>
+        ''' For Debug
+        ''' </summary>
+        ''' <param name="ai_opt"></param>
+        ''' <param name="ai_precision"></param>
+        ''' <param name="ai_isOutValue"></param>
+        ''' <param name="ai_isOnlyIterationCount"></param>
+        ''' <remarks></remarks>
+        Public Shared Sub DebugValue(ByVal ai_opt As absOptimization,
+                                     Optional ai_precision As Integer = 0,
+                                     Optional ai_isOutValue As Boolean = True,
+                                     Optional ai_isOnlyIterationCount As Boolean = False)
+            If ai_opt Is Nothing Then
+                Return
+            End If
+
+            If ai_isOnlyIterationCount = True Then
+                Console.WriteLine("IterationCount:," & String.Format("{0}", ai_opt.IterationCount()))
+                Return
+            End If
+
+            If ai_isOutValue = True Then
+                Console.WriteLine("TargetFunction:" & ai_opt.ObjectiveFunction().GetType().Name & " Dimension:" & ai_opt.ObjectiveFunction().NumberOfVariable.ToString())
+                Console.WriteLine("OptimizeMethod:" & ai_opt.GetType().Name)
+                Console.WriteLine("Eval          :" & String.Format("{0}", ai_opt.BestResult.Eval))
+                Console.WriteLine("IterationCount:" & String.Format("{0}", ai_opt.IterationCount()))
+                Console.WriteLine("Result        :")
+                Dim str As New System.Text.StringBuilder()
+                For Each value As Double In ai_opt.BestResult
+                    If ai_precision <= 0 Then
+                        str.Append(value.ToString())
+                    Else
+                        str.Append(value.ToString("F3"))
+                    End If
+                    str.AppendLine("")
+                Next
+                Console.WriteLine(str.ToString())
+            Else
+                Console.WriteLine("Eval          :" & String.Format("{0}", ai_opt.BestResult.Eval))
+            End If
+        End Sub
 
         ''' <summary>
         ''' For Debug
@@ -136,7 +241,7 @@ Namespace Util
         Public Shared Function IsCriterion(ByVal ai_eps As Double,
                                            ByVal ai_comparisonA As clsPoint, ByVal ai_comparisonB As clsPoint,
                                            Optional ByVal ai_tiny As Double = 0.0000000000001) As Boolean
-            Return clsUtil.IsCriterion(ai_eps, ai_comparisonA.Eval, ai_comparisonB.Eval, ai_tiny)
+            Return Util.IsCriterion(ai_eps, ai_comparisonA.Eval, ai_comparisonB.Eval, ai_tiny)
         End Function
 
         ''' <summary>
@@ -201,7 +306,7 @@ Namespace Util
         ''' <remarks></remarks>
         Public Shared Sub ToCSV(ByVal arP As List(Of clsPoint))
             For Each p In arP
-                clsUtil.ToCSV(p)
+                Util.ToCSV(p)
             Next
             Console.WriteLine("")
         End Sub
@@ -223,10 +328,10 @@ Namespace Util
         ''' <param name="arP"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function GetSortedEvalList(ByVal arP As List(Of clsPoint)) As List(Of clsEval)
-            Dim sortedEvalList = New List(Of clsEval)
+        Public Shared Function GetSortedEvalList(ByVal arP As List(Of clsPoint)) As List(Of Eval)
+            Dim sortedEvalList = New List(Of Eval)
             For i = 0 To arP.Count - 1
-                sortedEvalList.Add(New clsEval(i, arP(i).Eval))
+                sortedEvalList.Add(New Eval(i, arP(i).Eval))
             Next
             sortedEvalList.Sort()
             Return sortedEvalList
@@ -278,7 +383,7 @@ Namespace Util
             End If
 
             Dim sortedPoints As New List(Of clsPoint)
-            Dim sortedEvalList = clsUtil.GetSortedEvalList(ai_points)
+            Dim sortedEvalList = Util.GetSortedEvalList(ai_points)
             For i As Integer = 0 To sortedEvalList.Count - 1
                 sortedPoints.Add(ai_points(sortedEvalList(i).Index))
             Next
@@ -296,7 +401,7 @@ Namespace Util
             Dim ret As New List(Of KeyValuePair(Of Integer, clsPoint))
 
             'Index
-            Dim randIndex As List(Of Integer) = clsUtil.RandomPermutaion(ai_population.Count)
+            Dim randIndex As List(Of Integer) = Util.RandomPermutaion(ai_population.Count)
 
             'PickParents
             For i As Integer = 0 To ai_parentSize - 1

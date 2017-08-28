@@ -499,8 +499,8 @@
                 For i As Integer = 0 To vec.Count - 1
                     str.Append(vec(i).ToString("F" & ai_preci.ToString()) & ControlChars.Tab)
                 Next
-                Str.AppendLine("")
-                Console.Write(Str.ToString())
+                str.AppendLine("")
+                Console.Write(str.ToString())
             Next
             Console.WriteLine()
         End Sub
@@ -661,7 +661,7 @@
         ''' <param name="ai_isDebug"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function CalcDeterminant(ByVal ai_clsMatrix As clsEasyMatrix, _
+        Private Function CalcDeterminant(ByVal ai_clsMatrix As clsEasyMatrix,
                                          ByVal ai_dim As Integer, Optional ai_isDebug As Boolean = False) As Double
             If ai_dim = 1 Then
                 Return ai_clsMatrix(0)(0)

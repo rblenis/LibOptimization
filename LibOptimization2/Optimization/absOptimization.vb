@@ -1,4 +1,5 @@
 ﻿Imports LibOptimization2.Util
+Imports LibOptimization2.Util.Random
 
 Namespace Optimization
     ''' <summary>
@@ -11,7 +12,7 @@ Namespace Optimization
         Public Property ObjectiveFunction As absObjectiveFunction = Nothing
 
         ''' <summary>Random object</summary>
-        Public Property Random As System.Random = New clsRandomXorshift(BitConverter.ToUInt32(BitConverter.GetBytes(Environment.TickCount), 0))
+        Public Property Random As System.Random = New Xorshift(BitConverter.ToUInt32(BitConverter.GetBytes(Environment.TickCount + Util.Util.GlobalCounter()), 0))
 
         ''' <summary>Max iteration count(Default:2000)</summary>
         Public Property Iteration As Integer = 2000
@@ -68,22 +69,22 @@ Namespace Optimization
         Public Overridable Function Init() As Boolean
             'check
             If ObjectiveFunction Is Nothing Then
-                clsError.SetError(clsError.ErrorType.ERR_INIT, "Not exist ObjectiveFunction")
+                ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT, "Not exist ObjectiveFunction")
                 Return False
             End If
 
             'Bound check
             If UseBounds = True Then
                 If UpperBounds Is Nothing OrElse LowerBounds Is Nothing Then
-                    clsError.SetError(clsError.ErrorType.ERR_INIT, "Bounds setting error")
+                    ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT, "Bounds setting error")
                     Return False
                 End If
                 If ObjectiveFunction.NumberOfVariable <> UpperBounds.Length Then
-                    clsError.SetError(clsError.ErrorType.ERR_INIT, "Bounds setting error")
+                    ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT, "Bounds setting error")
                     Return False
                 End If
                 If ObjectiveFunction.NumberOfVariable <> LowerBounds.Length Then
-                    clsError.SetError(clsError.ErrorType.ERR_INIT, "Bounds setting error")
+                    ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT, "Bounds setting error")
                     Return False
                 End If
             End If
@@ -93,7 +94,7 @@ Namespace Optimization
             _populations.Clear()
 
             'error manage reset
-            clsError.Clear()
+            ErrorManage.Clear()
 
             'Set initialize value
             Try
@@ -106,7 +107,7 @@ Namespace Optimization
                 Dim temp(ObjectiveFunction.NumberOfVariable - 1) As Double
                 For i As Integer = 0 To PopulationSize - 1
                     For j As Integer = 0 To ObjectiveFunction.NumberOfVariable - 1
-                        temp(j) = clsUtil.GenRandomRange(Random, -InitialValueRange, InitialValueRange)
+                        temp(j) = Util.Util.GenRandomRange(Random, -InitialValueRange, InitialValueRange)
                     Next
 
                     Dim tempPoint = New clsPoint(New clsPoint(ObjectiveFunction, temp))
@@ -125,7 +126,7 @@ Namespace Optimization
                 'Sort Evaluate
                 _populations.Sort()
             Catch ex As Exception
-                clsError.SetError(clsError.ErrorType.ERR_INIT, ex.Message)
+                ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT, ex.Message)
             End Try
 
             Return True
@@ -138,12 +139,12 @@ Namespace Optimization
         ''' <returns></returns>
         Public Function Init(ByVal anyPoint As clsPoint) As Boolean
             If anyPoint Is Nothing Then
-                clsError.SetError(clsError.ErrorType.ERR_INIT)
+                ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT)
                 Return False
             End If
 
             If ObjectiveFunction.NumberOfVariable <> anyPoint.Count Then
-                clsError.SetError(clsError.ErrorType.ERR_INIT)
+                ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT)
                 Return False
             End If
 
@@ -163,7 +164,7 @@ Namespace Optimization
             Dim best As clsPoint = Nothing
             Dim flg As Boolean = False
             If isReuseBestResult = True And _populations.Count > 0 Then
-                best = clsUtil.GetBestPoint(_populations)
+                best = Util.Util.GetBestPoint(_populations)
                 flg = Init(False)
                 If flg = True Then
                     _populations(0) = best
@@ -190,7 +191,7 @@ Namespace Optimization
         ''' <remarks></remarks>
         Public Overridable ReadOnly Property BestResult As clsPoint
             Get
-                Return clsUtil.GetBestPoint(_populations, True)
+                Return Util.Util.GetBestPoint(_populations, True)
             End Get
         End Property
 
@@ -200,7 +201,7 @@ Namespace Optimization
         ''' <returns></returns>
         Public Overridable ReadOnly Property Results As List(Of clsPoint)
             Get
-                Return clsUtil.GetSortedResultsByEval(_populations)
+                Return Util.Util.GetSortedResultsByEval(_populations)
             End Get
         End Property
 
@@ -222,6 +223,23 @@ Namespace Optimization
         Public Sub ResetIterationCount()
             _IterationCount = 0
         End Sub
+
+        ''' <summary>
+        ''' Criterion/Conversion check
+        ''' </summary>
+        ''' <returns></returns>
+        Public Function IsCriterion() As Boolean
+            If UseCriterion = False Then
+                Return False
+            End If
+
+            'higher N percentage particles are finished at the time of same evaluate value.
+            If Util.Util.IsCriterion(EPS, _populations(0).Eval, _populations(_criterionIndex).Eval, EPS) Then
+                Return True
+            Else
+                Return False
+            End If
+        End Function
 
         ''' <summary>
         ''' Limit solution space
@@ -266,6 +284,10 @@ Namespace Optimization
         ''' <param name="temp"></param>
         ''' <remarks></remarks>
         Protected Sub LimitSolutionSpace(ByRef temp As clsPoint)
+            If UseBounds = False Then
+                Return
+            End If
+
             LimitSolutionSpace(DirectCast(temp, MathUtil.clsEasyVector))
             temp.ReEvaluate()
         End Sub

@@ -56,14 +56,14 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
                 'check criterion
                 If MyBase.UseCriterion = True Then
                     'higher N percentage particles are finished at the time of same evaluate value.
-                    If clsUtil.IsCriterion(EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
+                    If Util.Util.IsCriterion(EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
                         Return True
                     End If
                 End If
 
                 'SPX with JGG
                 'Parent is n+1
-                Dim parents As List(Of KeyValuePair(Of Integer, clsPoint)) = clsUtil.SelectParent(MyBase._populations, ObjectiveFunction.NumberOfVariable + 1)
+                Dim parents As List(Of KeyValuePair(Of Integer, clsPoint)) = Util.Util.SelectParent(MyBase._populations, ObjectiveFunction.NumberOfVariable + 1)
 
                 'Crossover
                 Dim children As List(Of clsPoint) = CrossOverSPX(ChildrenSize, parents)

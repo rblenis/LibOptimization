@@ -1,11 +1,11 @@
-﻿Namespace Util
+﻿Namespace Util.Random
     ''' <summary>
     ''' Xorshift random algorithm singleton
     ''' </summary>
     ''' <remarks>
     ''' </remarks>
-    Public Class clsRandomXorshiftSingleton
-        Private Shared m_rand As New clsRandomXorshift()
+    Public Class XorshiftSingleton
+        Private Shared m_rand As New Xorshift()
 
 #Region "Constructor"
         ''' <summary>
@@ -23,7 +23,7 @@
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function GetInstance() As clsRandomXorshift
+        Public Shared Function GetInstance() As Xorshift
             Return m_rand
         End Function
 #End Region

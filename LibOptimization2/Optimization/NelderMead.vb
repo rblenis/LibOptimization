@@ -42,7 +42,7 @@ Namespace Optimization.DerivativeFree
         Public Overrides Function Init() As Boolean
             'Check number of variable
             If ObjectiveFunction.NumberOfVariable < 2 Then
-                clsError.SetError(clsError.ErrorType.ERR_INIT, "NumberOfVariable is 1")
+                ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT, "NumberOfVariable is 1")
                 Return False
             End If
 
@@ -72,7 +72,7 @@ Namespace Optimization.DerivativeFree
 
                 'Check criterion
                 _populations.Sort()
-                If clsUtil.IsCriterion(Me.EPS, _populations(0).Eval, _populations(_populations.Count - 1).Eval) Then
+                If Util.Util.IsCriterion(Me.EPS, _populations(0).Eval, _populations(_populations.Count - 1).Eval) Then
                     Return True
                 End If
 
@@ -137,8 +137,11 @@ Namespace Optimization.DerivativeFree
                 Next
                 ret(i) = temp / (ai_vertexs.Count - 1)
             Next
-
             ret.ReEvaluate()
+
+            'limit result
+            LimitSolutionSpace(ret)
+
             Return ret
         End Function
 
@@ -161,8 +164,11 @@ Namespace Optimization.DerivativeFree
                 Dim temp As Double = -ai_coeff * ai_tgt(i) + (1 + ai_coeff) * ai_base(i)
                 ret(i) = temp
             Next
-
             ret.ReEvaluate()
+
+            'limit result
+            LimitSolutionSpace(ret)
+
             Return ret
         End Function
 
@@ -185,8 +191,11 @@ Namespace Optimization.DerivativeFree
                 Dim temp As Double = ai_coeff * ai_tgt(i) + (1 - ai_coeff) * ai_base(i)
                 ret(i) = temp
             Next
-
             ret.ReEvaluate()
+
+            'limit result
+            LimitSolutionSpace(ret)
+
             Return ret
         End Function
 
@@ -209,8 +218,11 @@ Namespace Optimization.DerivativeFree
                 Dim temp As Double = -ai_coeff * ai_tgt(i) + (1 + ai_coeff) * ai_base(i)
                 ret(i) = temp
             Next
-
             ret.ReEvaluate()
+
+            'limit result
+            LimitSolutionSpace(ret)
+
             Return ret
         End Function
 
@@ -230,6 +242,9 @@ Namespace Optimization.DerivativeFree
                     _populations(i)(j) = temp
                 Next
                 _populations(i).ReEvaluate()
+
+                'limit result
+                LimitSolutionSpace(_populations(i))
             Next
         End Sub
 #End Region

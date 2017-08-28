@@ -10,14 +10,23 @@ Namespace Optimization
         Inherits clsEasyVector
         Implements IComparable
 
+        ''' <summary>Objective fucntion</summary>
         Private _func As absObjectiveFunction = Nothing
+
+        ''' <summary>Evaluate value</summary>
         Private _evaluateValue As Double = 0.0
+
+        ''' <summary>temp1</summary>
+        Public Property temp1 As Object = Nothing
+
+        ''' <summary>temp2</summary>
+        Public Property temp2 As Object = Nothing
 
         ''' <summary>
         ''' Default constructor
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub New()
+        Public Sub New()
             'nop
         End Sub
 

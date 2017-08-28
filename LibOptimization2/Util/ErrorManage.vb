@@ -2,8 +2,8 @@
     ''' <summary>
     ''' Error manage class(Singleton)
     ''' </summary>
-    Public Class clsError
-        Private Shared _errors As New List(Of clsDetailError)
+    Public Class ErrorManage
+        Private Shared _errors As New List(Of DetailError)
 
         Public Enum ErrorType
             ERR_INIT
@@ -12,7 +12,7 @@
             ERR_UNKNOWN
         End Enum
 
-        Private Class clsDetailError
+        Private Class DetailError
             Public Property ErrorType As ErrorType
             Public Property Message As String
 
@@ -50,8 +50,8 @@
         ''' <param name="message"></param>
         Public Shared Sub SetError(ByVal eType As ErrorType, Optional ByVal message As String = "")
             If _errors Is Nothing Then
-                _errors = New List(Of clsDetailError)
-                _errors.Add(New clsDetailError(eType, message))
+                _errors = New List(Of DetailError)
+                _errors.Add(New DetailError(eType, message))
                 Return
             End If
         End Sub

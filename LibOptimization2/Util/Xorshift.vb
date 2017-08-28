@@ -7,7 +7,7 @@
     ''' Refference:
     ''' George Marsaglia, "Xorshift RNGs", Journal of Statistical Software Vol. 8, Issue 14, Jul 2003
     ''' </remarks>
-    Public Class clsRandomXorshift : Inherits System.Random
+    Public Class Xorshift : Inherits System.Random
         'DefaultParameter
         Private x As UInt32 = 123456789
         Private y As UInt32 = 362436069

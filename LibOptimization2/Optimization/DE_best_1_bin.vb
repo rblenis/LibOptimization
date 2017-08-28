@@ -53,7 +53,7 @@ Namespace Optimization.DerivativeFree.DifferentialEvolution
                 'check criterion
                 If MyBase.UseCriterion = True Then
                     'higher N percentage particles are finished at the time of same evaluate value.
-                    If clsUtil.IsCriterion(EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
+                    If Util.Util.IsCriterion(EPS, MyBase._populations(0).Eval, MyBase._populations(MyBase._criterionIndex).Eval) Then
                         Return True
                     End If
                 End If
@@ -64,7 +64,7 @@ Namespace Optimization.DerivativeFree.DifferentialEvolution
                 'DE
                 For i As Integer = 0 To PopulationSize - 1
                     'pick different parent without i
-                    Dim randIndex As List(Of Integer) = clsUtil.RandomPermutaion(_populations.Count, i)
+                    Dim randIndex As List(Of Integer) = Util.Util.RandomPermutaion(_populations.Count, i)
                     Dim xi = _populations(i)
                     Dim p1 As clsPoint = _populations(randIndex(0))
                     Dim p2 As clsPoint = _populations(randIndex(1))
