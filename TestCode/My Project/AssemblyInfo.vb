@@ -8,17 +8,17 @@ Imports System.Runtime.InteropServices
 
 ' アセンブリ属性の値を確認します
 
-<Assembly: AssemblyTitle("LibOptimization")>
-<Assembly: AssemblyDescription("Optimization Library for .NET Framework")>
+<Assembly: AssemblyTitle("TestCode")>
+<Assembly: AssemblyDescription("")>
 <Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("LibOptimization")>
-<Assembly: AssemblyCopyright("tomitomi3 (https://github.com/tomitomi3/LibOptimization)")>
-<Assembly: AssemblyTrademark("")> 
+<Assembly: AssemblyProduct("TestCode")>
+<Assembly: AssemblyCopyright("Copyright ©  2017")>
+<Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
 
 'このプロジェクトが COM に公開される場合、次の GUID が typelib の ID になります
-<Assembly: Guid("96d40cdc-bfc1-4933-9478-5ea25ba0434e")>
+<Assembly: Guid("5d9d8e9e-4145-4265-9119-c6e889b22b8a")>
 
 ' アセンブリのバージョン情報は次の 4 つの値で構成されています:
 '
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' 既定値にすることができます:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("2.0.0.0")>
-<Assembly: AssemblyFileVersion("2.0.0.0")>
+<Assembly: AssemblyVersion("1.0.0.0")>
+<Assembly: AssemblyFileVersion("1.0.0.0")>

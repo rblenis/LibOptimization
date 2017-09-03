@@ -2,7 +2,6 @@
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
 'LibOptimization
-Imports LibOptimization
 Imports LibOptimization.MathUtil
 Imports LibOptimization.Optimization
 Imports LibOptimization.BenchmarkFunction
@@ -17,32 +16,33 @@ Imports LibOptimization.Util
     <TestMethod()> Public Sub TestRandom()
         Dim rand As System.Random = Nothing
         Try
-            rand = New clsRandomXorshift()
+            rand = New LibOptimization.Util.Random.Xorshift()
         Catch ex As Exception
-            Assert.Fail("clsRandomXorshift error")
+            Assert.Fail("123456 error")
         End Try
 
         Try
             Dim temp As Integer = 123456
-            rand = New clsRandomXorshift(BitConverter.ToUInt32(BitConverter.GetBytes(temp), 0))
+            rand = New LibOptimization.Util.Random.Xorshift(BitConverter.ToUInt32(BitConverter.GetBytes(temp), 0))
         Catch ex As Exception
-            Assert.Fail("clsRandomXorshift seed error using positive value.")
+            Assert.Fail("123456 seed error using positive value.")
         End Try
 
         Try
             Dim temp As Integer = -123456
-            rand = New clsRandomXorshift(BitConverter.ToUInt32(BitConverter.GetBytes(temp), 0))
+            rand = New LibOptimization.Util.Random.Xorshift(BitConverter.ToUInt32(BitConverter.GetBytes(temp), 0))
         Catch ex As Exception
-            Assert.Fail("clsRandomXorshift seed error using negative value.")
+            Assert.Fail("123456 seed error using negative value.")
         End Try
     End Sub
 #End Region
+
 #Region "Vector, Matrix"
     ''' <summary>
     ''' check Matric initialize
     ''' </summary>
     <TestMethod()> Public Sub TestVector()
-        Dim v As New clsEasyVector(New Double() {1, 2, 3})
+        Dim v As New EasyVector(New Double() {1, 2, 3})
         For i As Integer = 0 To 3 - 1
             Assert.AreEqual(v(i), CType(i + 1, Double))
         Next
@@ -52,8 +52,8 @@ Imports LibOptimization.Util
     ''' Vector + Matrix
     ''' </summary>
     <TestMethod()> Public Sub TestVectorMatrix_AddVectorMatrix()
-        Dim v As New clsEasyVector(New Double() {1, 1, 1})
-        Dim matV As New clsEasyMatrix(New Double()() {New Double() {1}, New Double() {2}, New Double() {3}})
+        Dim v As New EasyVector(New Double() {1, 1, 1})
+        Dim matV As New EasyMatrix(New Double()() {New Double() {1}, New Double() {2}, New Double() {3}})
         Try
             v = v + matV
             If v(0) = 2.0 AndAlso v(1) = 3.0 AndAlso v(2) = 4.0 Then
@@ -70,8 +70,8 @@ Imports LibOptimization.Util
     ''' Matrix + vector
     ''' </summary>
     <TestMethod()> Public Sub TestVectorMatrix_AddMatrixVector()
-        Dim v As New clsEasyVector(New Double() {1, 1, 1})
-        Dim matV As New clsEasyMatrix(New Double()() {New Double() {1}, New Double() {2}, New Double() {3}})
+        Dim v As New EasyVector(New Double() {1, 1, 1})
+        Dim matV As New EasyMatrix(New Double()() {New Double() {1}, New Double() {2}, New Double() {3}})
         Try
             v = matV + v
             If v(0) = 2.0 AndAlso v(1) = 3.0 AndAlso v(2) = 4.0 Then
@@ -88,8 +88,8 @@ Imports LibOptimization.Util
     ''' Vector - Matrix
     ''' </summary>
     <TestMethod()> Public Sub TestVectorMatrix_SubVectorMatrix()
-        Dim v As New clsEasyVector(New Double() {1, 1, 1})
-        Dim matV As New clsEasyMatrix(New Double()() {New Double() {1}, New Double() {2}, New Double() {3}})
+        Dim v As New EasyVector(New Double() {1, 1, 1})
+        Dim matV As New EasyMatrix(New Double()() {New Double() {1}, New Double() {2}, New Double() {3}})
         Try
             v = v - matV
             If v(0) = 0 AndAlso v(1) = -1.0 AndAlso v(2) = -2.0 Then
@@ -106,8 +106,8 @@ Imports LibOptimization.Util
     ''' Matrix - Vector
     ''' </summary>
     <TestMethod()> Public Sub TestVectorMatrix_SubMatrixVector()
-        Dim v As New clsEasyVector(New Double() {1, 1, 1})
-        Dim matV As New clsEasyMatrix(New Double()() {New Double() {1}, New Double() {2}, New Double() {3}})
+        Dim v As New EasyVector(New Double() {1, 1, 1})
+        Dim matV As New EasyMatrix(New Double()() {New Double() {1}, New Double() {2}, New Double() {3}})
         Try
             v = matV - v
             If v(0) = 0.0 AndAlso v(1) = 1.0 AndAlso v(2) = 2.0 Then
@@ -124,10 +124,10 @@ Imports LibOptimization.Util
     ''' Matrix * Vector
     ''' </summary>
     <TestMethod()> Public Sub TestVectorMatrix_ProductMatrixVector()
-        Dim v As New clsEasyVector(New Double() {1, 2, 3})
-        Dim mat As New clsEasyMatrix(New Double()() {New Double() {1, 1, 1}, New Double() {2, 1, 1}, New Double() {3, 1, 1}})
+        Dim v As New EasyVector(New Double() {1, 2, 3})
+        Dim mat As New EasyMatrix(New Double()() {New Double() {1, 1, 1}, New Double() {2, 1, 1}, New Double() {3, 1, 1}})
         Try
-            v.Direction = clsEasyVector.VectorDirection.COL
+            v.Direction = EasyVector.VectorDirection.COL
             Dim temp = mat * v
             temp.PrintValue()
         Catch ex As Exception
@@ -139,10 +139,10 @@ Imports LibOptimization.Util
     ''' Vector * Matrix
     ''' </summary>
     <TestMethod()> Public Sub TestVectorMatrix_ProductVectorMatrix_OK()
-        Dim v As New clsEasyVector(New Double() {1, 2, 3})
-        Dim mat As New clsEasyMatrix(New Double()() {New Double() {4, 5, 6}})
+        Dim v As New EasyVector(New Double() {1, 2, 3})
+        Dim mat As New EasyMatrix(New Double()() {New Double() {4, 5, 6}})
         Try
-            v.Direction = clsEasyVector.VectorDirection.COL
+            v.Direction = EasyVector.VectorDirection.COL
             Dim temp = v * mat
             Dim temp2 = mat * v
         Catch ex As Exception
@@ -151,10 +151,10 @@ Imports LibOptimization.Util
     End Sub
 
     <TestMethod()> Public Sub TestVectorMatrix_ProductMatrixVectorFail()
-        Dim v As New clsEasyVector(New Double() {1, 2, 3})
-        Dim mat As New clsEasyMatrix(New Double()() {New Double() {1, 1, 1}, New Double() {2, 1, 1}, New Double() {3, 1, 1}})
+        Dim v As New EasyVector(New Double() {1, 2, 3})
+        Dim mat As New EasyMatrix(New Double()() {New Double() {1, 1, 1}, New Double() {2, 1, 1}, New Double() {3, 1, 1}})
         Try
-            v.Direction = clsEasyVector.VectorDirection.ROW
+            v.Direction = EasyVector.VectorDirection.ROW
             Dim temp = mat * v
             Assert.Fail()
         Catch ex As Exception
@@ -163,7 +163,7 @@ Imports LibOptimization.Util
     End Sub
 
     <TestMethod()> Public Sub TestMatrix()
-        Dim matV As New clsEasyMatrix(New Double()() {New Double() {1, 2, 3}, New Double() {4, 5, 6}, New Double() {7, 8, 9}})
+        Dim matV As New EasyMatrix(New Double()() {New Double() {1, 2, 3}, New Double() {4, 5, 6}, New Double() {7, 8, 9}})
         Dim c As Integer = 1
         For i As Integer = 0 To matV.RowCount - 1
             For j As Integer = 0 To matV.ColCount - 1
@@ -174,14 +174,14 @@ Imports LibOptimization.Util
     End Sub
 
     <TestMethod()> Public Sub TestMatrixInverse()
-        Dim mat As New clsEasyMatrix(New Double()() {New Double() {3, 1, 1},
+        Dim mat As New EasyMatrix(New Double()() {New Double() {3, 1, 1},
                                                      New Double() {5, 1, 3},
                                                      New Double() {2, 0, 1}})
         'Inverse
         '0.5	-0.5	1
         '0.5	 0.5	-2
         '-1      1  	-1
-        Dim matInv As clsEasyMatrix = mat.Inverse()
+        Dim matInv As EasyMatrix = mat.Inverse()
 
         'check Identy matrix
         ' I = A * A^-1
@@ -202,8 +202,8 @@ Imports LibOptimization.Util
     End Sub
 
     <TestMethod()> Public Sub TestVectorMatrix()
-        Dim v As New clsEasyVector(New Double() {3, 2, 1})
-        Dim mat As New clsEasyMatrix(New Double()() {New Double() {1}, New Double() {2}, New Double() {3}})
+        Dim v As New EasyVector(New Double() {3, 2, 1})
+        Dim mat As New EasyMatrix(New Double()() {New Double() {1}, New Double() {2}, New Double() {3}})
 
         Dim temp = v + mat
         For i As Integer = 0 To temp.Count - 1
@@ -227,7 +227,7 @@ Imports LibOptimization.Util
     End Sub
 #End Region
 
-#Region "Optimization"
+#Region "Optimization Typical use(using Sphere)"
     ''' <summary>
     ''' Sphere関数で最適解になるか確認
     ''' </summary>
@@ -236,12 +236,13 @@ Imports LibOptimization.Util
     Public Sub CheckOptUsingSphere(ByVal opt As absOptimization)
         'check init
         opt.Init()
-        Dim errorFlg = opt.IsRecentError()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
         Assert.IsFalse(errorFlg)
 
         'check iterate
         opt.DoIteration()
-        errorFlg = opt.IsRecentError()
+        errorFlg = ErrorManage.IsRecentError()
         Assert.IsFalse(errorFlg)
 
         'Eval   
@@ -257,185 +258,202 @@ Imports LibOptimization.Util
         Console.WriteLine(String.Format("Success Result {0} {1}", opt.Result(0), opt.Result(1)))
     End Sub
 
-    <TestMethod()> Public Sub TestOptimizationCS()
-        Dim opt = New clsOptCS(New clsBenchSphere(2))
+    <TestMethod()> Public Sub TestOptimizationCuckooSearch()
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.CuckooSearch()
+        opt.ObjectiveFunction = New BenchSphere(2)
         Me.CheckOptUsingSphere(opt)
     End Sub
 
-    <TestMethod()> Public Sub TestOptimizationDE()
-        Dim opt = New clsOptDE(New clsBenchSphere(2))
-        opt.DEStrategy = clsOptDE.EnumDEStrategyType.DE_best_1_bin
-        Me.CheckOptUsingSphere(opt)
-
-        opt = New clsOptDE(New clsBenchSphere(2))
-        opt.DEStrategy = clsOptDE.EnumDEStrategyType.DE_best_2_bin
-        Me.CheckOptUsingSphere(opt)
-
-        opt = New clsOptDE(New clsBenchSphere(2))
-        opt.DEStrategy = clsOptDE.EnumDEStrategyType.DE_rand_1_bin
-        Me.CheckOptUsingSphere(opt)
-
-        opt = New clsOptDE(New clsBenchSphere(2))
-        opt.DEStrategy = clsOptDE.EnumDEStrategyType.DE_rand_2_bin
+    <TestMethod()> Public Sub TestOptimizationDE_best1_bin()
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.DifferentialEvolution.DE_best_1_bin()
+        opt.ObjectiveFunction = New BenchSphere(2)
         Me.CheckOptUsingSphere(opt)
     End Sub
 
-    <TestMethod()> Public Sub TestOptimizationJADE()
-        Dim opt = New clsOptDEJADE(New clsBenchSphere(2))
+    <TestMethod()> Public Sub TestOptimizationDE_best2_bin()
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.DifferentialEvolution.DE_best_2_bin()
+        opt.ObjectiveFunction = New BenchSphere(2)
+        Me.CheckOptUsingSphere(opt)
+    End Sub
+
+    <TestMethod()> Public Sub TestOptimizationDE_current_1_bin()
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.DifferentialEvolution.DE_current_1_bin()
+        opt.ObjectiveFunction = New BenchSphere(2)
+        Me.CheckOptUsingSphere(opt)
+    End Sub
+
+    <TestMethod()> Public Sub TestOptimizationDE_current_to_Best_1_bin()
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.DifferentialEvolution.DE_current_to_Best_1_bin()
+        opt.ObjectiveFunction = New BenchSphere(2)
+        Me.CheckOptUsingSphere(opt)
+    End Sub
+
+    <TestMethod()> Public Sub TestOptimizationDE_rand_1_bin()
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.DifferentialEvolution.DE_rand_1_bin()
+        opt.ObjectiveFunction = New BenchSphere(2)
+        Me.CheckOptUsingSphere(opt)
+    End Sub
+
+    <TestMethod()> Public Sub TestOptimizationDE_rand_2_bin()
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.DifferentialEvolution.DE_rand_2_bin()
+        opt.ObjectiveFunction = New BenchSphere(2)
+        Me.CheckOptUsingSphere(opt)
+    End Sub
+
+    <TestMethod()> Public Sub TestOptimizationDE_rand_to_Best_1_bin()
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.DifferentialEvolution.DE_rand_to_Best_1_bin()
+        opt.ObjectiveFunction = New BenchSphere(2)
+        Me.CheckOptUsingSphere(opt)
+    End Sub
+
+    <TestMethod()> Public Sub TestOptimizationDE_JADE()
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.DifferentialEvolution.JADE()
+        opt.ObjectiveFunction = New BenchSphere(2)
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationFA()
-        Dim opt = New clsOptFA(New clsBenchSphere(2))
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.Firefly()
+        opt.ObjectiveFunction = New BenchSphere(2)
         opt.Iteration = 300
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationNM()
-        Dim opt = New clsOptNelderMead(New clsBenchSphere(2))
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.NelderMead()
+        opt.ObjectiveFunction = New BenchSphere(2)
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationNMWiki()
-        Dim opt = New clsOptCS(New clsBenchSphere(2))
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.NelderMeadWiki()
+        opt.ObjectiveFunction = New BenchSphere(2)
+        Me.CheckOptUsingSphere(opt)
+    End Sub
+
+    <TestMethod()> Public Sub TestOptimizationSteepestDescent()
+        Dim opt = New LibOptimization.Optimization.RequireDerivative.SteepestDescent()
+        opt.ObjectiveFunction = New BenchSphere(2)
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationNewton()
-        Dim opt = New clsOptNewtonMethod(New clsBenchSphere(2))
+        Dim opt = New LibOptimization.Optimization.RequireDerivative.NewtonMethod()
+        opt.ObjectiveFunction = New BenchSphere(2)
         Me.CheckOptUsingSphere(opt)
     End Sub
 
-    <TestMethod()> Public Sub TestOptimizationPS()
-        Dim opt = New clsOptPatternSearch(New clsBenchSphere(2))
+    <TestMethod()> Public Sub TestOptimizationPatternSearch()
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.PatternSearch()
+        opt.ObjectiveFunction = New BenchSphere(2)
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationPSO()
-        Dim opt = New clsOptPSO(New clsBenchSphere(2))
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.ParticleSwarmOptmization.PSO()
+        opt.ObjectiveFunction = New BenchSphere(2)
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationPSOAIW()
-        Dim opt = New clsOptPSOAIW(New clsBenchSphere(2))
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.ParticleSwarmOptmization.AIWPSO()
+        opt.ObjectiveFunction = New BenchSphere(2)
         Me.CheckOptUsingSphere(opt)
     End Sub
 
-    <TestMethod()> Public Sub TestOptimizationPSOCIW()
-        Dim opt = New clsOptPSOChaoticIW(New clsBenchSphere(2))
-        opt.ChaoticMode = clsOptPSOChaoticIW.EnumChaoticInertiaWeightMode.CDIW
-        Me.CheckOptUsingSphere(opt)
-
-        opt = New clsOptPSOChaoticIW(New clsBenchSphere(2))
-        opt.ChaoticMode = clsOptPSOChaoticIW.EnumChaoticInertiaWeightMode.CRIW
+    <TestMethod()> Public Sub TestOptimizationCRIWPSO()
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.ParticleSwarmOptmization.CRIWPSO()
+        opt.ObjectiveFunction = New BenchSphere(2)
         Me.CheckOptUsingSphere(opt)
     End Sub
 
-    <TestMethod()> Public Sub TestOptimizationLDIW()
-        Dim opt = New clsOptPSOLDIW(New clsBenchSphere(2))
+    <TestMethod()> Public Sub TestOptimizationCDIWPSO()
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.ParticleSwarmOptmization.CDIWPSO()
+        opt.ObjectiveFunction = New BenchSphere(2)
+        Me.CheckOptUsingSphere(opt)
+    End Sub
+
+    <TestMethod()> Public Sub TestOptimizationLDIWPSO()
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.ParticleSwarmOptmization.LDIWPSO()
+        opt.ObjectiveFunction = New BenchSphere(2)
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationRGABLX()
-        Dim opt = New clsOptRealGABLX(New clsBenchSphere(2))
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.ReadlCodedGA.RealGABLXAlpha()
+        opt.ObjectiveFunction = New BenchSphere(2)
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationRGAPCX()
-        Dim opt = New clsOptRealGAPCX(New clsBenchSphere(2))
-        opt.Iteration = 1000
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.ReadlCodedGA.RealGAPCX()
+        opt.ObjectiveFunction = New BenchSphere(2)
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationRGAREX()
-        Dim opt = New clsOptRealGAREX(New clsBenchSphere(2))
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.ReadlCodedGA.RealGAREX()
+        opt.ObjectiveFunction = New BenchSphere(2)
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizatioRGASPX()
-        Dim opt = New clsOptRealGASPX(New clsBenchSphere(2))
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.ReadlCodedGA.RealGASPX()
+        opt.ObjectiveFunction = New BenchSphere(2)
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationRGAUNDX()
-        Dim opt = New clsOptRealGAUNDX(New clsBenchSphere(2))
-        opt.PopulationSize = 100
-        opt.ChildrenSize = 50
-        opt.Iteration = 700
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.ReadlCodedGA.RealGAUNDX()
+        opt.ObjectiveFunction = New BenchSphere(2)
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationSA()
-        Dim isOnceSuccess As Boolean = False
-        For i As Integer = 0 To 10 - 1
-            Dim opt = New clsOptSimulatedAnnealing(New clsBenchSphere(2))
-
-            'check init
-            opt.Init()
-            Dim errorFlg = opt.IsRecentError()
-            Assert.IsFalse(errorFlg)
-
-            'check iterate
-            opt.DoIteration()
-            errorFlg = opt.IsRecentError()
-            Assert.IsFalse(errorFlg)
-
-            'Eval
-            Dim isSuccess As Boolean = True
-            If Math.Abs(opt.Result.Eval) > 0.05 Then
-                isSuccess = isSuccess And False
-            Else
-                isSuccess = isSuccess And True
-            End If
-
-            'Result
-            If Math.Abs(opt.Result(0)) > 0.05 OrElse Math.Abs(opt.Result(1)) > 0.05 Then
-                isSuccess = isSuccess And False
-            Else
-                isSuccess = isSuccess And True
-            End If
-
-            isOnceSuccess = isOnceSuccess Or isSuccess
-        Next
-
-        Assert.IsTrue(isOnceSuccess, "fail SimulatedAnnealing")
-    End Sub
-
-    <TestMethod()> Public Sub TestOptimizationSD()
-        Dim opt = New clsOptSteepestDescent(New clsBenchSphere(2))
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.SimulatedAnnealing()
+        opt.ObjectiveFunction = New BenchSphere(2)
+        opt.Iteration = 10000
+        opt.UseCriterion = False
         Me.CheckOptUsingSphere(opt)
     End Sub
-
-    <TestMethod()> Public Sub TestOptimizationDEWithBound()
-        Dim opt As New clsOptDE(New clsBenchTest2())
-        'x1-> 0 to 5, x2-> 0 to 5
-        opt.LowerBounds = New Double() {0, 0}
-        opt.UpperBounds = New Double() {5, 5}
-        opt.Init()
-        Dim errorFlg = opt.IsRecentError()
-        Assert.IsFalse(errorFlg)
-
-        'check iterate
-        opt.DoIteration()
-        errorFlg = opt.IsRecentError()
-        Assert.IsFalse(errorFlg)
-
-        'Eval
-        If -78.99 < opt.Result.Eval AndAlso opt.Result.Eval < -78.98 Then
-            'OK
-        Else
-            Assert.Fail(String.Format("fail Eval {0}", opt.Result.Eval))
-        End If
-        Console.WriteLine(String.Format("Success Eval {0}", opt.Result.Eval))
-
-        'Result
-        If 2.8 < opt.Result(0) AndAlso opt.Result(0) < 2.9 Then
-            'OK
-        Else
-            Assert.Fail(String.Format("fail Result {0} {1}", opt.Result(0), opt.Result(1)))
-        End If
-        Console.WriteLine(String.Format("Success Result {0} {1}", opt.Result(0), opt.Result(1)))
-    End Sub
-
 #End Region
+
+    'add
+    'error case
+    'not set objectivefunction
+    'same bound
+    '
+    'Use bound
+    '<TestMethod()> Public Sub TestOptimizationDEWithBound()
+    '    Dim opt As New clsOptDE(New clsBenchTest2())
+    '    'x1-> 0 to 5, x2-> 0 to 5
+    '    opt.LowerBounds = New Double() {0, 0}
+    '    opt.UpperBounds = New Double() {5, 5}
+    '    opt.Init()
+    '    Dim errorFlg = opt.IsRecentError()
+    '    Assert.IsFalse(errorFlg)
+
+    '    'check iterate
+    '    opt.DoIteration()
+    '    errorFlg = opt.IsRecentError()
+    '    Assert.IsFalse(errorFlg)
+
+    '    'Eval
+    '    If -78.99 < opt.Result.Eval AndAlso opt.Result.Eval < -78.98 Then
+    '        'OK
+    '    Else
+    '        Assert.Fail(String.Format("fail Eval {0}", opt.Result.Eval))
+    '    End If
+    '    Console.WriteLine(String.Format("Success Eval {0}", opt.Result.Eval))
+
+    '    'Result
+    '    If 2.8 < opt.Result(0) AndAlso opt.Result(0) < 2.9 Then
+    '        'OK
+    '    Else
+    '        Assert.Fail(String.Format("fail Result {0} {1}", opt.Result(0), opt.Result(1)))
+    '    End If
+    '    Console.WriteLine(String.Format("Success Result {0} {1}", opt.Result(0), opt.Result(1)))
+    'End Sub
+
+
 End Class
