@@ -54,10 +54,10 @@ Namespace Optimization.DerivativeFree
 
                 'get a cuckoo
                 Dim currentBest = _populations(0)
-                Dim newNests As New List(Of clsPoint)(Me.PopulationSize)
+                Dim newNests As New List(Of Point)(Me.PopulationSize)
                 For i = 0 To Me.PopulationSize - 1
                     Dim s = _populations(i)
-                    Dim newNest = New clsPoint(ObjectiveFunction)
+                    Dim newNest = New Point(ObjectiveFunction)
                     'levy flight process
                     For j = 0 To ObjectiveFunction.NumberOfVariable - 1
                         Dim u = Util.Util.NormRand(0) * sigma
@@ -67,7 +67,10 @@ Namespace Optimization.DerivativeFree
                         Dim temp = s(j) + stepSize * Util.Util.NormRand(0)
                         newNest(j) = temp
                     Next
-                    newNest.ReEvaluate()
+
+                    'Limit solution space
+                    LimitSolutionSpace(newNest)
+
                     newNests.Add(newNest) 'new nests
                 Next
 
@@ -83,7 +86,7 @@ Namespace Optimization.DerivativeFree
                 Dim randPerm1 = Util.Util.RandomPermutaion(Me.PopulationSize)
                 Dim randPerm2 = Util.Util.RandomPermutaion(Me.PopulationSize)
                 For i = 0 To Me.PopulationSize - 1
-                    Dim newNest = New clsPoint(ObjectiveFunction)
+                    Dim newNest = New Point(ObjectiveFunction)
                     For j = 0 To ObjectiveFunction.NumberOfVariable - 1
                         If Random.NextDouble() > Me.PA Then
                             newNest(j) = _populations(i)(j) + Random.NextDouble() * (_populations(randPerm1(i))(j) - _populations(randPerm2(i))(j))
@@ -91,7 +94,10 @@ Namespace Optimization.DerivativeFree
                             newNest(j) = _populations(i)(j)
                         End If
                     Next
-                    newNest.ReEvaluate()
+
+                    'Limit solution space
+                    LimitSolutionSpace(newNest)
+
                     newNests.Add(newNest)
                 Next
 

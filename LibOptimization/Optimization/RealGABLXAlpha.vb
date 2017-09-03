@@ -52,9 +52,9 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
                 Dim p2 = MyBase._populations(p2Index)
 
                 'cross over
-                Dim children As New List(Of clsPoint)(ChildrenSize)
+                Dim children As New List(Of Point)(ChildrenSize)
                 For numChild As Integer = 0 To ChildrenSize - 1
-                    children.Add(New clsPoint(ObjectiveFunction))
+                    children.Add(New Point(ObjectiveFunction))
                     For i As Integer = 0 To ObjectiveFunction.NumberOfVariable - 1
                         Dim range As Double = Math.Abs(p1(i) - p2(i))
                         Dim min As Double = 0

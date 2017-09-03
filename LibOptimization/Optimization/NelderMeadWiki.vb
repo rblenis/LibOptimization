@@ -115,8 +115,8 @@ Namespace Optimization.DerivativeFree
         ''' <param name="ai_vertexs"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetCentroid(ByVal ai_vertexs As List(Of clsPoint)) As clsPoint
-            Dim ret As New clsPoint(ai_vertexs(0))
+        Private Function GetCentroid(ByVal ai_vertexs As List(Of Point)) As Point
+            Dim ret As New Point(ai_vertexs(0))
 
             Dim numVar As Integer = ai_vertexs(0).Count
             For i As Integer = 0 To numVar - 1
@@ -143,8 +143,8 @@ Namespace Optimization.DerivativeFree
         ''' <returns></returns>
         ''' <remarks>
         ''' </remarks>
-        Private Function ModifySimplex(ByVal ai_tgt As clsPoint, ByVal ai_base As clsPoint, ByVal ai_coeff As Double) As clsPoint
-            Dim ret As New clsPoint(ObjectiveFunction)
+        Private Function ModifySimplex(ByVal ai_tgt As Point, ByVal ai_base As Point, ByVal ai_coeff As Double) As Point
+            Dim ret As New Point(ObjectiveFunction)
             For i As Integer = 0 To ret.Count - 1
                 Dim temp As Double = ai_base(i) + ai_coeff * (ai_base(i) - ai_tgt(i))
                 ret(i) = temp
@@ -179,29 +179,29 @@ Namespace Optimization.DerivativeFree
 #End Region
 
 #Region "Property(Private)"
-        Private Property BestPoint() As clsPoint
+        Private Property BestPoint() As Point
             Get
                 Return _populations(0)
             End Get
-            Set(ByVal value As clsPoint)
+            Set(ByVal value As Point)
                 _populations(0) = value
             End Set
         End Property
 
-        Private Property WorstPoint() As clsPoint
+        Private Property WorstPoint() As Point
             Get
                 Return _populations(_populations.Count - 1)
             End Get
-            Set(ByVal value As clsPoint)
+            Set(ByVal value As Point)
                 _populations(_populations.Count - 1) = value
             End Set
         End Property
 
-        Private Property Worst2ndPoint() As clsPoint
+        Private Property Worst2ndPoint() As Point
             Get
                 Return _populations(_populations.Count - 2)
             End Get
-            Set(ByVal value As clsPoint)
+            Set(ByVal value As Point)
                 _populations(_populations.Count - 2) = value
             End Set
         End Property

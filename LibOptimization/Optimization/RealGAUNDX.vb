@@ -127,7 +127,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
         ''' <param name="isForMinimize"></param>
         ''' <returns>index</returns>
         ''' <remarks></remarks>
-        Private Function SelectRoulette(ByVal ai_chidren As List(Of clsPoint), ByVal isForMinimize As Boolean) As Integer
+        Private Function SelectRoulette(ByVal ai_chidren As List(Of Point), ByVal isForMinimize As Boolean) As Integer
             If isForMinimize = True Then
                 Dim tempSum As Double = 0.0
                 For Each c In ai_chidren
@@ -197,7 +197,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
         ''' <param name="p3"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function UNDX(ByVal p1 As clsPoint, ByVal p2 As clsPoint, ByVal p3 As clsPoint) As List(Of clsPoint)
+        Private Function UNDX(ByVal p1 As Point, ByVal p2 As Point, ByVal p3 As Point) As List(Of Point)
             'calc d
             Dim diffVectorP2P1 = p1 - p2
             Dim length = diffVectorP2P1.NormL2()
@@ -205,7 +205,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
             Dim d2 = 2.0 * areaTriangle / length 'S=1/2 * h * a -> h = 2.0 * S / a
 
             'UNDX
-            Dim children As New List(Of clsPoint)(ChildrenSize)
+            Dim children As New List(Of Point)(ChildrenSize)
             Dim g = (p1 + p2) / 2.0
             Dim sd1 = (ALPHA * length) ^ 2
             Dim sd2 = (BETA * d2 / Math.Sqrt(ObjectiveFunction.NumberOfVariable)) ^ 2
@@ -227,8 +227,8 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
                     child2(i) = g(i) - temp
                 Next
 
-                Dim temp1 = New clsPoint(ObjectiveFunction, child1)
-                Dim temp2 = New clsPoint(ObjectiveFunction, child2)
+                Dim temp1 = New Point(ObjectiveFunction, child1)
+                Dim temp2 = New Point(ObjectiveFunction, child2)
 
                 'limit solution space
                 LimitSolutionSpace(temp1)

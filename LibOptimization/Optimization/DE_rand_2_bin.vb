@@ -66,14 +66,14 @@ Namespace Optimization.DerivativeFree.DifferentialEvolution
                     'pick different parent without i
                     Dim randIndex As List(Of Integer) = Util.Util.RandomPermutaion(_populations.Count, i)
                     Dim xi = _populations(i)
-                    Dim p1 As clsPoint = _populations(randIndex(0))
-                    Dim p2 As clsPoint = _populations(randIndex(1))
-                    Dim p3 As clsPoint = _populations(randIndex(2))
-                    Dim p4 As clsPoint = _populations(randIndex(3))
-                    Dim p5 As clsPoint = _populations(randIndex(4))
+                    Dim p1 As Point = _populations(randIndex(0))
+                    Dim p2 As Point = _populations(randIndex(1))
+                    Dim p3 As Point = _populations(randIndex(2))
+                    Dim p4 As Point = _populations(randIndex(3))
+                    Dim p5 As Point = _populations(randIndex(4))
 
                     'Mutation and Crossover
-                    Dim child = New clsPoint(ObjectiveFunction)
+                    Dim child = New Point(ObjectiveFunction)
                     Dim j = Random.Next() Mod ObjectiveFunction.NumberOfVariable
                     Dim D = ObjectiveFunction.NumberOfVariable - 1
                     'DE/rand/2/bin

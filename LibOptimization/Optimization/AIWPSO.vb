@@ -46,7 +46,7 @@ Namespace Optimization.DerivativeFree.ParticleSwarmOptmization
                 'update velocity for each variable
                 Dim v(ObjectiveFunction.NumberOfVariable - 1) As Double
                 For j As Integer = 0 To ObjectiveFunction.NumberOfVariable - 1
-                    v(j) = Util.Util.GenRandomRange(Random, -Me.InitialValueRange, Me.InitialValueRange)
+                    v(j) = Util.Util.GenRandomRange(Random, -InitialValueRange, InitialValueRange)
                 Next
                 _populations(i).temp1 = DirectCast(v, Object)
                 _populations(i).temp2 = DirectCast(_populations(i).Copy(), Object)
@@ -65,7 +65,7 @@ Namespace Optimization.DerivativeFree.ParticleSwarmOptmization
         ''' <remarks></remarks>
         Public Overrides Function DoIteration(Optional ai_iteration As Integer = 0) As Boolean
             'get global best
-            Dim gBest As clsPoint = Result()
+            Dim gBest As Point = Result()
 
             'Do Iterate
             Dim count = GetRemainingIterationCount(ai_iteration)
@@ -83,14 +83,14 @@ Namespace Optimization.DerivativeFree.ParticleSwarmOptmization
 
                 'PSO process
                 Dim replaceSuccessCount As Integer = 0
-                Dim pBest As clsPoint = Nothing
+                Dim pBest As Point = Nothing
                 For Each particle In _populations
                     'update a velocity 
                     Dim v = DirectCast(particle.temp1, Double())
                     For i As Integer = 0 To ObjectiveFunction.NumberOfVariable - 1
                         Dim r1 = Random.NextDouble()
                         Dim r2 = Random.NextDouble()
-                        pBest = DirectCast(particle.temp2, clsPoint)
+                        pBest = DirectCast(particle.temp2, Point)
                         v(i) = Me.Weight * v(i) + C1 * r1 * (pBest(i) - particle(i)) + C2 * r2 * (gBest(i) - particle(i))
 
                         'update a position using velocity
@@ -102,9 +102,9 @@ Namespace Optimization.DerivativeFree.ParticleSwarmOptmization
                     LimitSolutionSpace(particle)
 
                     'replace personal best
-                    pBest = DirectCast(particle.temp2, clsPoint)
+                    pBest = DirectCast(particle.temp2, Point)
                     If particle.Eval < pBest.Eval Then
-                        particle.temp2 = DirectCast(particle.Copy(), clsPoint)
+                        particle.temp2 = DirectCast(particle.Copy(), Point)
                         replaceSuccessCount += 1 'for AIWPSO
 
                         'replace global best

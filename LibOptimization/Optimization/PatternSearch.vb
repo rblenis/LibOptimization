@@ -52,19 +52,19 @@ Namespace Optimization.DerivativeFree
             'Do Iterate
             ai_iteration = If(ai_iteration = 0, Iteration - 1, ai_iteration - 1)
 
-            Dim current = New clsPoint(_populations(0))
+            Dim current = New Point(_populations(0))
             Try
                 For iterate As Integer = 0 To ai_iteration
                     'MakeExploratoryMoves
-                    Dim exp As clsPoint = Me.MakeExploratoryMoves(current, Me.m_stepLength)
+                    Dim exp As Point = Me.MakeExploratoryMoves(current, Me.m_stepLength)
 
                     If exp.Eval < current.Eval Then
                         'Replace basepoint
-                        Dim previousBasePoint As clsPoint = current
+                        Dim previousBasePoint As Point = current
                         current = exp
 
                         'MakePatternMove and MakeExploratoryMoves
-                        Dim temp As clsPoint = Me.MakePatternMove(previousBasePoint, current)
+                        Dim temp As Point = Me.MakePatternMove(previousBasePoint, current)
                         Dim expUsingPatternMove = Me.MakeExploratoryMoves(temp, Me.m_stepLength)
                         If expUsingPatternMove.Eval < current.Eval Then
                             current = expUsingPatternMove
@@ -103,15 +103,15 @@ Namespace Optimization.DerivativeFree
         ''' <param name="ai_stepLength">Step</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function MakeExploratoryMoves(ByVal ai_base As clsPoint, ByVal ai_stepLength As Double) As clsPoint
-            Dim explorePoint As New List(Of clsPoint)
+        Public Function MakeExploratoryMoves(ByVal ai_base As Point, ByVal ai_stepLength As Double) As Point
+            Dim explorePoint As New List(Of Point)
             For i As Integer = 0 To ObjectiveFunction.NumberOfVariable - 1
-                Dim tempPlus As New clsPoint(ai_base)
+                Dim tempPlus As New Point(ai_base)
                 tempPlus(i) += ai_stepLength
                 tempPlus.ReEvaluate()
                 explorePoint.Add(tempPlus)
 
-                Dim tempMinus As New clsPoint(ai_base)
+                Dim tempMinus As New Point(ai_base)
                 tempMinus(i) -= ai_stepLength
                 tempMinus.ReEvaluate()
                 explorePoint.Add(tempMinus)
@@ -121,7 +121,7 @@ Namespace Optimization.DerivativeFree
             If explorePoint(0).Eval < ai_base.Eval Then
                 Return explorePoint(0)
             Else
-                Return New clsPoint(ai_base)
+                Return New Point(ai_base)
             End If
         End Function
 
@@ -132,8 +132,8 @@ Namespace Optimization.DerivativeFree
         ''' <param name="ai_base"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function MakePatternMove(ByVal ai_previousBasePoint As clsPoint, ByVal ai_base As clsPoint) As clsPoint
-            Dim ret As New clsPoint(ai_base)
+        Private Function MakePatternMove(ByVal ai_previousBasePoint As Point, ByVal ai_base As Point) As Point
+            Dim ret As New Point(ai_base)
             For i As Integer = 0 To ai_base.Count - 1
                 ret(i) = 2.0 * ai_base(i) - ai_previousBasePoint(i)
             Next

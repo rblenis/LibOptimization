@@ -80,10 +80,10 @@ Namespace Optimization.DerivativeFree
         ''' </summary>
         ''' <param name="base"></param>
         ''' <returns></returns>
-        Private Function Neighbor(ByVal base As clsPoint) As clsPoint
-            Dim ret As New List(Of clsPoint)
+        Private Function Neighbor(ByVal base As Point) As Point
+            Dim ret As New List(Of Point)
             For k As Integer = 0 To Me.NeighborSize - 1
-                Dim temp As New clsPoint(base)
+                Dim temp As New Point(base)
                 For i As Integer = 0 To temp.Count - 1
                     Dim tempNeighbor = Math.Abs(2.0 * NeighborRange) * MyBase.Random.NextDouble() - NeighborRange
                     temp(i) += tempNeighbor

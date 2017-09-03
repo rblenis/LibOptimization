@@ -85,14 +85,14 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
                 End If
 
                 'REX with JGG
-                Dim parents As List(Of KeyValuePair(Of Integer, clsPoint)) = Util.Util.SelectParent(MyBase._populations, ParentSize)
+                Dim parents As List(Of KeyValuePair(Of Integer, Point)) = Util.Util.SelectParent(MyBase._populations, ParentSize)
 
                 'Crossover
-                Dim children As List(Of clsPoint) = CrossOverREX(RandomMode, ChildrenSize, parents)
+                Dim children As List(Of Point) = CrossOverREX(RandomMode, ChildrenSize, parents)
 
                 'Replace
                 Dim index As Integer = 0
-                For Each p As KeyValuePair(Of Integer, clsPoint) In parents
+                For Each p As KeyValuePair(Of Integer, Point) In parents
                     MyBase._populations(p.Key) = children(index) 'replace
                     index += 1
                 Next
@@ -119,23 +119,23 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
         ''' REX(N, n+k) -> N is NormalDistribution
         ''' "n+k" is parents size.
         ''' </remarks>
-        Private Function CrossOverREX(ByVal ai_randomMode As RexRandomMode, ByVal ai_childNum As Integer, ByVal ai_parents As List(Of KeyValuePair(Of Integer, clsPoint))) As List(Of clsPoint)
+        Private Function CrossOverREX(ByVal ai_randomMode As RexRandomMode, ByVal ai_childNum As Integer, ByVal ai_parents As List(Of KeyValuePair(Of Integer, Point))) As List(Of Point)
             'Calc Centroid
             Dim xg As New EasyVector(ObjectiveFunction.NumberOfVariable)
-            For Each p As KeyValuePair(Of Integer, clsPoint) In ai_parents
+            For Each p As KeyValuePair(Of Integer, Point) In ai_parents
                 xg += p.Value
             Next
             xg /= ai_parents.Count 'sum(xi)/(n+k)
 
             'cross over
-            Dim retChilds As New List(Of clsPoint)
+            Dim retChilds As New List(Of Point)
             Dim uniformRandParam As Double = Math.Sqrt(3 / ai_parents.Count)
             Dim normalDistParam As Double = 1 / ai_parents.Count '???
             For i As Integer = 0 To ai_childNum
                 'cross over
                 Dim childV As New EasyVector(ObjectiveFunction.NumberOfVariable)
                 'sum( rand * (xi-xg) )
-                For Each xi As KeyValuePair(Of Integer, clsPoint) In ai_parents
+                For Each xi As KeyValuePair(Of Integer, Point) In ai_parents
                     'rand parameter
                     Dim randVal As Double = 0.0
                     If ai_randomMode = RexRandomMode.NORMAL_DIST Then
@@ -150,7 +150,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
                 childV += xg
 
                 'convert clsPoint
-                Dim child As New clsPoint(ObjectiveFunction, childV)
+                Dim child As New Point(ObjectiveFunction, childV)
 
                 'limit solution space
                 LimitSolutionSpace(child)

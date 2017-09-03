@@ -218,7 +218,7 @@ Namespace Util
         ''' </summary>
         ''' <param name="ai_results"></param>
         ''' <remarks></remarks>
-        Public Shared Sub DebugValue(ByVal ai_results As List(Of clsPoint))
+        Public Shared Sub DebugValue(ByVal ai_results As List(Of Point))
             If ai_results Is Nothing OrElse ai_results.Count = 0 Then
                 Return
             End If
@@ -232,7 +232,7 @@ Namespace Util
         ''' For Debug
         ''' </summary>
         ''' <param name="bestResult"></param>
-        Public Shared Sub DebugValue(ByVal bestResult As clsPoint)
+        Public Shared Sub DebugValue(ByVal bestResult As Point)
             Console.WriteLine("Eval          :" & String.Format("{0}", bestResult.Eval))
         End Sub
 
@@ -246,7 +246,7 @@ Namespace Util
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Shared Function IsCriterion(ByVal ai_eps As Double,
-                                           ByVal ai_comparisonA As clsPoint, ByVal ai_comparisonB As clsPoint,
+                                           ByVal ai_comparisonA As Point, ByVal ai_comparisonB As Point,
                                            Optional ByVal ai_tiny As Double = 0.0000000000001) As Boolean
             Return Util.IsCriterion(ai_eps, ai_comparisonA.Eval, ai_comparisonB.Eval, ai_tiny)
         End Function
@@ -299,7 +299,7 @@ Namespace Util
         ''' </summary>
         ''' <param name="arP"></param>
         ''' <remarks></remarks>
-        Public Shared Sub ToCSV(ByVal arP As clsPoint)
+        Public Shared Sub ToCSV(ByVal arP As Point)
             For Each p In arP
                 Console.Write("{0},", p)
             Next
@@ -311,7 +311,7 @@ Namespace Util
         ''' </summary>
         ''' <param name="arP"></param>
         ''' <remarks></remarks>
-        Public Shared Sub ToCSV(ByVal arP As List(Of clsPoint))
+        Public Shared Sub ToCSV(ByVal arP As List(Of Point))
             For Each p In arP
                 Util.ToCSV(p)
             Next
@@ -323,7 +323,7 @@ Namespace Util
         ''' </summary>
         ''' <param name="arP"></param>
         ''' <remarks></remarks>
-        Public Shared Sub ToEvalList(ByVal arP As List(Of clsPoint))
+        Public Shared Sub ToEvalList(ByVal arP As List(Of Point))
             For Each p In arP
                 Console.WriteLine("{0}", p.Eval)
             Next
@@ -335,7 +335,7 @@ Namespace Util
         ''' <param name="arP"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function GetSortedEvalList(ByVal arP As List(Of clsPoint)) As List(Of Eval)
+        Public Shared Function GetSortedEvalList(ByVal arP As List(Of Point)) As List(Of Eval)
             Dim sortedEvalList = New List(Of Eval)
             For i = 0 To arP.Count - 1
                 sortedEvalList.Add(New Eval(i, arP(i).Eval))
@@ -350,7 +350,7 @@ Namespace Util
         ''' <param name="ai_points"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function GetBestPoint(ByVal ai_points As List(Of clsPoint), Optional ByVal isCopy As Boolean = False) As clsPoint
+        Public Shared Function GetBestPoint(ByVal ai_points As List(Of Point), Optional ByVal isCopy As Boolean = False) As Point
             If ai_points Is Nothing Then
                 Return Nothing
             ElseIf ai_points.Count = 0 Then
@@ -378,18 +378,18 @@ Namespace Util
         ''' </summary>
         ''' <param name="ai_points"></param>
         ''' <returns></returns>
-        Public Shared Function GetSortedResultsByEval(ByVal ai_points As List(Of clsPoint)) As List(Of clsPoint)
+        Public Shared Function GetSortedResultsByEval(ByVal ai_points As List(Of Point)) As List(Of Point)
             If ai_points Is Nothing Then
                 Return Nothing
             ElseIf ai_points.Count = 0 Then
                 Return Nothing
             ElseIf ai_points.Count = 1 Then
-                Dim temp As New List(Of clsPoint)
+                Dim temp As New List(Of Point)
                 temp.Add(ai_points(0))
                 Return temp
             End If
 
-            Dim sortedPoints As New List(Of clsPoint)
+            Dim sortedPoints As New List(Of Point)
             Dim sortedEvalList = Util.GetSortedEvalList(ai_points)
             For i As Integer = 0 To sortedEvalList.Count - 1
                 sortedPoints.Add(ai_points(sortedEvalList(i).Index))
@@ -404,15 +404,15 @@ Namespace Util
         ''' <param name="ai_parentSize"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function SelectParent(ByVal ai_population As List(Of clsPoint), ByVal ai_parentSize As Integer) As List(Of KeyValuePair(Of Integer, clsPoint))
-            Dim ret As New List(Of KeyValuePair(Of Integer, clsPoint))
+        Public Shared Function SelectParent(ByVal ai_population As List(Of Point), ByVal ai_parentSize As Integer) As List(Of KeyValuePair(Of Integer, Point))
+            Dim ret As New List(Of KeyValuePair(Of Integer, Point))
 
             'Index
             Dim randIndex As List(Of Integer) = Util.RandomPermutaion(ai_population.Count)
 
             'PickParents
             For i As Integer = 0 To ai_parentSize - 1
-                ret.Add(New KeyValuePair(Of Integer, clsPoint)(randIndex(i), ai_population(randIndex(i))))
+                ret.Add(New KeyValuePair(Of Integer, Point)(randIndex(i), ai_population(randIndex(i))))
             Next
 
             Return ret
@@ -423,7 +423,7 @@ Namespace Util
         ''' </summary>
         ''' <param name="points"></param>
         ''' <returns></returns>
-        Public Shared Function IsExistZeroLength(ByVal points As List(Of clsPoint)) As Boolean
+        Public Shared Function IsExistZeroLength(ByVal points As List(Of Point)) As Boolean
             Dim isCanCrossover As Boolean = True
             Dim vec As EasyVector = Nothing
             For i As Integer = 0 To points.Count - 2
@@ -445,7 +445,7 @@ Namespace Util
         ''' </summary>
         ''' <param name="p"></param>
         ''' <returns></returns>
-        Public Shared Function CheckOverflow(ByVal p As List(Of clsPoint)) As Boolean
+        Public Shared Function CheckOverflow(ByVal p As List(Of Point)) As Boolean
             For Each temp In p
                 For Each v In temp
                     If Double.IsInfinity(v) = True Then

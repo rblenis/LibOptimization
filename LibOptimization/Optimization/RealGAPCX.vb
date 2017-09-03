@@ -53,7 +53,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
 
                 'Parent Centric Recombination with G3(Genelized Generation Gap)
                 Dim selectParentsIndex As List(Of Integer) = Nothing
-                Dim selectParents As List(Of clsPoint) = Nothing
+                Dim selectParents As List(Of Point) = Nothing
                 SelectParentsForG3(3, selectParentsIndex, selectParents) 'include best result
 
                 'check length 0
@@ -62,7 +62,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
                 'Crossover
                 If flag = False Then
                     'PCX Crossover
-                    Dim newPopulation As List(Of clsPoint) = CrossoverPCX(selectParents, ChildrenSize, 3)
+                    Dim newPopulation As List(Of Point) = CrossoverPCX(selectParents, ChildrenSize, 3)
 
                     'Replace(by G3)
                     Dim replaceParent As Integer = 2
@@ -101,13 +101,13 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
         ''' <param name="ao_parentIndex"></param>
         ''' <param name="ao_retParents"></param>
         ''' <remarks></remarks>
-        Private Sub SelectParentsForG3(ByVal ai_pickN As Integer, ByRef ao_parentIndex As List(Of Integer), ByRef ao_retParents As List(Of clsPoint))
+        Private Sub SelectParentsForG3(ByVal ai_pickN As Integer, ByRef ao_parentIndex As List(Of Integer), ByRef ao_retParents As List(Of Point))
             'generate random permutation array without best parent index
             Dim randIndex As List(Of Integer) = Util.Util.RandomPermutaion(MyBase._populations.Count, 0)
 
             'generate random permutation with best parent index
             ao_parentIndex = New List(Of Integer)(ai_pickN)
-            ao_retParents = New List(Of clsPoint)(ai_pickN)
+            ao_retParents = New List(Of Point)(ai_pickN)
             Dim insertBestParentPosition As Integer = Random.Next(0, ai_pickN)
             For i As Integer = 0 To ai_pickN - 1
                 If i = insertBestParentPosition Then
@@ -128,13 +128,13 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
         ''' <param name="ai_pickParentNo"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function CrossoverPCX(ByVal ai_parents As List(Of clsPoint), ByVal ai_childrenSize As Integer, ByVal ai_pickParentNo As Integer) As List(Of clsPoint)
-            Dim retPopulation As New List(Of clsPoint)
+        Private Function CrossoverPCX(ByVal ai_parents As List(Of Point), ByVal ai_childrenSize As Integer, ByVal ai_pickParentNo As Integer) As List(Of Point)
+            Dim retPopulation As New List(Of Point)
 
             'PCX
             For pNo As Integer = 0 To ai_childrenSize - 1
                 Dim randIndex As List(Of Integer) = Util.Util.RandomPermutaion(ai_parents.Count)
-                Dim parentsPoint As New List(Of clsPoint)(ai_pickParentNo)
+                Dim parentsPoint As New List(Of Point)(ai_pickParentNo)
                 For i As Integer = 0 To ai_pickParentNo - 1
                     parentsPoint.Add(ai_parents(randIndex(i)))
                 Next
@@ -191,7 +191,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
                 Next
 
                 'add population
-                Dim tempChild As New clsPoint(ObjectiveFunction, parentsPoint(0) + tempV1)
+                Dim tempChild As New Point(ObjectiveFunction, parentsPoint(0) + tempV1)
 
                 'limit solution space
                 LimitSolutionSpace(tempChild)

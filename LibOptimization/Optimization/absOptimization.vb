@@ -26,14 +26,11 @@ Namespace Optimization
         ''' <summary>Population Size(Default:100)</summary>
         Public Property PopulationSize As Integer = 100
 
-        ''' <summary>Initial position</summary>
-        Public Property InitialPosition As Double() = Nothing
-
         ''' <summary>Range of initial value(This parameters to use when generate a variable)</summary>
         Public Property InitialValueRange As Double = 5
 
         ''' <summary>population</summary>
-        Protected _populations As New List(Of clsPoint)
+        Protected _populations As New List(Of Point)
 
         ''' <summary>criterion index</summary>
         Protected _criterionIndex As Integer = 0
@@ -110,7 +107,7 @@ Namespace Optimization
                         temp(j) = Util.Util.GenRandomRange(Random, -InitialValueRange, InitialValueRange)
                     Next
 
-                    Dim tempPoint = New clsPoint(New clsPoint(ObjectiveFunction, temp))
+                    Dim tempPoint = New Point(New Point(ObjectiveFunction, temp))
                     If UseBounds = True Then
                         LimitSolutionSpace(tempPoint)
                     End If
@@ -150,7 +147,7 @@ Namespace Optimization
 
             Dim flg As Boolean = Init()
             If flg = True Then
-                _populations(0) = New clsPoint(ObjectiveFunction, anyPoint) 'replace
+                _populations(0) = New Point(ObjectiveFunction, anyPoint) 'replace
             End If
             Return flg
         End Function
@@ -193,7 +190,7 @@ Namespace Optimization
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overridable ReadOnly Property Result As clsPoint
+        Public Overridable ReadOnly Property Result As Point
             Get
                 Return Util.Util.GetBestPoint(_populations, True)
             End Get
@@ -203,7 +200,7 @@ Namespace Optimization
         ''' All Sorted Results
         ''' </summary>
         ''' <returns></returns>
-        Public Overridable ReadOnly Property Results As List(Of clsPoint)
+        Public Overridable ReadOnly Property Results As List(Of Point)
             Get
                 Return Util.Util.GetSortedResultsByEval(_populations)
             End Get
@@ -287,7 +284,7 @@ Namespace Optimization
         ''' </summary>
         ''' <param name="temp"></param>
         ''' <remarks></remarks>
-        Protected Sub LimitSolutionSpace(ByRef temp As clsPoint)
+        Protected Sub LimitSolutionSpace(ByRef temp As Point)
             If UseBounds = False Then
                 Return
             End If

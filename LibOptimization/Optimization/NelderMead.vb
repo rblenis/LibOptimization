@@ -77,14 +77,14 @@ Namespace Optimization.DerivativeFree
                 End If
 
                 'Calc centroid
-                Dim centroid As clsPoint = Me.GetCentroid(_populations)
+                Dim centroid As Point = Me.GetCentroid(_populations)
 
                 '1st Refrection
-                Dim refrection As clsPoint = Me.CalcRefrection(WorstPoint, centroid, Me.Refrection)
+                Dim refrection As Point = Me.CalcRefrection(WorstPoint, centroid, Me.Refrection)
 
                 'Simplex Operators - Refrection, Expantion, Constratction, (Shrink)
                 If refrection.Eval < BestPoint.Eval Then
-                    Dim expantion As clsPoint = Me.CalcExpantion(refrection, centroid, Me.Expantion) 'Fig. 1 Flow diagram is constratction??
+                    Dim expantion As Point = Me.CalcExpantion(refrection, centroid, Me.Expantion) 'Fig. 1 Flow diagram is constratction??
                     If expantion.Eval < BestPoint.Eval Then
                         WorstPoint = expantion
                     Else
@@ -98,7 +98,7 @@ Namespace Optimization.DerivativeFree
                             WorstPoint = refrection
                         End If
                         'Contraction
-                        Dim contraction As clsPoint = Me.CalcContraction(WorstPoint, centroid, Me.Contraction)
+                        Dim contraction As Point = Me.CalcContraction(WorstPoint, centroid, Me.Contraction)
                         If contraction.Eval > WorstPoint.Eval Then
                             WorstPoint = contraction
                         Else
@@ -126,8 +126,8 @@ Namespace Optimization.DerivativeFree
         ''' <param name="ai_vertexs"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetCentroid(ByVal ai_vertexs As List(Of clsPoint)) As clsPoint
-            Dim ret As New clsPoint(ai_vertexs(0))
+        Private Function GetCentroid(ByVal ai_vertexs As List(Of Point)) As Point
+            Dim ret As New Point(ai_vertexs(0))
 
             Dim numVar As Integer = ai_vertexs(0).Count
             For i As Integer = 0 To numVar - 1
@@ -155,9 +155,9 @@ Namespace Optimization.DerivativeFree
         ''' <remarks>
         ''' xr = (1 + alpha)¯x - p
         ''' </remarks>
-        Private Function CalcRefrection(ByVal ai_tgt As clsPoint, ByVal ai_base As clsPoint,
-                                        Optional ByVal ai_coeff As Double = 1.0) As clsPoint
-            Dim ret As New clsPoint(ObjectiveFunction)
+        Private Function CalcRefrection(ByVal ai_tgt As Point, ByVal ai_base As Point,
+                                        Optional ByVal ai_coeff As Double = 1.0) As Point
+            Dim ret As New Point(ObjectiveFunction)
 
             Dim numVar As Integer = ai_base.Count
             For i As Integer = 0 To numVar - 1
@@ -182,9 +182,9 @@ Namespace Optimization.DerivativeFree
         ''' <remarks>
         ''' xe = gamma * p + (1 - gamma)¯x
         ''' </remarks>
-        Private Function CalcExpantion(ByVal ai_tgt As clsPoint, ByVal ai_base As clsPoint,
-                                       Optional ByVal ai_coeff As Double = 2.0) As clsPoint
-            Dim ret As New clsPoint(ObjectiveFunction)
+        Private Function CalcExpantion(ByVal ai_tgt As Point, ByVal ai_base As Point,
+                                       Optional ByVal ai_coeff As Double = 2.0) As Point
+            Dim ret As New Point(ObjectiveFunction)
 
             Dim numVar As Integer = ai_base.Count
             For i As Integer = 0 To numVar - 1
@@ -209,9 +209,9 @@ Namespace Optimization.DerivativeFree
         ''' <remarks>
         ''' xc = beta * p + (1 - beta)¯x
         ''' </remarks>
-        Private Function CalcContraction(ByVal ai_tgt As clsPoint, ByVal ai_base As clsPoint,
-                                         Optional ByVal ai_coeff As Double = 0.5) As clsPoint
-            Dim ret As New clsPoint(ObjectiveFunction)
+        Private Function CalcContraction(ByVal ai_tgt As Point, ByVal ai_base As Point,
+                                         Optional ByVal ai_coeff As Double = 0.5) As Point
+            Dim ret As New Point(ObjectiveFunction)
 
             Dim numVar As Integer = ai_base.Count
             For i As Integer = 0 To numVar - 1
@@ -235,7 +235,7 @@ Namespace Optimization.DerivativeFree
         Private Sub CalcShrink(Optional ByVal ai_coeff As Double = 2.0)
             Dim numVar As Integer = _populations(0).Count
 
-            Dim tempBestPoint As New clsPoint(BestPoint)
+            Dim tempBestPoint As New Point(BestPoint)
             For i As Integer = 0 To _populations.Count - 1
                 For j As Integer = 0 To numVar - 1
                     Dim temp As Double = (tempBestPoint(j) + _populations(i)(j)) / ai_coeff
@@ -250,29 +250,29 @@ Namespace Optimization.DerivativeFree
 #End Region
 
 #Region "Property(Private)"
-        Private Property BestPoint() As clsPoint
+        Private Property BestPoint() As Point
             Get
                 Return _populations(0)
             End Get
-            Set(ByVal value As clsPoint)
+            Set(ByVal value As Point)
                 _populations(0) = value
             End Set
         End Property
 
-        Private Property WorstPoint() As clsPoint
+        Private Property WorstPoint() As Point
             Get
                 Return _populations(_populations.Count - 1)
             End Get
-            Set(ByVal value As clsPoint)
+            Set(ByVal value As Point)
                 _populations(_populations.Count - 1) = value
             End Set
         End Property
 
-        Private Property Worst2ndPoint() As clsPoint
+        Private Property Worst2ndPoint() As Point
             Get
                 Return _populations(_populations.Count - 2)
             End Get
-            Set(ByVal value As clsPoint)
+            Set(ByVal value As Point)
                 _populations(_populations.Count - 2) = value
             End Set
         End Property

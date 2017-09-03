@@ -6,7 +6,7 @@ Namespace Optimization
     ''' Point Class
     ''' </summary>
     ''' <remarks></remarks>
-    Public Class clsPoint
+    Public Class Point
         Inherits EasyVector
         Implements IComparable
 
@@ -35,7 +35,7 @@ Namespace Optimization
         ''' </summary>
         ''' <param name="ai_vertex"></param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal ai_vertex As clsPoint)
+        Public Sub New(ByVal ai_vertex As Point)
             _func = ai_vertex.GetFunc()
             AddRange(ai_vertex) 'ok
             _evaluateValue = ai_vertex.Eval
@@ -109,7 +109,7 @@ Namespace Optimization
 
             'Compare
             Dim mineValue As Double = _evaluateValue
-            Dim compareValue As Double = DirectCast(ai_obj, clsPoint).Eval
+            Dim compareValue As Double = DirectCast(ai_obj, Point).Eval
             If mineValue = compareValue Then
                 Return 0
             ElseIf mineValue < compareValue Then
@@ -165,8 +165,8 @@ Namespace Optimization
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function Copy() As clsPoint
-            Return New clsPoint(Me)
+        Public Function Copy() As Point
+            Return New Point(Me)
         End Function
 
         ''' <summary>
@@ -174,7 +174,7 @@ Namespace Optimization
         ''' </summary>
         ''' <param name="ai_point"></param>
         ''' <remarks></remarks>
-        Public Sub Copy(ByVal ai_point As clsPoint)
+        Public Sub Copy(ByVal ai_point As Point)
             For i As Integer = 0 To ai_point.Count - 1
                 Me(i) = ai_point(i)
             Next

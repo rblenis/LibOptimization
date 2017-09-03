@@ -61,7 +61,7 @@ Namespace Optimization.DerivativeFree
                     _IterationCount += 1
 
                     'neighbor function
-                    Dim temp As clsPoint = Neighbor(_populations(0))
+                    Dim temp As Point = Neighbor(_populations(0))
 
                     'limit solution space
                     LimitSolutionSpace(temp)
@@ -111,8 +111,8 @@ Namespace Optimization.DerivativeFree
         ''' </summary>
         ''' <param name="base"></param>
         ''' <returns></returns>
-        Private Function Neighbor(ByVal base As clsPoint) As clsPoint
-            Dim temp As New clsPoint(base)
+        Private Function Neighbor(ByVal base As Point) As Point
+            Dim temp As New Point(base)
             For i As Integer = 0 To temp.Count - 1
                 Dim tempNeighbor = Math.Abs(2.0 * NeighborRange) * MyBase.Random.NextDouble() - NeighborRange
                 temp(i) += tempNeighbor

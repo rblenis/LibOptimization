@@ -61,7 +61,7 @@ Namespace Optimization.DerivativeFree.ParticleSwarmOptmization
         ''' <remarks></remarks>
         Public Overrides Function DoIteration(Optional ai_iteration As Integer = 0) As Boolean
             'get global best
-            Dim gBest As clsPoint = Result()
+            Dim gBest As Point = Result()
 
             'Do Iterate
             Dim count = GetRemainingIterationCount(ai_iteration)
@@ -78,12 +78,12 @@ Namespace Optimization.DerivativeFree.ParticleSwarmOptmization
                 End If
 
                 'PSO process
-                Dim pBest As clsPoint = Nothing
+                Dim pBest As Point = Nothing
                 For Each particle In _populations
                     'replace personal best
-                    pBest = DirectCast(particle.temp2, clsPoint)
+                    pBest = DirectCast(particle.temp2, Point)
                     If particle.Eval < pBest.Eval Then
-                        particle.temp2 = DirectCast(particle.Copy(), clsPoint)
+                        particle.temp2 = DirectCast(particle.Copy(), Point)
 
                         'replace global best
                         If pBest.Eval < gBest.Eval Then
@@ -96,7 +96,7 @@ Namespace Optimization.DerivativeFree.ParticleSwarmOptmization
                     For i As Integer = 0 To ObjectiveFunction.NumberOfVariable - 1
                         Dim r1 = Random.NextDouble()
                         Dim r2 = Random.NextDouble()
-                        pBest = DirectCast(particle.temp2, clsPoint)
+                        pBest = DirectCast(particle.temp2, Point)
                         v(i) = Me.Weight * v(i) + C1 * r1 * (pBest(i) - particle(i)) + C2 * r2 * (gBest(i) - particle(i))
 
                         'update a position using velocity

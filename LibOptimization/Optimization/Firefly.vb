@@ -83,7 +83,9 @@ Namespace Optimization.DerivativeFree
                                 newPos += Me.Alpha * (Random.NextDouble() - 0.5) 'random search
                                 _populations(i)(k) = newPos
                             Next k
-                            _populations(i).ReEvaluate()
+                            'limit solution space
+                            LimitSolutionSpace(_populations(i))
+
                             'update intensity
                             _populations(i).temp1 = DirectCast(1.0 / (_populations(i).Eval + 0.0001), Object)
                         End If

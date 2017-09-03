@@ -33,9 +33,8 @@ Module Module1
             Dim optimization As New Optimization.DerivativeFree.DifferentialEvolution.DE_best_1_bin()
             optimization.ObjectiveFunction = New BenchSphere(2)
 
-            'Initial value is generated in the range of 2.5 and 3.5.
-            optimization.InitialPosition = {3, 3}
-            optimization.InitialValueRange = 0.5
+            'Initial value is generated in the range of -3 to 3.
+            optimization.InitialValueRange = 3
 
             'init
             optimization.Init()

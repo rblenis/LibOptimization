@@ -106,18 +106,18 @@ Namespace Optimization.DerivativeFree.DifferentialEvolution
                     'Dim p2 As clsPoint = _populations(randIndex(1))
                     Util.Util.ShuffleIndex(idxArray)
                     Dim pickIndex = Util.Util.PickIndex(idxArray, 3, i)
-                    Dim xi As clsPoint = _populations(pickIndex(0))
-                    Dim p1 As clsPoint = _populations(pickIndex(1))
-                    Dim p2 As clsPoint = _populations(pickIndex(2))
+                    Dim xi As Point = _populations(pickIndex(0))
+                    Dim p1 As Point = _populations(pickIndex(1))
+                    Dim p2 As Point = _populations(pickIndex(2))
 
                     'Mutation and Crossover
-                    Dim child = New clsPoint(ObjectiveFunction)
+                    Dim child = New Point(ObjectiveFunction)
                     Dim j = Random.Next() Mod ObjectiveFunction.NumberOfVariable
                     Dim D = ObjectiveFunction.NumberOfVariable - 1
 
                     'DE/current-to-pbest/1 for JADE Strategy. current 100p% p<-(0,1)
                     Dim p = CInt(Me.PopulationSize * Random.NextDouble()) 'range is 0 to PopulationSize
-                    Dim pbest As clsPoint = Nothing
+                    Dim pbest As Point = Nothing
                     If p = 0 Then
                         pbest = _populations(0) 'best
                     ElseIf p >= Me.PopulationSize Then

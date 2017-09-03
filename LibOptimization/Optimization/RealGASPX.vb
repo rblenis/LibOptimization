@@ -63,14 +63,14 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
 
                 'SPX with JGG
                 'Parent is n+1
-                Dim parents As List(Of KeyValuePair(Of Integer, clsPoint)) = Util.Util.SelectParent(MyBase._populations, ObjectiveFunction.NumberOfVariable + 1)
+                Dim parents As List(Of KeyValuePair(Of Integer, Point)) = Util.Util.SelectParent(MyBase._populations, ObjectiveFunction.NumberOfVariable + 1)
 
                 'Crossover
-                Dim children As List(Of clsPoint) = CrossOverSPX(ChildrenSize, parents)
+                Dim children As List(Of Point) = CrossOverSPX(ChildrenSize, parents)
 
                 'Replace
                 Dim index As Integer = 0
-                For Each p As KeyValuePair(Of Integer, clsPoint) In parents
+                For Each p As KeyValuePair(Of Integer, Point) In parents
                     MyBase._populations(p.Key) = children(index)
                     index += 1
                 Next
@@ -93,22 +93,22 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function CrossOverSPX(ByVal ai_childSize As Integer,
-                                      ByVal ai_parents As List(Of KeyValuePair(Of Integer, clsPoint))) As List(Of clsPoint)
+                                      ByVal ai_parents As List(Of KeyValuePair(Of Integer, Point))) As List(Of Point)
             'Calc Centroid
             Dim xg As New EasyVector(ObjectiveFunction.NumberOfVariable)
-            For Each p As KeyValuePair(Of Integer, clsPoint) In ai_parents
+            For Each p As KeyValuePair(Of Integer, Point) In ai_parents
                 xg += p.Value
             Next
             xg /= ai_parents.Count 'sum(xi)/(n+k)
 
             'SPX
-            Dim retChilds As New List(Of clsPoint)
+            Dim retChilds As New List(Of Point)
             Dim alpha As Double = Math.Sqrt(ObjectiveFunction.NumberOfVariable + 2) 'expantion rate
             For i As Integer = 0 To ai_childSize - 1
                 Dim cVector As New List(Of EasyVector)
                 Dim pVector As New List(Of EasyVector)
                 Dim k As Integer = 0
-                For Each xi As KeyValuePair(Of Integer, clsPoint) In ai_parents
+                For Each xi As KeyValuePair(Of Integer, Point) In ai_parents
                     pVector.Add(xg + alpha * (xi.Value - xg))
 
                     If k = 0 Then
@@ -120,7 +120,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
                     End If
                     k += 1
                 Next
-                Dim tempChild = New clsPoint(ObjectiveFunction, pVector(pVector.Count - 1) + cVector(cVector.Count - 1))
+                Dim tempChild = New Point(ObjectiveFunction, pVector(pVector.Count - 1) + cVector(cVector.Count - 1))
 
                 'limit solution space
                 LimitSolutionSpace(tempChild)
