@@ -38,6 +38,9 @@ Namespace Optimization
         ''' <summary>Use criterion flag</summary>
         Public Property UseCriterion As Boolean = True
 
+        ''' <summary>criterion ratio(Converge when the population has the same solution)</summary>
+        Public Property CriterionRatio As Double = 0.7
+
         ''' <summary>Use adaptive population flag(population = 50*ln(variable)+15))</summary>
         Public Property UseAdaptivePopulationSize As Boolean = False
 
@@ -117,7 +120,7 @@ Namespace Optimization
 
                 'calc criterion index
                 If UseCriterion = True Then
-                    _criterionIndex = CInt(PopulationSize * 0.7)
+                    _criterionIndex = CInt(PopulationSize * CriterionRatio)
                 End If
 
                 'Sort Evaluate
