@@ -1,4 +1,4 @@
-﻿Namespace Util
+﻿Namespace Util.Random
     ''' <summary>
     ''' Xorshift random algorithm
     ''' Inherits System.Random

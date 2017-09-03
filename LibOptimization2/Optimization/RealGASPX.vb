@@ -1,5 +1,5 @@
-﻿Imports LibOptimization2.Util
-Imports LibOptimization2.MathUtil
+﻿Imports LibOptimization.Util
+Imports LibOptimization.MathUtil
 
 Namespace Optimization.DerivativeFree.ReadlCodedGA
     ''' <summary>
@@ -95,7 +95,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
         Private Function CrossOverSPX(ByVal ai_childSize As Integer,
                                       ByVal ai_parents As List(Of KeyValuePair(Of Integer, clsPoint))) As List(Of clsPoint)
             'Calc Centroid
-            Dim xg As New clsEasyVector(ObjectiveFunction.NumberOfVariable)
+            Dim xg As New EasyVector(ObjectiveFunction.NumberOfVariable)
             For Each p As KeyValuePair(Of Integer, clsPoint) In ai_parents
                 xg += p.Value
             Next
@@ -105,14 +105,14 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
             Dim retChilds As New List(Of clsPoint)
             Dim alpha As Double = Math.Sqrt(ObjectiveFunction.NumberOfVariable + 2) 'expantion rate
             For i As Integer = 0 To ai_childSize - 1
-                Dim cVector As New List(Of clsEasyVector)
-                Dim pVector As New List(Of clsEasyVector)
+                Dim cVector As New List(Of EasyVector)
+                Dim pVector As New List(Of EasyVector)
                 Dim k As Integer = 0
                 For Each xi As KeyValuePair(Of Integer, clsPoint) In ai_parents
                     pVector.Add(xg + alpha * (xi.Value - xg))
 
                     If k = 0 Then
-                        cVector.Add(New clsEasyVector(ObjectiveFunction.NumberOfVariable)) 'all zero
+                        cVector.Add(New EasyVector(ObjectiveFunction.NumberOfVariable)) 'all zero
                     Else
                         Dim rk As Double = MyBase.Random.NextDouble() ^ (1 / k)
                         Dim pos = rk * (pVector(k - 1) - pVector(k) + cVector(k - 1))

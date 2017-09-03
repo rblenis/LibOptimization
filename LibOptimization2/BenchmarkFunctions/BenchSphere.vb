@@ -1,52 +1,48 @@
-﻿Imports LibOptimization2.Optimization
+﻿Imports LibOptimization.Optimization
 
 Namespace BenchmarkFunction
     ''' <summary>
-    ''' Benchmark function
-    ''' De Jong’s function 1 (Sphere Function)
+    ''' Benchmark function - Sphere Function
     ''' </summary>
     ''' <remarks>
-    ''' Minimum:
-    '''  F(0, 0, 0) = 0
-    ''' Range
-    '''  -5.12 ~ 5.12 
-    ''' Refference:
-    '''  De Jong, K. A., "Analysis of the Behavior of a Class of Genetic Adaptive Systems", PhD dissertation, The University of Michigan, Computer and Communication Sciences Department (1975)
+    ''' Minimum and value:
+    '''  F(0,...,0) = 0
+    ''' Range:
+    '''  -5.12 to 5.12
     ''' </remarks>
-    Public Class clsBenchDeJongFunction1 : Inherits absObjectiveFunction
+    Public Class BenchSphere : Inherits absObjectiveFunction
+        Private dimension As Integer = 0
+
         ''' <summary>
         ''' Default constructor
         ''' </summary>
+        ''' <param name="ai_dim">Set dimension</param>
         ''' <remarks></remarks>
-        Public Sub New()
+        Public Sub New(ByVal ai_dim As Integer)
+            dimension = ai_dim
         End Sub
 
         ''' <summary>
         ''' Target Function
         ''' </summary>
-        ''' <param name="x"></param>
+        ''' <param name="ai_var"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overrides Function F(ByVal x As List(Of Double)) As Double
-            If x Is Nothing Then
+        Public Overrides Function F(ByVal ai_var As List(Of Double)) As Double
+            If ai_var Is Nothing Then
                 Return 0
             End If
 
             Dim ret As Double = 0
-            For i As Integer = 0 To 2
-                If (x(i) >= -5.12) AndAlso (x(i) <= 5.12) Then
-                    ret += x(i) ^ 2
-                Else
-                    'out of range
-                    ret += Math.Abs(x(i)) * 2 'penarty
-                End If
+            For i As Integer = 0 To dimension - 1
+                ret += ai_var(i) ^ 2
             Next
             Return ret
         End Function
 
         Public Overrides Function Gradient(ByVal ai_var As List(Of Double)) As List(Of Double)
             Dim ret As New List(Of Double)
-            For i As Integer = 0 To 2
+            For i As Integer = 0 To dimension - 1
                 ret.Add(2.0 * ai_var(i))
             Next
             Return ret
@@ -54,9 +50,9 @@ Namespace BenchmarkFunction
 
         Public Overrides Function Hessian(ByVal ai_var As List(Of Double)) As List(Of List(Of Double))
             Dim ret As New List(Of List(Of Double))
-            For i As Integer = 0 To 2
+            For i As Integer = 0 To dimension - 1
                 ret.Add(New List(Of Double))
-                For j As Integer = 0 To 2
+                For j As Integer = 0 To dimension - 1
                     If i = j Then
                         ret(i).Add(2.0)
                     Else
@@ -68,7 +64,7 @@ Namespace BenchmarkFunction
         End Function
 
         Public Overrides Function NumberOfVariable() As Integer
-            Return 3
+            Return dimension
         End Function
     End Class
 

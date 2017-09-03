@@ -1,5 +1,5 @@
-﻿Imports LibOptimization2.Util
-Imports LibOptimization2.MathUtil
+﻿Imports LibOptimization.Util
+Imports LibOptimization.MathUtil
 
 Namespace Optimization.DerivativeFree.ReadlCodedGA
     ''' <summary>
@@ -140,22 +140,22 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
                 Next
 
                 'calc g
-                Dim g As New clsEasyVector(ObjectiveFunction.NumberOfVariable)
+                Dim g As New EasyVector(ObjectiveFunction.NumberOfVariable)
                 For i As Integer = 0 To ai_pickParentNo - 1
                     g += parentsPoint(i)
                 Next
                 g /= ai_pickParentNo
 
                 'calc D
-                Dim d As clsEasyVector = g - parentsPoint(0)
+                Dim d As EasyVector = g - parentsPoint(0)
                 Dim dist As Double = d.NormL2()
                 'If dist < EPS Then
                 '    Console.WriteLine("very near! g {0}", dist)
                 'End If
 
-                Dim diff As New List(Of clsEasyVector)
+                Dim diff As New List(Of EasyVector)
                 For i As Integer = 1 To ai_pickParentNo - 1
-                    diff.Add(New clsEasyVector(ObjectiveFunction.NumberOfVariable))
+                    diff.Add(New EasyVector(ObjectiveFunction.NumberOfVariable))
                     diff(i - 1) = parentsPoint(i) - parentsPoint(0)
                     'If diff(i - 1).NormL2 < EPS Then
                     '    Console.WriteLine("very near! {0}", diff(i - 1).NormL2)
@@ -163,7 +163,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
                 Next
 
                 'orthogonal directions -> Vector D
-                Dim DD As New clsEasyVector(ObjectiveFunction.NumberOfVariable)
+                Dim DD As New EasyVector(ObjectiveFunction.NumberOfVariable)
                 For i As Integer = 0 To ai_pickParentNo - 2
                     Dim temp1 As Double = diff(i).InnerProduct(d)
                     Dim temp2 As Double = temp1 / (diff(i).NormL2 * dist)
@@ -179,7 +179,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
 
                 'Average vector D
                 Dim meanD As Double = DD.Average()
-                Dim tempV1 As New clsEasyVector(ObjectiveFunction.NumberOfVariable)
+                Dim tempV1 As New EasyVector(ObjectiveFunction.NumberOfVariable)
                 For i As Integer = 0 To ObjectiveFunction.NumberOfVariable - 1
                     tempV1(i) = Util.Util.NormRand(0.0, meanD * Eta) 'original
                 Next

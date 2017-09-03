@@ -5,7 +5,7 @@
     ''' <remarks>
     ''' Inherits List(of double)
     ''' </remarks>
-    Public Class clsEasyVector : Inherits List(Of Double)
+    Public Class EasyVector : Inherits List(Of Double)
         Private _direcition As VectorDirection = VectorDirection.ROW
 
         ''' <summary>
@@ -32,7 +32,7 @@
         ''' </summary>
         ''' <param name="ai_base"></param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal ai_base As clsEasyVector)
+        Public Sub New(ByVal ai_base As EasyVector)
             AddRange(ai_base)
             _direcition = ai_base.Direction
         End Sub
@@ -77,8 +77,8 @@
         ''' <remarks>
         ''' double() -> clsShoddyVector
         ''' </remarks>
-        Public Shared Widening Operator CType(ByVal ai_ar() As Double) As clsEasyVector
-            Return New clsEasyVector(ai_ar)
+        Public Shared Widening Operator CType(ByVal ai_ar() As Double) As EasyVector
+            Return New EasyVector(ai_ar)
         End Operator
 
         ''' <summary>
@@ -88,12 +88,12 @@
         ''' <param name="ai_dest"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Operator +(ByVal ai_source As clsEasyVector, ByVal ai_dest As clsEasyVector) As clsEasyVector
+        Public Shared Operator +(ByVal ai_source As EasyVector, ByVal ai_dest As EasyVector) As EasyVector
             If IsSameDimension(ai_source, ai_dest) = False Then
-                Throw New clsExceptionForMath(clsExceptionForMath.Series.DifferElementNumber)
+                Throw New ExceptionForMath(ExceptionForMath.Series.DifferElementNumber)
             End If
 
-            Dim ret As New clsEasyVector(ai_source)
+            Dim ret As New EasyVector(ai_source)
             For i As Integer = 0 To ret.Count - 1
                 ret(i) = ai_source(i) + ai_dest(i)
             Next
@@ -107,12 +107,12 @@
         ''' <param name="ai_dest"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Operator -(ByVal ai_source As clsEasyVector, ByVal ai_dest As clsEasyVector) As clsEasyVector
+        Public Shared Operator -(ByVal ai_source As EasyVector, ByVal ai_dest As EasyVector) As EasyVector
             If IsSameDimension(ai_source, ai_dest) = False Then
-                Throw New clsExceptionForMath(clsExceptionForMath.Series.DifferElementNumber)
+                Throw New ExceptionForMath(ExceptionForMath.Series.DifferElementNumber)
             End If
 
-            Dim ret As New clsEasyVector(ai_source)
+            Dim ret As New EasyVector(ai_source)
             For i As Integer = 0 To ret.Count - 1
                 ret(i) = ai_source(i) - ai_dest(i)
             Next
@@ -127,9 +127,9 @@
         ''' <remarks>
         ''' a dot b = |a||b|cos(theta)
         ''' </remarks>
-        Public Function InnerProduct(ByVal ai_source As clsEasyVector) As Double
+        Public Function InnerProduct(ByVal ai_source As EasyVector) As Double
             If IsSameDimension(ai_source, Me) = False Then
-                Throw New clsExceptionForMath(clsExceptionForMath.Series.DifferElementNumber)
+                Throw New ExceptionForMath(ExceptionForMath.Series.DifferElementNumber)
             End If
             Dim ret As Double = 0
             For i As Integer = 0 To ai_source.Count - 1
@@ -145,8 +145,8 @@
         ''' <param name="ai_dest"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Operator *(ByVal ai_source As Double, ByVal ai_dest As clsEasyVector) As clsEasyVector
-            Dim ret As New clsEasyVector(ai_dest)
+        Public Shared Operator *(ByVal ai_source As Double, ByVal ai_dest As EasyVector) As EasyVector
+            Dim ret As New EasyVector(ai_dest)
             For i As Integer = 0 To ret.Count - 1
                 ret(i) = ai_source * ai_dest(i)
             Next
@@ -160,8 +160,8 @@
         ''' <param name="ai_dest"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Operator *(ByVal ai_source As clsEasyVector, ByVal ai_dest As Double) As clsEasyVector
-            Dim ret As New clsEasyVector(ai_source)
+        Public Shared Operator *(ByVal ai_source As EasyVector, ByVal ai_dest As Double) As EasyVector
+            Dim ret As New EasyVector(ai_source)
             For i As Integer = 0 To ret.Count - 1
                 ret(i) = ai_source(i) * ai_dest
             Next
@@ -175,8 +175,8 @@
         ''' <param name="ai_dest"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Operator /(ByVal ai_source As Double, ByVal ai_dest As clsEasyVector) As clsEasyVector
-            Dim ret As New clsEasyVector(ai_dest)
+        Public Shared Operator /(ByVal ai_source As Double, ByVal ai_dest As EasyVector) As EasyVector
+            Dim ret As New EasyVector(ai_dest)
             For i As Integer = 0 To ret.Count - 1
                 ret(i) = ai_source / ai_dest(i)
             Next
@@ -190,8 +190,8 @@
         ''' <param name="ai_dest"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Operator /(ByVal ai_source As clsEasyVector, ByVal ai_dest As Double) As clsEasyVector
-            Dim ret As New clsEasyVector(ai_source)
+        Public Shared Operator /(ByVal ai_source As EasyVector, ByVal ai_dest As Double) As EasyVector
+            Dim ret As New EasyVector(ai_source)
             For i As Integer = 0 To ret.Count - 1
                 ret(i) = ai_source(i) / ai_dest
             Next
@@ -205,8 +205,8 @@
         ''' <param name="ai_dest"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Operator ^(ByVal ai_source As clsEasyVector, ByVal ai_dest As Double) As clsEasyVector
-            Dim ret As New clsEasyVector(ai_source)
+        Public Shared Operator ^(ByVal ai_source As EasyVector, ByVal ai_dest As Double) As EasyVector
+            Dim ret As New EasyVector(ai_source)
             For i As Integer = 0 To ret.Count - 1
                 ret(i) = Math.Pow(ai_source(i), ai_dest)
             Next
@@ -244,11 +244,11 @@
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function ToMatrix() As clsEasyMatrix
+        Public Function ToMatrix() As EasyMatrix
             If _direcition = VectorDirection.ROW Then
-                Return New clsEasyMatrix(Me, VectorDirection.ROW)
+                Return New EasyMatrix(Me, VectorDirection.ROW)
             Else
-                Return New clsEasyMatrix(Me, VectorDirection.COL)
+                Return New EasyMatrix(Me, VectorDirection.COL)
             End If
         End Function
 
@@ -309,8 +309,8 @@
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function T() As clsEasyVector
-            Dim temp As New clsEasyVector(Me)
+        Public Function T() As EasyVector
+            Dim temp As New EasyVector(Me)
             If temp.Direction = VectorDirection.ROW Then
                 temp.Direction = VectorDirection.COL
             Else
@@ -404,7 +404,7 @@
         ''' <param name="ai_vec2"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Shared Function IsSameDimension(ByVal ai_vec1 As clsEasyVector, ByVal ai_vec2 As clsEasyVector) As Boolean
+        Private Shared Function IsSameDimension(ByVal ai_vec1 As EasyVector, ByVal ai_vec2 As EasyVector) As Boolean
             If ai_vec1 Is Nothing Then
                 Return False
             End If

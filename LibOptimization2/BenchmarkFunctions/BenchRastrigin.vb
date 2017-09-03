@@ -1,19 +1,19 @@
-﻿Imports LibOptimization2.Optimization
+﻿Imports LibOptimization.Optimization
 
 Namespace BenchmarkFunction
     ''' <summary>
     ''' Benchmark function
-    ''' Schwefel function
+    ''' Rastrigin function
     ''' </summary>
     ''' <remarks>
     ''' Minimum:
-    '''  F(420.96875,...,420.96875) = 0
+    '''  F(0,...,0) = 0
     ''' Range:
-    '''  -512 to 512
+    '''  -5.12 to 5.12
     ''' Referrence:
     ''' http://mikilab.doshisha.ac.jp/dia/research/pdga/archive/doc/ga2k_performance.pdf
     ''' </remarks>
-    Public Class clsBenchSchwefel : Inherits absObjectiveFunction
+    Public Class BenchRastrigin : Inherits absObjectiveFunction
         Private dimension As Integer = 0
 
         ''' <summary>
@@ -27,30 +27,30 @@ Namespace BenchmarkFunction
         ''' <summary>
         ''' Target Function
         ''' </summary>
-        ''' <param name="x"></param>
+        ''' <param name="ai_var"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overrides Function F(ByVal x As List(Of Double)) As Double
-            If x Is Nothing Then
+        Public Overrides Function F(ByVal ai_var As List(Of Double)) As Double
+            If ai_var Is Nothing Then
                 Return 0
             End If
 
-            If dimension <> x.Count Then
+            If dimension <> ai_var.Count Then
                 Return 0
             End If
 
+            Dim A As Double = 10.0
             Dim ret As Double = 0.0
             For i As Integer = 0 To dimension - 1
-                If (x(i) >= -512) AndAlso (x(i) <= 512) Then
-                    ret += -x(i) * Math.Sin(Math.Sqrt(Math.Abs(x(i))))
-                Else
-                    'out of range
-                    ret += Math.Abs(x(i))
-                End If
+                ret += ai_var(i) ^ 2 - A * Math.Cos(2.0 * Math.PI * ai_var(i))
             Next
-            ret = ret + 418.982887272434 * dimension
+            ret += A * dimension
 
             Return ret
+        End Function
+
+        Public Overloads Function F(ByVal ai_var() As Double) As Double
+            Return F(New List(Of Double)(ai_var))
         End Function
 
         Public Overrides Function Gradient(ByVal ai_var As List(Of Double)) As List(Of Double)
@@ -65,4 +65,5 @@ Namespace BenchmarkFunction
             Return dimension
         End Function
     End Class
+
 End Namespace

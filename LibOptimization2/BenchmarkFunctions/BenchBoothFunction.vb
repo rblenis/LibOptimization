@@ -1,29 +1,24 @@
-﻿Imports LibOptimization2.Optimization
+﻿Imports LibOptimization.Optimization
 
 Namespace BenchmarkFunction
     ''' <summary>
     ''' Benchmark function
-    ''' De Jong’s function 4 (qudratic with gauss Function)
+    ''' Booth Function
     ''' </summary>
     ''' <remarks>
     ''' Minimum:
-    '''  x = {0, ..., 0}
-    ''' Range
-    '''  -1.28 ~ 1.28
-    ''' Refference:
-    '''  De Jong, K. A., "Analysis of the Behavior of a Class of Genetic Adaptive Systems", PhD dissertation, The University of Michigan, Computer and Communication Sciences Department (1975)
+    '''  F(1,3) = 0
+    ''' Range:
+    '''  -10 to 10
+    ''' Referrence:
+    ''' http://www-optima.amp.i.kyoto-u.ac.jp/member/student/hedar/Hedar_files/TestGO_files/Page816.htm
     ''' </remarks>
-    Public Class clsBenchDeJongFunction4 : Inherits absObjectiveFunction
-        Private normRand As New List(Of Double)
-
+    Public Class BenchBoothFunction : Inherits absObjectiveFunction
         ''' <summary>
         ''' Default constructor
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub New()
-            For i As Integer = 0 To 29
-                normRand.Add(Util.Util.NormRand())
-            Next
         End Sub
 
         ''' <summary>
@@ -37,17 +32,7 @@ Namespace BenchmarkFunction
                 Return 0
             End If
 
-            Dim ret As Double = 0
-            For i As Integer = 0 To 29
-                If (x(i) >= -1.28) AndAlso (x(i) <= 1.28) Then
-                    ret += (i + 1) * x(i) * x(i) * x(i) * x(i) + normRand(i)
-                Else
-                    'out of range
-                    ret += Math.Abs(i) 'penarty
-                End If
-            Next
-
-            Return ret '??? 
+            Return (x(0) + 2 * x(1) - 7) ^ 2 + (2 * x(0) + x(1) - 5) ^ 2
         End Function
 
         Public Overrides Function Gradient(ByVal ai_var As List(Of Double)) As List(Of Double)
@@ -59,7 +44,7 @@ Namespace BenchmarkFunction
         End Function
 
         Public Overrides Function NumberOfVariable() As Integer
-            Return 30
+            Return 2
         End Function
     End Class
 

@@ -1,4 +1,4 @@
-﻿Imports LibOptimization2.MathUtil
+﻿Imports LibOptimization.MathUtil
 
 Namespace Optimization.RequireDerivative
     ''' <summary>
@@ -50,11 +50,11 @@ Namespace Optimization.RequireDerivative
         ''' <returns></returns>
         Public Overrides Function DoIteration(Optional ai_iteration As Integer = 0) As Boolean
             'Do Iteration
-            Dim vector1 As New clsEasyVector(_populations(0))
-            Dim vector2 As New clsEasyVector(_populations(0))
+            Dim vector1 As New EasyVector(_populations(0))
+            Dim vector2 As New EasyVector(_populations(0))
             Try
                 ai_iteration = If(ai_iteration = 0, Iteration - 1, ai_iteration - 1)
-                Dim gradient As New clsEasyVector(ObjectiveFunction.NumberOfVariable)
+                Dim gradient As New EasyVector(ObjectiveFunction.NumberOfVariable)
                 For iterate As Integer = 0 To ai_iteration
                     'Calculate Gradient vector
                     gradient.RawVector = ObjectiveFunction.Gradient(vector1)

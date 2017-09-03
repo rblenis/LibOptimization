@@ -1,4 +1,4 @@
-﻿Imports LibOptimization2.Util
+﻿Imports LibOptimization.Util
 
 Namespace Optimization.DerivativeFree.ParticleSwarmOptmization
     ''' <summary>
@@ -45,7 +45,7 @@ Namespace Optimization.DerivativeFree.ParticleSwarmOptmization
                 'update velocity for each variable
                 Dim v(ObjectiveFunction.NumberOfVariable - 1) As Double
                 For j As Integer = 0 To ObjectiveFunction.NumberOfVariable - 1
-                    v(j) = Util.Util.GenRandomRange(Random, 0, Me.InitialValueRange)
+                    v(j) = Util.Util.GenRandomRange(Random, -Me.InitialValueRange, Me.InitialValueRange)
                 Next
                 _populations(i).temp1 = DirectCast(v, Object)
                 _populations(i).temp2 = DirectCast(_populations(i).Copy(), Object)
@@ -64,7 +64,7 @@ Namespace Optimization.DerivativeFree.ParticleSwarmOptmization
         ''' <remarks></remarks>
         Public Overrides Function DoIteration(Optional ai_iteration As Integer = 0) As Boolean
             'get global best
-            Dim gBest As clsPoint = BestResult()
+            Dim gBest As clsPoint = Result()
 
             'Do Iterate
             Dim count = GetRemainingIterationCount(ai_iteration)

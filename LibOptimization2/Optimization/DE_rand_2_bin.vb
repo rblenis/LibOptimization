@@ -1,4 +1,4 @@
-﻿Imports LibOptimization2.Util
+﻿Imports LibOptimization.Util
 
 Namespace Optimization.DerivativeFree.DifferentialEvolution
     ''' <summary>

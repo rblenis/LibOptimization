@@ -1,27 +1,20 @@
-﻿Imports LibOptimization2.Optimization
+﻿Imports LibOptimization.Optimization
 
 Namespace BenchmarkFunction
     ''' <summary>
     ''' Benchmark function
-    ''' Rastrigin function
+    ''' Powell function
     ''' </summary>
     ''' <remarks>
     ''' Minimum:
-    '''  F(0,...,0) = 0
-    ''' Range:
-    '''  -5.12 to 5.12
-    ''' Referrence:
-    ''' http://mikilab.doshisha.ac.jp/dia/research/pdga/archive/doc/ga2k_performance.pdf
+    '''  F(0,0,0,0) = 0
     ''' </remarks>
-    Public Class clsBenchRastrigin : Inherits absObjectiveFunction
-        Private dimension As Integer = 0
-
+    Public Class BenchPowell : Inherits absObjectiveFunction
         ''' <summary>
         ''' Default constructor
         ''' </summary>
         ''' <remarks></remarks>
-        Public Sub New(ByVal ai_dim As Integer)
-            dimension = ai_dim
+        Public Sub New()
         End Sub
 
         ''' <summary>
@@ -35,22 +28,12 @@ Namespace BenchmarkFunction
                 Return 0
             End If
 
-            If dimension <> ai_var.Count Then
-                Return 0
-            End If
-
-            Dim A As Double = 10.0
-            Dim ret As Double = 0.0
-            For i As Integer = 0 To dimension - 1
-                ret += ai_var(i) ^ 2 - A * Math.Cos(2.0 * Math.PI * ai_var(i))
-            Next
-            ret += A * dimension
-
+            Dim x1 As Double = ai_var(0)
+            Dim x2 As Double = ai_var(1)
+            Dim x3 As Double = ai_var(2)
+            Dim x4 As Double = ai_var(3)
+            Dim ret As Double = (x1 - 10 * x2) ^ 2 + 5 * (x3 - x4) ^ 2 + (x2 + 2 * x3) ^ 4 + 10 * (x1 - x4) ^ 4
             Return ret
-        End Function
-
-        Public Overloads Function F(ByVal ai_var() As Double) As Double
-            Return F(New List(Of Double)(ai_var))
         End Function
 
         Public Overrides Function Gradient(ByVal ai_var As List(Of Double)) As List(Of Double)
@@ -62,7 +45,7 @@ Namespace BenchmarkFunction
         End Function
 
         Public Overrides Function NumberOfVariable() As Integer
-            Return dimension
+            Return 4
         End Function
     End Class
 

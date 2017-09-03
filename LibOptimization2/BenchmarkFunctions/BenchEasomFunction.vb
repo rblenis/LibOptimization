@@ -1,15 +1,19 @@
-﻿Imports LibOptimization2.Optimization
+﻿Imports LibOptimization.Optimization
 
 Namespace BenchmarkFunction
     ''' <summary>
     ''' Benchmark function
-    ''' Powell function
+    ''' Easom Function
     ''' </summary>
     ''' <remarks>
     ''' Minimum:
-    '''  F(0,0,0,0) = 0
+    '''  F(pi, pi) = -1
+    ''' Range:
+    '''  −100≦x1 , x2≦100
+    ''' Referrence:
+    ''' [1]Test fXin-She Yang, "Test Problems in Optimization", arXiv(http://arxiv.org/abs/1008.0549)
     ''' </remarks>
-    Public Class clsBenchPowell : Inherits absObjectiveFunction
+    Public Class BenchEasomFunction : Inherits absObjectiveFunction
         ''' <summary>
         ''' Default constructor
         ''' </summary>
@@ -20,19 +24,17 @@ Namespace BenchmarkFunction
         ''' <summary>
         ''' Target Function
         ''' </summary>
-        ''' <param name="ai_var"></param>
+        ''' <param name="x"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overrides Function F(ByVal ai_var As List(Of Double)) As Double
-            If ai_var Is Nothing Then
+        Public Overrides Function F(ByVal x As List(Of Double)) As Double
+            If x Is Nothing Then
                 Return 0
             End If
 
-            Dim x1 As Double = ai_var(0)
-            Dim x2 As Double = ai_var(1)
-            Dim x3 As Double = ai_var(2)
-            Dim x4 As Double = ai_var(3)
-            Dim ret As Double = (x1 - 10 * x2) ^ 2 + 5 * (x3 - x4) ^ 2 + (x2 + 2 * x3) ^ 4 + 10 * (x1 - x4) ^ 4
+            Dim x1 As Double = x(0)
+            Dim x2 As Double = x(1)
+            Dim ret As Double = -Math.Cos(x1) * Math.Cos(x2) * Math.Exp(-((x1 - Math.PI) ^ 2 + (x2 - Math.PI) ^ 2))
             Return ret
         End Function
 
@@ -45,7 +47,7 @@ Namespace BenchmarkFunction
         End Function
 
         Public Overrides Function NumberOfVariable() As Integer
-            Return 4
+            Return 2
         End Function
     End Class
 

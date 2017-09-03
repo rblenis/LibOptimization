@@ -1,4 +1,4 @@
-﻿Imports LibOptimization2.Util
+﻿Imports LibOptimization.Util
 
 Namespace Optimization.DerivativeFree
     ''' <summary>
@@ -14,7 +14,7 @@ Namespace Optimization.DerivativeFree
     ''' Implment:
     ''' N.Tomi(tomi.nori+github at gmail.com)
     ''' </remarks>
-    Public Class HillClimbing : Inherits LibOptimization2.Optimization.absOptimization
+    Public Class HillClimbing : Inherits LibOptimization.Optimization.absOptimization
 #Region "Member(Original parameter for Simulated Annealing)"
         ''' <summary>range of neighbor search</summary>
         Public Property NeighborRange As Double = 0.1

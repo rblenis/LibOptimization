@@ -8,7 +8,7 @@
     ''' TODO:
     ''' LU, Solve ,SVD
     ''' </remarks>
-    Public Class clsEasyMatrix : Inherits List(Of List(Of Double))
+    Public Class EasyMatrix : Inherits List(Of List(Of Double))
         Public Const SAME_ZERO As Double = 2.0E-50 '2^-50
 
 #Region "Constructor"
@@ -25,9 +25,9 @@
         ''' </summary>
         ''' <param name="ai_base"></param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal ai_base As clsEasyMatrix)
+        Public Sub New(ByVal ai_base As EasyMatrix)
             For i As Integer = 0 To ai_base.Count - 1
-                Dim temp As New clsEasyVector(ai_base(i))
+                Dim temp As New EasyVector(ai_base(i))
                 Add(temp)
             Next
         End Sub
@@ -40,7 +40,7 @@
         ''' <remarks></remarks>
         Public Sub New(ByVal ai_dim As Integer, Optional ai_isIdentity As Boolean = False)
             For i As Integer = 0 To ai_dim - 1
-                Dim temp As New clsEasyVector(ai_dim)
+                Dim temp As New EasyVector(ai_dim)
                 If ai_isIdentity Then
                     temp(i) = 1.0
                 End If
@@ -56,7 +56,7 @@
         ''' <remarks></remarks>
         Public Sub New(ByVal ai_rowSize As Integer, ByVal ai_colSize As Integer)
             For i As Integer = 0 To ai_rowSize - 1
-                Add(New clsEasyVector(ai_colSize))
+                Add(New EasyVector(ai_colSize))
             Next
         End Sub
 
@@ -67,7 +67,7 @@
         ''' <remarks></remarks>
         Public Sub New(ByVal ai_val As List(Of List(Of Double)))
             For i As Integer = 0 To ai_val.Count - 1
-                Add(New clsEasyVector(ai_val(i)))
+                Add(New EasyVector(ai_val(i)))
             Next
         End Sub
 
@@ -78,7 +78,7 @@
         ''' <remarks></remarks>
         Public Sub New(ByVal ai_val()() As Double)
             For i As Integer = 0 To ai_val.Length - 1
-                Add(New clsEasyVector(ai_val(i)))
+                Add(New EasyVector(ai_val(i)))
             Next
         End Sub
 
@@ -88,13 +88,13 @@
         ''' <param name="ai_val"></param>
         ''' <param name="ai_direction">Row or Col</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal ai_val As List(Of Double), ByVal ai_direction As clsEasyVector.VectorDirection)
-            If ai_direction = clsEasyVector.VectorDirection.ROW Then
-                Dim temp As New clsEasyVector(ai_val)
+        Public Sub New(ByVal ai_val As List(Of Double), ByVal ai_direction As EasyVector.VectorDirection)
+            If ai_direction = EasyVector.VectorDirection.ROW Then
+                Dim temp As New EasyVector(ai_val)
                 Add(temp)
             Else
                 For i As Integer = 0 To ai_val.Count - 1
-                    Add(New clsEasyVector({ai_val(i)}))
+                    Add(New EasyVector({ai_val(i)}))
                 Next
             End If
         End Sub
@@ -103,7 +103,7 @@
             Clear()
             For i As Integer = 0 To order - 1
                 Dim temp(order - 1) As Double
-                Add(New clsEasyVector(temp))
+                Add(New EasyVector(temp))
             Next
             Dim index As Integer = 0
             For i As Integer = 0 To order - 1
@@ -123,11 +123,11 @@
         ''' <param name="ai_dest"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Operator +(ByVal ai_source As clsEasyMatrix, ByVal ai_dest As clsEasyMatrix) As clsEasyMatrix
+        Public Shared Operator +(ByVal ai_source As EasyMatrix, ByVal ai_dest As EasyMatrix) As EasyMatrix
             If IsSameDimension(ai_source, ai_dest) = False Then
-                Throw New clsExceptionForMath(clsExceptionForMath.Series.DifferRowNumberAndCollumnNumber)
+                Throw New ExceptionForMath(ExceptionForMath.Series.DifferRowNumberAndCollumnNumber)
             End If
-            Dim ret As New clsEasyMatrix(ai_source)
+            Dim ret As New EasyMatrix(ai_source)
             For i As Integer = 0 To ret.RowCount() - 1
                 ret.Row(i) = ai_source.Row(i) + ai_dest.Row(i)
             Next
@@ -141,11 +141,11 @@
         ''' <param name="ai_dest"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Operator +(ByVal ai_source As clsEasyMatrix, ByVal ai_dest As clsEasyVector) As clsEasyVector
+        Public Shared Operator +(ByVal ai_source As EasyMatrix, ByVal ai_dest As EasyVector) As EasyVector
             If IsComputableMatrixVector(ai_source, ai_dest) = False Then
-                Throw New clsExceptionForMath(clsExceptionForMath.Series.NotComputable)
+                Throw New ExceptionForMath(ExceptionForMath.Series.NotComputable)
             End If
-            Dim ret As New clsEasyVector(ai_dest)
+            Dim ret As New EasyVector(ai_dest)
             For i As Integer = 0 To ai_dest.Count - 1
                 ret(i) = ai_source(i)(0) + ai_dest(i)
             Next
@@ -159,11 +159,11 @@
         ''' <param name="ai_dest"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Operator +(ByVal ai_source As clsEasyVector, ByVal ai_dest As clsEasyMatrix) As clsEasyVector
+        Public Shared Operator +(ByVal ai_source As EasyVector, ByVal ai_dest As EasyMatrix) As EasyVector
             If IsComputableMatrixVector(ai_dest, ai_source) = False Then
-                Throw New clsExceptionForMath(clsExceptionForMath.Series.NotComputable)
+                Throw New ExceptionForMath(ExceptionForMath.Series.NotComputable)
             End If
-            Dim ret As New clsEasyVector(ai_source)
+            Dim ret As New EasyVector(ai_source)
             For i As Integer = 0 To ai_source.Count - 1
                 ret(i) = ai_source(i) + ai_dest(i)(0)
             Next
@@ -177,11 +177,11 @@
         ''' <param name="ai_dest"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Operator -(ByVal ai_source As clsEasyMatrix, ByVal ai_dest As clsEasyMatrix) As clsEasyMatrix
+        Public Shared Operator -(ByVal ai_source As EasyMatrix, ByVal ai_dest As EasyMatrix) As EasyMatrix
             If IsSameDimension(ai_source, ai_dest) = False Then
-                Throw New clsExceptionForMath(clsExceptionForMath.Series.DifferRowNumberAndCollumnNumber)
+                Throw New ExceptionForMath(ExceptionForMath.Series.DifferRowNumberAndCollumnNumber)
             End If
-            Dim ret As New clsEasyMatrix(ai_source)
+            Dim ret As New EasyMatrix(ai_source)
             For i As Integer = 0 To ret.RowCount() - 1
                 ret.Row(i) = ai_source.Row(i) - ai_dest.Row(i)
             Next
@@ -195,11 +195,11 @@
         ''' <param name="ai_dest"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Operator -(ByVal ai_source As clsEasyMatrix, ByVal ai_dest As clsEasyVector) As clsEasyVector
+        Public Shared Operator -(ByVal ai_source As EasyMatrix, ByVal ai_dest As EasyVector) As EasyVector
             If IsComputableMatrixVector(ai_source, ai_dest) = False Then
-                Throw New clsExceptionForMath(clsExceptionForMath.Series.NotComputable)
+                Throw New ExceptionForMath(ExceptionForMath.Series.NotComputable)
             End If
-            Dim ret As New clsEasyVector(ai_dest)
+            Dim ret As New EasyVector(ai_dest)
             For i As Integer = 0 To ai_dest.Count - 1
                 ret(i) = ai_source(i)(0) - ai_dest(i)
             Next
@@ -213,11 +213,11 @@
         ''' <param name="ai_dest"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Operator -(ByVal ai_source As clsEasyVector, ByVal ai_dest As clsEasyMatrix) As clsEasyVector
+        Public Shared Operator -(ByVal ai_source As EasyVector, ByVal ai_dest As EasyMatrix) As EasyVector
             If IsComputableMatrixVector(ai_dest, ai_source) = False Then
-                Throw New clsExceptionForMath(clsExceptionForMath.Series.NotComputable)
+                Throw New ExceptionForMath(ExceptionForMath.Series.NotComputable)
             End If
-            Dim ret As New clsEasyVector(ai_source)
+            Dim ret As New EasyVector(ai_source)
             For i As Integer = 0 To ai_source.Count - 1
                 ret(i) = ai_source(i) - ai_dest(i)(0)
             Next
@@ -232,10 +232,10 @@
         ''' <returns></returns>
         ''' <remarks>
         ''' </remarks>
-        Public Shared Operator *(ByVal ai_source As clsEasyMatrix, ByVal ai_dest As clsEasyMatrix) As clsEasyMatrix
+        Public Shared Operator *(ByVal ai_source As EasyMatrix, ByVal ai_dest As EasyMatrix) As EasyMatrix
             If IsSameDimension(ai_source, ai_dest) = True Then
                 '[M*M] X [M*M]
-                Dim ret As New clsEasyMatrix(ai_source.RowCount)
+                Dim ret As New EasyMatrix(ai_source.RowCount)
                 For i As Integer = 0 To ret.RowCount - 1
                     For j As Integer = 0 To ret.ColCount - 1
                         For k As Integer = 0 To ret.ColCount - 1
@@ -246,7 +246,7 @@
                 Return ret
             ElseIf ai_source.ColCount = ai_dest.RowCount Then
                 '[M*N] X [N*O]
-                Dim ret As New clsEasyMatrix(ai_source.RowCount, ai_dest.ColCount)
+                Dim ret As New EasyMatrix(ai_source.RowCount, ai_dest.ColCount)
                 For mIndex As Integer = 0 To ret.RowCount - 1
                     For nIndex As Integer = 0 To ret.ColCount - 1
                         Dim temp As Double = 0.0
@@ -259,7 +259,7 @@
                 Return ret
             End If
 
-            Throw New clsExceptionForMath(clsExceptionForMath.Series.NotComputable, "Matrix * Matrix")
+            Throw New ExceptionForMath(ExceptionForMath.Series.NotComputable, "Matrix * Matrix")
         End Operator
 
         ''' <summary>
@@ -270,19 +270,19 @@
         ''' <returns></returns>
         ''' <remarks>
         ''' </remarks>
-        Public Shared Operator *(ByVal ai_source As clsEasyMatrix, ByVal ai_dest As clsEasyVector) As clsEasyMatrix
+        Public Shared Operator *(ByVal ai_source As EasyMatrix, ByVal ai_dest As EasyVector) As EasyMatrix
             '列 ＝ 行
             Dim col As Integer = 1
             Dim row As Integer = ai_dest.Count
-            If ai_dest.Direction = clsEasyVector.VectorDirection.ROW Then
+            If ai_dest.Direction = EasyVector.VectorDirection.ROW Then
                 col = ai_dest.Count
                 row = 1
             End If
             If ai_source.ColCount <> row Then
-                Throw New clsExceptionForMath(clsExceptionForMath.Series.NotComputable, "Matrix * Vector")
+                Throw New ExceptionForMath(ExceptionForMath.Series.NotComputable, "Matrix * Vector")
             End If
 
-            Dim temp As clsEasyMatrix = ai_source * ai_dest.ToMatrix()
+            Dim temp As EasyMatrix = ai_source * ai_dest.ToMatrix()
             Return temp
         End Operator
 
@@ -294,18 +294,18 @@
         ''' <returns></returns>
         ''' <remarks>
         ''' </remarks>
-        Public Shared Operator *(ByVal ai_source As clsEasyVector, ByVal ai_dest As clsEasyMatrix) As clsEasyMatrix
+        Public Shared Operator *(ByVal ai_source As EasyVector, ByVal ai_dest As EasyMatrix) As EasyMatrix
             Dim col As Integer = 1
             Dim row As Integer = ai_source.Count
-            If ai_source.Direction = clsEasyVector.VectorDirection.ROW Then
+            If ai_source.Direction = EasyVector.VectorDirection.ROW Then
                 col = ai_source.Count
                 row = 1
             End If
             If col <> ai_dest.RowCount Then
-                Throw New clsExceptionForMath(clsExceptionForMath.Series.NotComputable, "Vector * Matrix")
+                Throw New ExceptionForMath(ExceptionForMath.Series.NotComputable, "Vector * Matrix")
             End If
 
-            Dim temp As clsEasyMatrix = ai_source.ToMatrix() * ai_dest
+            Dim temp As EasyMatrix = ai_source.ToMatrix() * ai_dest
             Return temp
         End Operator
 
@@ -316,8 +316,8 @@
         ''' <param name="ai_dest"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Operator *(ByVal ai_source As Double, ByVal ai_dest As clsEasyMatrix) As clsEasyMatrix
-            Dim ret As New clsEasyMatrix(ai_dest)
+        Public Shared Operator *(ByVal ai_source As Double, ByVal ai_dest As EasyMatrix) As EasyMatrix
+            Dim ret As New EasyMatrix(ai_dest)
             For i As Integer = 0 To ret.RowCount() - 1
                 ret.Row(i) = ai_source * ai_dest.Row(i)
             Next
@@ -331,8 +331,8 @@
         ''' <param name="ai_dest"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Operator *(ByVal ai_source As clsEasyMatrix, ByVal ai_dest As Double) As clsEasyMatrix
-            Dim ret As New clsEasyMatrix(ai_source)
+        Public Shared Operator *(ByVal ai_source As EasyMatrix, ByVal ai_dest As Double) As EasyMatrix
+            Dim ret As New EasyMatrix(ai_source)
             For i As Integer = 0 To ret.RowCount() - 1
                 ret.Row(i) = ai_source.Row(i) * ai_dest
             Next
@@ -343,8 +343,8 @@
         ''' Transpose
         ''' </summary>
         ''' <remarks></remarks>
-        Public Function T() As clsEasyMatrix
-            Dim ret As New clsEasyMatrix(ColCount, RowCount)
+        Public Function T() As EasyMatrix
+            Dim ret As New EasyMatrix(ColCount, RowCount)
             For rowIndex As Integer = 0 To ret.RowCount - 1
                 ret.Row(rowIndex) = Column(rowIndex)
             Next
@@ -367,8 +367,8 @@
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function Diag() As clsEasyMatrix
-            Dim ret As New clsEasyMatrix(Count)
+        Public Function Diag() As EasyMatrix
+            Dim ret As New EasyMatrix(Count)
             For i As Integer = 0 To Count - 1
                 ret(i)(i) = Me(i)(i)
             Next
@@ -379,14 +379,14 @@
         ''' Inverse
         ''' </summary>
         ''' <remarks></remarks>
-        Public Function Inverse() As clsEasyMatrix
+        Public Function Inverse() As EasyMatrix
             If RowCount <> ColCount Then
-                Return New clsEasyMatrix(0)
+                Return New EasyMatrix(0)
             End If
 
             Dim n As Integer = RowCount
-            Dim source As New clsEasyMatrix(Me)
-            Dim retInverse As New clsEasyMatrix(n, True)
+            Dim source As New EasyMatrix(Me)
+            Dim retInverse As New EasyMatrix(n, True)
             If n = 0 Then
                 'nop
             ElseIf n = 1 Then
@@ -434,7 +434,7 @@
 
                     'check 正則性の判定
                     If amax < SAME_ZERO Then
-                        Return New clsEasyMatrix(ColCount)
+                        Return New EasyMatrix(ColCount)
                     End If
 
                     'change row
@@ -471,7 +471,7 @@
         ''' <param name="ai_destRowIndex"></param>
         ''' <remarks></remarks>
         Public Sub SwapRow(ByVal ai_sourceRowIndex As Integer, ByVal ai_destRowIndex As Integer)
-            Dim temp As clsEasyVector = Row(ai_sourceRowIndex)
+            Dim temp As EasyVector = Row(ai_sourceRowIndex)
             Row(ai_sourceRowIndex) = Row(ai_destRowIndex)
             Row(ai_destRowIndex) = temp
         End Sub
@@ -483,7 +483,7 @@
         ''' <param name="ai_destColIndex"></param>
         ''' <remarks></remarks>
         Public Sub SwapCol(ByVal ai_sourceColIndex As Integer, ByVal ai_destColIndex As Integer)
-            Dim temp As clsEasyVector = Column(ai_sourceColIndex)
+            Dim temp As EasyVector = Column(ai_sourceColIndex)
             Column(ai_sourceColIndex) = Row(ai_destColIndex)
             Column(ai_destColIndex) = temp
         End Sub
@@ -494,7 +494,7 @@
         ''' <param name="ai_preci"></param>
         ''' <remarks></remarks>
         Public Sub PrintValue(Optional ByVal ai_preci As Integer = 3)
-            For Each vec As clsEasyVector In Me
+            For Each vec As EasyVector In Me
                 Dim str As New System.Text.StringBuilder()
                 For i As Integer = 0 To vec.Count - 1
                     str.Append(vec(i).ToString("F" & ai_preci.ToString()) & ControlChars.Tab)
@@ -510,14 +510,14 @@
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function ToVector() As clsEasyVector
+        Public Function ToVector() As EasyVector
             If RowCount = 1 Then
                 Return Row(0)
             ElseIf ColCount = 1 Then
                 Return Column(0)
             End If
 
-            Throw New clsExceptionForMath(clsExceptionForMath.Series.NotComputable, "Matrix")
+            Throw New ExceptionForMath(ExceptionForMath.Series.NotComputable, "Matrix")
         End Function
 
         ''' <summary>
@@ -568,12 +568,12 @@
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Property Row(ByVal ai_rowIndex As Integer) As clsEasyVector
+        Public Property Row(ByVal ai_rowIndex As Integer) As EasyVector
             Get
-                Return New clsEasyVector(Me(ai_rowIndex))
+                Return New EasyVector(Me(ai_rowIndex))
             End Get
-            Set(ByVal value As clsEasyVector)
-                Me(ai_rowIndex) = New clsEasyVector(value)
+            Set(ByVal value As EasyVector)
+                Me(ai_rowIndex) = New EasyVector(value)
             End Set
         End Property
 
@@ -584,17 +584,17 @@
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Property Column(ByVal ai_colIndex As Integer) As clsEasyVector
+        Public Property Column(ByVal ai_colIndex As Integer) As EasyVector
             Get
                 Dim temp(RowCount - 1) As Double
                 For i As Integer = 0 To temp.Length - 1
                     temp(i) = Row(i)(ai_colIndex)
                 Next
-                Dim tempVector As New clsEasyVector(temp)
-                tempVector.Direction = clsEasyVector.VectorDirection.COL
+                Dim tempVector As New EasyVector(temp)
+                tempVector.Direction = EasyVector.VectorDirection.COL
                 Return tempVector
             End Get
-            Set(ByVal value As clsEasyVector)
+            Set(ByVal value As EasyVector)
                 For i As Integer = 0 To value.Count - 1
                     Me(i)(ai_colIndex) = value(i)
                 Next
@@ -626,7 +626,7 @@
         ''' <param name="ai_dest"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Shared Function IsSameDimension(ByVal ai_source As clsEasyMatrix, ByVal ai_dest As clsEasyMatrix) As Boolean
+        Private Shared Function IsSameDimension(ByVal ai_source As EasyMatrix, ByVal ai_dest As EasyMatrix) As Boolean
             If ai_source.RowCount <> ai_dest.RowCount Then
                 Return False
             End If
@@ -643,7 +643,7 @@
         ''' <param name="ai_vector"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Shared Function IsComputableMatrixVector(ByVal ai_matrix As clsEasyMatrix, ByVal ai_vector As clsEasyVector) As Boolean
+        Private Shared Function IsComputableMatrixVector(ByVal ai_matrix As EasyMatrix, ByVal ai_vector As EasyVector) As Boolean
             If (ai_matrix.ColCount = 1) AndAlso (ai_matrix.RowCount = ai_vector.Count) Then
                 Return True
             ElseIf (ai_matrix.RowCount = 1) AndAlso (ai_matrix.ColCount = ai_vector.Count) Then
@@ -661,7 +661,7 @@
         ''' <param name="ai_isDebug"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function CalcDeterminant(ByVal ai_clsMatrix As clsEasyMatrix,
+        Private Function CalcDeterminant(ByVal ai_clsMatrix As EasyMatrix,
                                          ByVal ai_dim As Integer, Optional ai_isDebug As Boolean = False) As Double
             If ai_dim = 1 Then
                 Return ai_clsMatrix(0)(0)
@@ -683,7 +683,7 @@
             Else
                 'over 4 order
                 Dim detVal As Double = 0.0
-                Dim b As New clsEasyMatrix(ai_dim - 1)
+                Dim b As New EasyMatrix(ai_dim - 1)
                 Dim sign As Integer = 0
                 If ((ai_dim + 1) Mod (2)) = 0 Then
                     sign = 1

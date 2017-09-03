@@ -1,19 +1,19 @@
-﻿Imports LibOptimization2.Optimization
+﻿Imports LibOptimization.Optimization
 
 Namespace BenchmarkFunction
     ''' <summary>
     ''' Benchmark function
-    ''' Griewank function
+    ''' Schaffer function
     ''' </summary>
     ''' <remarks>
     ''' Minimum:
     '''  F(0,...,0) = 0
     ''' Range:
-    '''  -512 to 512
+    '''  -100 to 100
     ''' Referrence:
-    ''' http://mikilab.doshisha.ac.jp/dia/research/pdga/archive/doc/ga2k_performance.pdf
+    ''' 小林重信, "実数値GAのフロンティア"，人工知能学会誌 Vol. 24, No. 1, pp.147-162 (2009)
     ''' </remarks>
-    Public Class clsBenchGriewank : Inherits absObjectiveFunction
+    Public Class BenchSchaffer : Inherits absObjectiveFunction
         Private dimension As Integer = 0
 
         ''' <summary>
@@ -39,15 +39,16 @@ Namespace BenchmarkFunction
                 Return 0
             End If
 
-            Dim a As Double = 0.0
-            Dim b As Double = 0.0
-            For i As Integer = 0 To dimension - 1
-                a += (ai_var(i) ^ 2)
-                b *= Math.Cos(ai_var(i) / Math.Sqrt(i + 1))
+            Dim ret As Double = 0.0
+            For i As Integer = 0 To dimension - 2
+                ret += ((ai_var(i) ^ 2 + ai_var(i + 1) ^ 2) ^ 0.25) * (Math.Sin(50 * ((ai_var(i) ^ 2 + ai_var(i + 1) ^ 2)) ^ 0.1) ^ 2 + 1.0)
             Next
-            Dim ret As Double = a / 4000.0 - b + 1
 
             Return ret
+        End Function
+
+        Public Overloads Function F(ByVal ai_var() As Double) As Double
+            Return F(New List(Of Double)(ai_var))
         End Function
 
         Public Overrides Function Gradient(ByVal ai_var As List(Of Double)) As List(Of Double)

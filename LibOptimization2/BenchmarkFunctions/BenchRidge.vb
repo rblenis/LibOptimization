@@ -1,9 +1,9 @@
-﻿Imports LibOptimization2.Optimization
+﻿Imports LibOptimization.Optimization
 
 Namespace BenchmarkFunction
     ''' <summary>
     ''' Benchmark function
-    ''' Ellipsoid function
+    ''' Ridge Function
     ''' </summary>
     ''' <remarks>
     ''' Minimum:
@@ -11,15 +11,14 @@ Namespace BenchmarkFunction
     ''' Range:
     '''  -5.12 to 5.12
     ''' Referrence:
-    ''' 小林重信, "実数値GAのフロンティア"，人工知能学会誌 Vol. 24, No. 1, pp.147-162 (2009)
+    ''' http://mikilab.doshisha.ac.jp/dia/research/pdga/archive/doc/ga2k_performance.pdf
     ''' </remarks>
-    Public Class clsBenchEllipsoid : Inherits absObjectiveFunction
+    Public Class BenchRidge : Inherits absObjectiveFunction
         Private dimension As Integer = 0
 
         ''' <summary>
         ''' Default constructor
         ''' </summary>
-        ''' <param name="ai_dim">Set dimension</param>
         ''' <remarks></remarks>
         Public Sub New(ByVal ai_dim As Integer)
             dimension = ai_dim
@@ -42,11 +41,18 @@ Namespace BenchmarkFunction
 
             Dim ret As Double = 0.0
             For i As Integer = 0 To dimension - 1
-                Dim temp As Double = (1000 ^ (i / (dimension - 1))) * ai_var(i)
-                ret += temp ^ 2
+                ret += ai_var(i)
             Next
-
+            ret = ret ^ 2
+            'Sum
+            For i As Integer = 0 To 4
+                ret += ret
+            Next
             Return ret
+        End Function
+
+        Public Overloads Function F(ByVal ai_var() As Double) As Double
+            Return F(New List(Of Double)(ai_var))
         End Function
 
         Public Overrides Function Gradient(ByVal ai_var As List(Of Double)) As List(Of Double)

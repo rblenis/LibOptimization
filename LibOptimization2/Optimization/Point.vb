@@ -1,5 +1,5 @@
-﻿Imports LibOptimization2.Optimization
-Imports LibOptimization2.MathUtil
+﻿Imports LibOptimization.Optimization
+Imports LibOptimization.MathUtil
 
 Namespace Optimization
     ''' <summary>
@@ -7,7 +7,7 @@ Namespace Optimization
     ''' </summary>
     ''' <remarks></remarks>
     Public Class clsPoint
-        Inherits clsEasyVector
+        Inherits EasyVector
         Implements IComparable
 
         ''' <summary>Objective fucntion</summary>

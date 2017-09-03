@@ -1,6 +1,6 @@
-﻿Imports LibOptimization2.MathUtil
-Imports LibOptimization2.Optimization
-Imports LibOptimization2.Util.Random
+﻿Imports LibOptimization.MathUtil
+Imports LibOptimization.Optimization
+Imports LibOptimization.Util.Random
 
 Namespace Util
     ''' <summary>
@@ -26,6 +26,13 @@ Namespace Util
 
             Return Util._callCount '警告抑止のため
         End Function
+
+        ''' <summary>
+        ''' reset random seed
+        ''' </summary>
+        Public Shared Sub ResetGlobalCounter()
+            _callCount = 0
+        End Sub
 
         ''' <summary>
         ''' Normal Distribution
@@ -188,11 +195,11 @@ Namespace Util
             If ai_isOutValue = True Then
                 Console.WriteLine("TargetFunction:" & ai_opt.ObjectiveFunction().GetType().Name & " Dimension:" & ai_opt.ObjectiveFunction().NumberOfVariable.ToString())
                 Console.WriteLine("OptimizeMethod:" & ai_opt.GetType().Name)
-                Console.WriteLine("Eval          :" & String.Format("{0}", ai_opt.BestResult.Eval))
+                Console.WriteLine("Eval          :" & String.Format("{0}", ai_opt.Result.Eval))
                 Console.WriteLine("IterationCount:" & String.Format("{0}", ai_opt.IterationCount()))
                 Console.WriteLine("Result        :")
                 Dim str As New System.Text.StringBuilder()
-                For Each value As Double In ai_opt.BestResult
+                For Each value As Double In ai_opt.Result
                     If ai_precision <= 0 Then
                         str.Append(value.ToString())
                     Else
@@ -202,7 +209,7 @@ Namespace Util
                 Next
                 Console.WriteLine(str.ToString())
             Else
-                Console.WriteLine("Eval          :" & String.Format("{0}", ai_opt.BestResult.Eval))
+                Console.WriteLine("Eval          :" & String.Format("{0}", ai_opt.Result.Eval))
             End If
         End Sub
 
@@ -418,7 +425,7 @@ Namespace Util
         ''' <returns></returns>
         Public Shared Function IsExistZeroLength(ByVal points As List(Of clsPoint)) As Boolean
             Dim isCanCrossover As Boolean = True
-            Dim vec As clsEasyVector = Nothing
+            Dim vec As EasyVector = Nothing
             For i As Integer = 0 To points.Count - 2
                 vec = points(i) - points(i + 1)
                 If vec.NormL1() = 0 Then

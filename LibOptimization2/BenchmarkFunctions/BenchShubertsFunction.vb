@@ -1,4 +1,4 @@
-﻿Imports LibOptimization2.Optimization
+﻿Imports LibOptimization.Optimization
 
 Namespace BenchmarkFunction
     ''' <summary>
@@ -13,7 +13,7 @@ Namespace BenchmarkFunction
     ''' Referrence:
     ''' [1]Test fXin-She Yang, "Test Problems in Optimization", arXiv(http://arxiv.org/abs/1008.0549)
     ''' </remarks>
-    Public Class clsBenchShubertsFunction : Inherits absObjectiveFunction
+    Public Class BenchShubertsFunction : Inherits absObjectiveFunction
         ''' <summary>
         ''' Default constructor
         ''' </summary>

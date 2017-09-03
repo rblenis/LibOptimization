@@ -1,5 +1,5 @@
-﻿Imports LibOptimization2.Util
-Imports LibOptimization2.MathUtil
+﻿Imports LibOptimization.Util
+Imports LibOptimization.MathUtil
 
 Namespace Optimization.DerivativeFree.ReadlCodedGA
     ''' <summary>
@@ -210,7 +210,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
             Dim sd1 = (ALPHA * length) ^ 2
             Dim sd2 = (BETA * d2 / Math.Sqrt(ObjectiveFunction.NumberOfVariable)) ^ 2
             Dim e = diffVectorP2P1 / length
-            Dim t = New clsEasyVector(ObjectiveFunction.NumberOfVariable)
+            Dim t = New EasyVector(ObjectiveFunction.NumberOfVariable)
             For genChild As Integer = 0 To CInt(ChildrenSize / 2 - 1)
                 For i As Integer = 0 To ObjectiveFunction.NumberOfVariable - 1
                     t(i) = Util.Util.NormRand(0, sd2)

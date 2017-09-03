@@ -1,4 +1,4 @@
-﻿Imports LibOptimization2.Optimization
+﻿Imports LibOptimization.Optimization
 
 Namespace BenchmarkFunction
     ''' <summary>
@@ -13,7 +13,7 @@ Namespace BenchmarkFunction
     ''' Referrence:
     ''' 小林重信, "実数値GAのフロンティア"，人工知能学会誌 Vol. 24, No. 1, pp.147-162 (2009)
     ''' </remarks>
-    Public Class clsBenchAckley : Inherits absObjectiveFunction
+    Public Class BenchAckley : Inherits absObjectiveFunction
         Private dimension As Integer = 0
 
         ''' <summary>

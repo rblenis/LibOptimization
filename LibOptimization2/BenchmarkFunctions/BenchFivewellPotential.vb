@@ -1,19 +1,19 @@
-﻿Imports LibOptimization2.Optimization
+﻿Imports LibOptimization.Optimization
 
 Namespace BenchmarkFunction
     ''' <summary>
     ''' Benchmark function
-    ''' De Jong’s function 3 (Step Function)
+    ''' Fivewell-Potential
     ''' </summary>
     ''' <remarks>
     ''' Minimum:
-    '''  x = {-5.12~-5, -5.12~-5, -5.12~-5, -5.12~-5, -5.12~-5}
-    ''' Range
-    '''  -5.12 ~ 5.12 
-    ''' Refference:
-    '''  De Jong, K. A., "Analysis of the Behavior of a Class of Genetic Adaptive Systems", PhD dissertation, The University of Michigan, Computer and Communication Sciences Department (1975)
+    '''  F(4.92, -9.89) = -1.4616
+    ''' Range:
+    '''  -20 to 20
+    ''' Referrence:
+    ''' Ilya Pavlyukevich, "Levy flights, non-local search and simulated annealing", Journal of Computational Physics 226 (2007) 1830-1844
     ''' </remarks>
-    Public Class clsBenchDeJongFunction3 : Inherits absObjectiveFunction
+    Public Class BenchFivewellPotential : Inherits absObjectiveFunction
         ''' <summary>
         ''' Default constructor
         ''' </summary>
@@ -32,15 +32,13 @@ Namespace BenchmarkFunction
                 Return 0
             End If
 
-            Dim ret As Double = 0
-            For i As Integer = 0 To 4
-                If (x(i) >= -5.12) AndAlso (x(i) <= 5.12) Then
-                    ret += Math.Floor(x(i))
-                Else
-                    'out of range
-                    ret += Math.Abs(x(i)) 'penarty
-                End If
-            Next
+            If NumberOfVariable() <> x.Count Then
+                Return 0
+            End If
+
+            Dim ret As Double = 0.0
+            ret = 1 - 1 / (1 + 0.05 * (x(0) ^ 2 + (x(1) - 10) ^ 2)) - 1 / (1 + 0.05 * ((x(0) - 10)) ^ 2 + x(1) ^ 2) - 1.5 / (1 + 0.03 * ((x(0) + 10)) ^ 2 + x(1) ^ 2) - 2 / (1 + 0.05 * ((x(0) - 5)) ^ 2 + (x(1) + 10) ^ 2) - 1 / (1 + 0.1 * ((x(0) + 5)) ^ 2 + (x(1) + 10) ^ 2)
+            ret = ret * (1 + 0.0001 * (x(0) ^ 2 + x(1) ^ 2) ^ 1.2)
             Return ret
         End Function
 

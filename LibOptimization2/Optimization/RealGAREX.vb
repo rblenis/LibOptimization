@@ -1,5 +1,5 @@
-﻿Imports LibOptimization2.Util
-Imports LibOptimization2.MathUtil
+﻿Imports LibOptimization.Util
+Imports LibOptimization.MathUtil
 
 Namespace Optimization.DerivativeFree.ReadlCodedGA
     ''' <summary>
@@ -121,7 +121,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
         ''' </remarks>
         Private Function CrossOverREX(ByVal ai_randomMode As RexRandomMode, ByVal ai_childNum As Integer, ByVal ai_parents As List(Of KeyValuePair(Of Integer, clsPoint))) As List(Of clsPoint)
             'Calc Centroid
-            Dim xg As New clsEasyVector(ObjectiveFunction.NumberOfVariable)
+            Dim xg As New EasyVector(ObjectiveFunction.NumberOfVariable)
             For Each p As KeyValuePair(Of Integer, clsPoint) In ai_parents
                 xg += p.Value
             Next
@@ -133,7 +133,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
             Dim normalDistParam As Double = 1 / ai_parents.Count '???
             For i As Integer = 0 To ai_childNum
                 'cross over
-                Dim childV As New clsEasyVector(ObjectiveFunction.NumberOfVariable)
+                Dim childV As New EasyVector(ObjectiveFunction.NumberOfVariable)
                 'sum( rand * (xi-xg) )
                 For Each xi As KeyValuePair(Of Integer, clsPoint) In ai_parents
                     'rand parameter

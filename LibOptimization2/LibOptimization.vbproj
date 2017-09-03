@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{C9B49EB1-E2A6-4534-B2CD-7379B2525182}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>LibOptimization2</RootNamespace>
-    <AssemblyName>LibOptimization2</AssemblyName>
+    <RootNamespace>LibOptimization</RootNamespace>
+    <AssemblyName>LibOptimization</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -18,7 +18,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>LibOptimization2.xml</DocumentationFile>
+    <DocumentationFile>LibOptimization.xml</DocumentationFile>
     <NoWarn>
     </NoWarn>
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
@@ -29,7 +29,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>LibOptimization2.xml</DocumentationFile>
+    <DocumentationFile>LibOptimization.xml</DocumentationFile>
     <NoWarn>
     </NoWarn>
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
@@ -66,25 +66,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BenchmarkFunctions\absObjectiveFunction.vb" />
-    <Compile Include="BenchmarkFunctions\clsBenchAckley.vb" />
-    <Compile Include="BenchmarkFunctions\clsBenchBoothFunction.vb" />
-    <Compile Include="BenchmarkFunctions\clsBenchDeJongFunction1.vb" />
-    <Compile Include="BenchmarkFunctions\clsBenchDeJongFunction2.vb" />
-    <Compile Include="BenchmarkFunctions\clsBenchDeJongFunction3.vb" />
-    <Compile Include="BenchmarkFunctions\clsBenchDeJongFunction4.vb" />
-    <Compile Include="BenchmarkFunctions\clsBenchDeJongFunction5.vb" />
-    <Compile Include="BenchmarkFunctions\clsBenchEasomFunction.vb" />
-    <Compile Include="BenchmarkFunctions\clsBenchEllipsoid.vb" />
-    <Compile Include="BenchmarkFunctions\clsBenchFivewellPotential.vb" />
-    <Compile Include="BenchmarkFunctions\clsBenchGriewank.vb" />
-    <Compile Include="BenchmarkFunctions\clsBenchPowell.vb" />
-    <Compile Include="BenchmarkFunctions\clsBenchRastrigin.vb" />
-    <Compile Include="BenchmarkFunctions\clsBenchRidge.vb" />
-    <Compile Include="BenchmarkFunctions\clsBenchRosenblock.vb" />
-    <Compile Include="BenchmarkFunctions\clsBenchSchaffer.vb" />
-    <Compile Include="BenchmarkFunctions\clsBenchSchwefel.vb" />
-    <Compile Include="BenchmarkFunctions\clsBenchShubertsFunction.vb" />
-    <Compile Include="BenchmarkFunctions\clsBenchSphere.vb" />
+    <Compile Include="BenchmarkFunctions\BenchAckley.vb" />
+    <Compile Include="BenchmarkFunctions\BenchBoothFunction.vb" />
+    <Compile Include="BenchmarkFunctions\BenchDeJongFunction1.vb" />
+    <Compile Include="BenchmarkFunctions\BenchDeJongFunction2.vb" />
+    <Compile Include="BenchmarkFunctions\BenchDeJongFunction3.vb" />
+    <Compile Include="BenchmarkFunctions\BenchDeJongFunction4.vb" />
+    <Compile Include="BenchmarkFunctions\BenchDeJongFunction5.vb" />
+    <Compile Include="BenchmarkFunctions\BenchEasomFunction.vb" />
+    <Compile Include="BenchmarkFunctions\BenchEllipsoid.vb" />
+    <Compile Include="BenchmarkFunctions\BenchFivewellPotential.vb" />
+    <Compile Include="BenchmarkFunctions\BenchGriewank.vb" />
+    <Compile Include="BenchmarkFunctions\BenchPowell.vb" />
+    <Compile Include="BenchmarkFunctions\BenchRastrigin.vb" />
+    <Compile Include="BenchmarkFunctions\BenchRidge.vb" />
+    <Compile Include="BenchmarkFunctions\BenchRosenblock.vb" />
+    <Compile Include="BenchmarkFunctions\BenchSchaffer.vb" />
+    <Compile Include="BenchmarkFunctions\BenchSchwefel.vb" />
+    <Compile Include="BenchmarkFunctions\BenchShubertsFunction.vb" />
+    <Compile Include="BenchmarkFunctions\BenchSphere.vb" />
     <Compile Include="Optimization\AIWPSO.vb" />
     <Compile Include="Optimization\LDIWPSO.vb" />
     <Compile Include="Optimization\CRIWPSO.vb" />
@@ -111,7 +111,7 @@
     <Compile Include="Optimization\RealGASPX.vb" />
     <Compile Include="Optimization\RealGAUNDX.vb" />
     <Compile Include="Optimization\NewtonMethod.vb" />
-    <Compile Include="Math\clsExceptionForMath.vb" />
+    <Compile Include="Math\ExceptionForMath.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -130,8 +130,8 @@
     <Compile Include="Optimization\absOptimization.vb" />
     <Compile Include="Optimization\SimulatedAnnealing.vb" />
     <Compile Include="Optimization\SteepestDescent.vb" />
-    <Compile Include="Math\clsEasyMatrix.vb" />
-    <Compile Include="Math\clsEasyVector.vb" />
+    <Compile Include="Math\EasyMatrix.vb" />
+    <Compile Include="Math\EasyVector.vb" />
     <Compile Include="Util\ErrorManage.vb" />
     <Compile Include="Util\Eval.vb" />
     <Compile Include="Util\Util.vb" />

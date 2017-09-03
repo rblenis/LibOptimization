@@ -1,5 +1,5 @@
-﻿Imports LibOptimization2.Util
-Imports LibOptimization2.MathUtil
+﻿Imports LibOptimization.Util
+Imports LibOptimization.MathUtil
 
 Namespace Optimization.DerivativeFree
     ''' <summary>

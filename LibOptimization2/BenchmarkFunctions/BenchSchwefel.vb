@@ -1,19 +1,19 @@
-﻿Imports LibOptimization2.Optimization
+﻿Imports LibOptimization.Optimization
 
 Namespace BenchmarkFunction
     ''' <summary>
     ''' Benchmark function
-    ''' Schaffer function
+    ''' Schwefel function
     ''' </summary>
     ''' <remarks>
     ''' Minimum:
-    '''  F(0,...,0) = 0
+    '''  F(420.96875,...,420.96875) = 0
     ''' Range:
-    '''  -100 to 100
+    '''  -512 to 512
     ''' Referrence:
-    ''' 小林重信, "実数値GAのフロンティア"，人工知能学会誌 Vol. 24, No. 1, pp.147-162 (2009)
+    ''' http://mikilab.doshisha.ac.jp/dia/research/pdga/archive/doc/ga2k_performance.pdf
     ''' </remarks>
-    Public Class clsBenchSchaffer : Inherits absObjectiveFunction
+    Public Class BenchSchwefel : Inherits absObjectiveFunction
         Private dimension As Integer = 0
 
         ''' <summary>
@@ -27,28 +27,30 @@ Namespace BenchmarkFunction
         ''' <summary>
         ''' Target Function
         ''' </summary>
-        ''' <param name="ai_var"></param>
+        ''' <param name="x"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overrides Function F(ByVal ai_var As List(Of Double)) As Double
-            If ai_var Is Nothing Then
+        Public Overrides Function F(ByVal x As List(Of Double)) As Double
+            If x Is Nothing Then
                 Return 0
             End If
 
-            If dimension <> ai_var.Count Then
+            If dimension <> x.Count Then
                 Return 0
             End If
 
             Dim ret As Double = 0.0
-            For i As Integer = 0 To dimension - 2
-                ret += ((ai_var(i) ^ 2 + ai_var(i + 1) ^ 2) ^ 0.25) * (Math.Sin(50 * ((ai_var(i) ^ 2 + ai_var(i + 1) ^ 2)) ^ 0.1) ^ 2 + 1.0)
+            For i As Integer = 0 To dimension - 1
+                If (x(i) >= -512) AndAlso (x(i) <= 512) Then
+                    ret += -x(i) * Math.Sin(Math.Sqrt(Math.Abs(x(i))))
+                Else
+                    'out of range
+                    ret += Math.Abs(x(i))
+                End If
             Next
+            ret = ret + 418.982887272434 * dimension
 
             Return ret
-        End Function
-
-        Public Overloads Function F(ByVal ai_var() As Double) As Double
-            Return F(New List(Of Double)(ai_var))
         End Function
 
         Public Overrides Function Gradient(ByVal ai_var As List(Of Double)) As List(Of Double)
@@ -63,5 +65,4 @@ Namespace BenchmarkFunction
             Return dimension
         End Function
     End Class
-
 End Namespace

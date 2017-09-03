@@ -1,40 +1,51 @@
-﻿Imports LibOptimization2.Optimization
+﻿Imports LibOptimization.Optimization
 
 Namespace BenchmarkFunction
     ''' <summary>
     ''' Benchmark function
-    ''' Easom Function
+    ''' Ellipsoid function
     ''' </summary>
     ''' <remarks>
     ''' Minimum:
-    '''  F(pi, pi) = -1
+    '''  F(0,...,0) = 0
     ''' Range:
-    '''  −100≦x1 , x2≦100
+    '''  -5.12 to 5.12
     ''' Referrence:
-    ''' [1]Test fXin-She Yang, "Test Problems in Optimization", arXiv(http://arxiv.org/abs/1008.0549)
+    ''' 小林重信, "実数値GAのフロンティア"，人工知能学会誌 Vol. 24, No. 1, pp.147-162 (2009)
     ''' </remarks>
-    Public Class clsBenchEasomFunction : Inherits absObjectiveFunction
+    Public Class BenchEllipsoid : Inherits absObjectiveFunction
+        Private dimension As Integer = 0
+
         ''' <summary>
         ''' Default constructor
         ''' </summary>
+        ''' <param name="ai_dim">Set dimension</param>
         ''' <remarks></remarks>
-        Public Sub New()
+        Public Sub New(ByVal ai_dim As Integer)
+            dimension = ai_dim
         End Sub
 
         ''' <summary>
         ''' Target Function
         ''' </summary>
-        ''' <param name="x"></param>
+        ''' <param name="ai_var"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overrides Function F(ByVal x As List(Of Double)) As Double
-            If x Is Nothing Then
+        Public Overrides Function F(ByVal ai_var As List(Of Double)) As Double
+            If ai_var Is Nothing Then
                 Return 0
             End If
 
-            Dim x1 As Double = x(0)
-            Dim x2 As Double = x(1)
-            Dim ret As Double = -Math.Cos(x1) * Math.Cos(x2) * Math.Exp(-((x1 - Math.PI) ^ 2 + (x2 - Math.PI) ^ 2))
+            If dimension <> ai_var.Count Then
+                Return 0
+            End If
+
+            Dim ret As Double = 0.0
+            For i As Integer = 0 To dimension - 1
+                Dim temp As Double = (1000 ^ (i / (dimension - 1))) * ai_var(i)
+                ret += temp ^ 2
+            Next
+
             Return ret
         End Function
 
@@ -47,7 +58,7 @@ Namespace BenchmarkFunction
         End Function
 
         Public Overrides Function NumberOfVariable() As Integer
-            Return 2
+            Return dimension
         End Function
     End Class
 

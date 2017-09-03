@@ -1,19 +1,19 @@
-﻿Imports LibOptimization2.Optimization
+﻿Imports LibOptimization.Optimization
 
 Namespace BenchmarkFunction
     ''' <summary>
     ''' Benchmark function
-    ''' Booth Function
+    ''' De Jong’s function 3 (Step Function)
     ''' </summary>
     ''' <remarks>
     ''' Minimum:
-    '''  F(1,3) = 0
-    ''' Range:
-    '''  -10 to 10
-    ''' Referrence:
-    ''' http://www-optima.amp.i.kyoto-u.ac.jp/member/student/hedar/Hedar_files/TestGO_files/Page816.htm
+    '''  x = {-5.12~-5, -5.12~-5, -5.12~-5, -5.12~-5, -5.12~-5}
+    ''' Range
+    '''  -5.12 ~ 5.12 
+    ''' Refference:
+    '''  De Jong, K. A., "Analysis of the Behavior of a Class of Genetic Adaptive Systems", PhD dissertation, The University of Michigan, Computer and Communication Sciences Department (1975)
     ''' </remarks>
-    Public Class clsBenchBoothFunction : Inherits absObjectiveFunction
+    Public Class BenchDeJongFunction3 : Inherits absObjectiveFunction
         ''' <summary>
         ''' Default constructor
         ''' </summary>
@@ -32,7 +32,16 @@ Namespace BenchmarkFunction
                 Return 0
             End If
 
-            Return (x(0) + 2 * x(1) - 7) ^ 2 + (2 * x(0) + x(1) - 5) ^ 2
+            Dim ret As Double = 0
+            For i As Integer = 0 To 4
+                If (x(i) >= -5.12) AndAlso (x(i) <= 5.12) Then
+                    ret += Math.Floor(x(i))
+                Else
+                    'out of range
+                    ret += Math.Abs(x(i)) 'penarty
+                End If
+            Next
+            Return ret
         End Function
 
         Public Overrides Function Gradient(ByVal ai_var As List(Of Double)) As List(Of Double)
@@ -44,7 +53,7 @@ Namespace BenchmarkFunction
         End Function
 
         Public Overrides Function NumberOfVariable() As Integer
-            Return 2
+            Return 5
         End Function
     End Class
 

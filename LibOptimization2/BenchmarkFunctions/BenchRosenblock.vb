@@ -1,4 +1,4 @@
-﻿Imports LibOptimization2.Optimization
+﻿Imports LibOptimization.Optimization
 
 Namespace BenchmarkFunction
     ''' <summary>
@@ -9,7 +9,7 @@ Namespace BenchmarkFunction
     ''' Minimum:
     '''  F(0,...,0) = 0
     ''' </remarks>
-    Public Class clsBenchRosenblock : Inherits absObjectiveFunction
+    Public Class BenchRosenblock : Inherits absObjectiveFunction
         Private dimension As Integer = 0
 
         ''' <summary>

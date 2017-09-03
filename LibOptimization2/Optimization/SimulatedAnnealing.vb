@@ -1,4 +1,4 @@
-﻿Imports LibOptimization2.Util
+﻿Imports LibOptimization.Util
 
 Namespace Optimization.DerivativeFree
     ''' <summary>
@@ -14,7 +14,7 @@ Namespace Optimization.DerivativeFree
     ''' Implment:
     ''' N.Tomi(tomi.nori+github at gmail.com)
     ''' </remarks>
-    Public Class SimulatedAnnealing : Inherits LibOptimization2.Optimization.absOptimization
+    Public Class SimulatedAnnealing : Inherits LibOptimization.Optimization.absOptimization
 #Region "Member(Original parameter for Simulated Annealing)"
         ''' <summary>cooling ratio</summary>
         Public Property CoolingRatio As Double = 0.99
