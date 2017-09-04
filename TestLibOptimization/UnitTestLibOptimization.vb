@@ -284,13 +284,13 @@ Imports LibOptimization.Util
         Assert.IsFalse(errorFlg)
 
         'Eval   
-        If Math.Abs(opt.Result.Eval) > 0.05 Then
+        If Math.Abs(opt.Result.Eval) > 0.01 Then
             Assert.Fail(String.Format("fail Eval {0}", opt.Result.Eval))
         End If
         Console.WriteLine(String.Format("Success Eval {0}", opt.Result.Eval))
 
         'Result
-        If Math.Abs(opt.Result(0)) > 0.05 OrElse Math.Abs(opt.Result(1)) > 0.05 Then
+        If Math.Abs(opt.Result(0)) > 0.01 OrElse Math.Abs(opt.Result(1)) > 0.01 Then
             Assert.Fail(String.Format("fail Result {0} {1}", opt.Result(0), opt.Result(1)))
         End If
         Console.WriteLine(String.Format("Success Result {0} {1}", opt.Result(0), opt.Result(1)))
@@ -400,7 +400,7 @@ Imports LibOptimization.Util
         Me.CheckOptUsingSphere(opt)
     End Sub
 
-    <TestMethod()> Public Sub TestOptimizationDE_JADE()
+    <TestMethod()> Public Sub TestOptimizationJADE()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.DifferentialEvolution.JADE()
         opt.ObjectiveFunction = New BenchSphere(2)
 
@@ -413,7 +413,7 @@ Imports LibOptimization.Util
         Me.CheckOptUsingSphere(opt)
     End Sub
 
-    <TestMethod()> Public Sub TestOptimizationFA()
+    <TestMethod()> Public Sub TestOptimizationFireFly()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.Firefly()
         opt.ObjectiveFunction = New BenchSphere(2)
         opt.Iteration = 300
@@ -427,7 +427,7 @@ Imports LibOptimization.Util
         Me.CheckOptUsingSphere(opt)
     End Sub
 
-    <TestMethod()> Public Sub TestOptimizationNM()
+    <TestMethod()> Public Sub TestOptimizationNelderMead()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.NelderMead()
         opt.ObjectiveFunction = New BenchSphere(2)
 
@@ -440,7 +440,7 @@ Imports LibOptimization.Util
         Me.CheckOptUsingSphere(opt)
     End Sub
 
-    <TestMethod()> Public Sub TestOptimizationNMWiki()
+    <TestMethod()> Public Sub TestOptimizationNelderMeadWiki()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.NelderMeadWiki()
         opt.ObjectiveFunction = New BenchSphere(2)
 
@@ -466,7 +466,7 @@ Imports LibOptimization.Util
         Me.CheckOptUsingSphere(opt)
     End Sub
 
-    <TestMethod()> Public Sub TestOptimizationNewton()
+    <TestMethod()> Public Sub TestOptimizationNewtonMethod()
         Dim opt = New LibOptimization.Optimization.RequireDerivative.NewtonMethod()
         opt.ObjectiveFunction = New BenchSphere(2)
 
@@ -505,7 +505,7 @@ Imports LibOptimization.Util
         Me.CheckOptUsingSphere(opt)
     End Sub
 
-    <TestMethod()> Public Sub TestOptimizationPSOAIW()
+    <TestMethod()> Public Sub TestOptimizationAIWPSO()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.ParticleSwarmOptmization.AIWPSO()
         opt.ObjectiveFunction = New BenchSphere(2)
 
@@ -596,7 +596,7 @@ Imports LibOptimization.Util
         Me.CheckOptUsingSphere(opt)
     End Sub
 
-    <TestMethod()> Public Sub TestOptimizatioRGASPX()
+    <TestMethod()> Public Sub TestOptimizationRGASPX()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.ReadlCodedGA.RealGASPX()
         opt.ObjectiveFunction = New BenchSphere(2)
 
@@ -627,6 +627,19 @@ Imports LibOptimization.Util
         opt.ObjectiveFunction = New BenchSphere(2)
         opt.Iteration = 10000
         opt.UseCriterion = False
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
+        Me.CheckOptUsingSphere(opt)
+    End Sub
+
+    <TestMethod()> Public Sub TestOptimizationHillClimbing()
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.HillClimbing()
+        opt.ObjectiveFunction = New BenchSphere(2)
 
         'check init
         opt.Init()

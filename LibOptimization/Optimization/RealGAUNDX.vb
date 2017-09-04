@@ -9,7 +9,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
     ''' <remarks>
     ''' Features:
     '''  -Derivative free optimization algorithm.
-    '''  -Alternation of generation algorithm is JGG
+    '''  -Alternation of generation algorithm is MGG
     ''' 
     ''' Refference:
     ''' [1]小野功，佐藤浩，小林重信, "単峰性正規分布交叉UNDXを用いた実数値GAによる関数最適化"，人工知能学会誌，Vol. 14，No. 6，pp. 1146-1155 (1999)
@@ -28,15 +28,6 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
 
         ''' <summary>Beta(Default:0.35)</summary>
         Public Property BETA As Double = 0.35
-
-        ''' <summary>AlternationStrategy(Default:JGG)</summary>
-        Public Property AlternationStrategy As EnumAlternatioType = EnumAlternatioType.JGG
-
-        ''' <summary>alternation strategy</summary>
-        Public Enum EnumAlternatioType
-            MGG
-            JGG
-        End Enum
 #End Region
 
 #Region "Public"
@@ -84,31 +75,17 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
                 Dim p2 = MyBase._populations(p2Index)
                 Dim p3 = MyBase._populations(randIndex(2)) 'for d2
 
-                'check length 0
-                Dim flag = Util.Util.IsExistZeroLength({p1, p2, p3}.ToList())
-                'flag = False
-                'Crossover
-                If flag = False Then
-                    'cross over UNDX
-                    Dim children = UNDX(p1, p2, p3)
+                'cross over UNDX
+                Dim children = UNDX(p1, p2, p3)
 
-                    'AlternationStrategy
-                    If Me.AlternationStrategy = EnumAlternatioType.JGG Then
-                        'JGG
-                        children.Sort()
-                        MyBase._populations(p1Index) = children(0)
-                        MyBase._populations(p2Index) = children(1)
-                    Else
-                        'MGG
-                        children.Add(p1)
-                        children.Add(p2)
-                        children.Sort()
-                        MyBase._populations(p1Index) = children(0) 'elite
-                        children.RemoveAt(0)
-                        Dim rIndex = SelectRoulette(children, True)
-                        MyBase._populations(p2Index) = children(rIndex)
-                    End If
-                End If
+                'AlternationStrategy MGG
+                children.Add(p1)
+                children.Add(p2)
+                children.Sort()
+                MyBase._populations(p1Index) = children(0) 'replace elite
+                children.RemoveAt(0)
+                Dim rIndex = SelectRoulette(children, True)
+                MyBase._populations(p2Index) = children(rIndex) 'replace
 
                 'Check and Update Iteration count
                 If Iteration = _IterationCount Then
@@ -227,8 +204,20 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
                     child2(i) = g(i) - temp
                 Next
 
+                'overflow check
                 Dim temp1 = New Point(ObjectiveFunction, child1)
+                If Util.Util.CheckOverflow(temp1) = True Then
+                    For i As Integer = 0 To ObjectiveFunction.NumberOfVariable - 1
+                        'temp1(i) = Util.Util.NormRand(g(i), 0.1)
+                        temp1(i) = Util.Util.GenRandomRange(Random, -InitialValueRange, InitialValueRange)
+                    Next
+                End If
                 Dim temp2 = New Point(ObjectiveFunction, child2)
+                If Util.Util.CheckOverflow(temp2) = True Then
+                    For i As Integer = 0 To ObjectiveFunction.NumberOfVariable - 1
+                        temp2(i) = Util.Util.GenRandomRange(Random, -InitialValueRange, InitialValueRange)
+                    Next
+                End If
 
                 'limit solution space
                 LimitSolutionSpace(temp1)
