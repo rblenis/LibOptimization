@@ -25,14 +25,14 @@ Imports LibOptimization.Util
             Dim temp As Integer = 123456
             rand = New LibOptimization.Util.Random.Xorshift(BitConverter.ToUInt32(BitConverter.GetBytes(temp), 0))
         Catch ex As Exception
-            Assert.Fail("123456 seed error using positive value.")
+            Assert.Fail("seed error using positive value.")
         End Try
 
         Try
             Dim temp As Integer = -123456
             rand = New LibOptimization.Util.Random.Xorshift(BitConverter.ToUInt32(BitConverter.GetBytes(temp), 0))
         Catch ex As Exception
-            Assert.Fail("123456 seed error using negative value.")
+            Assert.Fail("seed error using negative value.")
         End Try
     End Sub
 #End Region
@@ -227,6 +227,50 @@ Imports LibOptimization.Util
     End Sub
 #End Region
 
+#Region "Optimization basic function"
+    <TestMethod()> Public Sub SetIteration()
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.NelderMead()
+
+        With Nothing
+            opt.ObjectiveFunction = New BenchDeJongFunction2()
+            opt.Iteration = 10
+            opt.UseCriterion = False
+            opt.Init()
+            opt.DoIteration()
+            If opt.IterationCount <> 10 Then
+                Assert.Fail("Set iteration error")
+            End If
+        End With
+
+        With Nothing
+            opt.ObjectiveFunction = New BenchDeJongFunction2()
+            opt.Iteration = 1
+            opt.UseCriterion = False
+            opt.Init()
+            opt.DoIteration()
+            If opt.IterationCount <> 1 Then
+                Assert.Fail("Set iteration error")
+            End If
+        End With
+    End Sub
+#End Region
+
+#Region "Optimization Erro case"
+    '<TestMethod()> Public Sub NotsetFunction1()
+    '    Dim opt = New LibOptimization.Optimization.DerivativeFree.NelderMead()
+    '    opt.Init()
+    '    opt.DoIteration()
+    '    Util.DebugValue(opt)
+    'End Sub
+
+    '<TestMethod()> Public Sub NotsetFunction2()
+    '    Dim opt = New LibOptimization.Optimization.DerivativeFree.NelderMead()
+    '    opt.ObjectiveFunction = New BenchDeJongFunction2()
+    '    opt.DoIteration()
+    '    Util.DebugValue(opt)
+    'End Sub
+#End Region
+
 #Region "Optimization Typical use(using Sphere)"
     ''' <summary>
     ''' Sphere関数で最適解になるか確認
@@ -234,15 +278,9 @@ Imports LibOptimization.Util
     ''' <param name="opt"></param>
     ''' <remarks></remarks>
     Public Sub CheckOptUsingSphere(ByVal opt As absOptimization)
-        'check init
-        opt.Init()
-        Dim errorFlg = False
-        errorFlg = ErrorManage.IsRecentError()
-        Assert.IsFalse(errorFlg)
-
         'check iterate
         opt.DoIteration()
-        errorFlg = ErrorManage.IsRecentError()
+        Dim errorFlg = ErrorManage.IsRecentError()
         Assert.IsFalse(errorFlg)
 
         'Eval   
@@ -261,54 +299,117 @@ Imports LibOptimization.Util
     <TestMethod()> Public Sub TestOptimizationCuckooSearch()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.CuckooSearch()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationDE_best1_bin()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.DifferentialEvolution.DE_best_1_bin()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationDE_best2_bin()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.DifferentialEvolution.DE_best_2_bin()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationDE_current_1_bin()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.DifferentialEvolution.DE_current_1_bin()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationDE_current_to_Best_1_bin()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.DifferentialEvolution.DE_current_to_Best_1_bin()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationDE_rand_1_bin()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.DifferentialEvolution.DE_rand_1_bin()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationDE_rand_2_bin()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.DifferentialEvolution.DE_rand_2_bin()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationDE_rand_to_Best_1_bin()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.DifferentialEvolution.DE_rand_to_Best_1_bin()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationDE_JADE()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.DifferentialEvolution.JADE()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
@@ -316,96 +417,208 @@ Imports LibOptimization.Util
         Dim opt = New LibOptimization.Optimization.DerivativeFree.Firefly()
         opt.ObjectiveFunction = New BenchSphere(2)
         opt.Iteration = 300
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationNM()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.NelderMead()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationNMWiki()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.NelderMeadWiki()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationSteepestDescent()
         Dim opt = New LibOptimization.Optimization.RequireDerivative.SteepestDescent()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationNewton()
         Dim opt = New LibOptimization.Optimization.RequireDerivative.NewtonMethod()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationPatternSearch()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.PatternSearch()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationPSO()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.ParticleSwarmOptmization.PSO()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationPSOAIW()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.ParticleSwarmOptmization.AIWPSO()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationCRIWPSO()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.ParticleSwarmOptmization.CRIWPSO()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationCDIWPSO()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.ParticleSwarmOptmization.CDIWPSO()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationLDIWPSO()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.ParticleSwarmOptmization.LDIWPSO()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationRGABLX()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.ReadlCodedGA.RealGABLXAlpha()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationRGAPCX()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.ReadlCodedGA.RealGAPCX()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationRGAREX()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.ReadlCodedGA.RealGAREX()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizatioRGASPX()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.ReadlCodedGA.RealGASPX()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
     <TestMethod()> Public Sub TestOptimizationRGAUNDX()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.ReadlCodedGA.RealGAUNDX()
         opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 
@@ -414,6 +627,13 @@ Imports LibOptimization.Util
         opt.ObjectiveFunction = New BenchSphere(2)
         opt.Iteration = 10000
         opt.UseCriterion = False
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
         Me.CheckOptUsingSphere(opt)
     End Sub
 #End Region

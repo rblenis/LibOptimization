@@ -44,7 +44,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
         ''' Init optimizer
         ''' </summary>
         ''' <returns></returns>
-        Public Overrides Function Init() As Boolean
+        Public Overrides Function Init(Optional ByVal anyPoint() As Double = Nothing, Optional ByVal isReuseBestResult As Boolean = False) As Boolean
             'Init
             Dim flg = MyBase.Init()
 

@@ -66,38 +66,43 @@ Namespace Optimization
         ''' Initialize optimizer
         ''' </summary>
         ''' <returns></returns>
-        Public Overridable Function Init() As Boolean
-            'check
-            If ObjectiveFunction Is Nothing Then
-                ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT, "Not exist ObjectiveFunction")
-                Return False
-            End If
-
-            'Bound check
-            If UseBounds = True Then
-                If UpperBounds Is Nothing OrElse LowerBounds Is Nothing Then
-                    ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT, "Bounds setting error")
-                    Return False
-                End If
-                If ObjectiveFunction.NumberOfVariable <> UpperBounds.Length Then
-                    ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT, "Bounds setting error")
-                    Return False
-                End If
-                If ObjectiveFunction.NumberOfVariable <> LowerBounds.Length Then
-                    ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT, "Bounds setting error")
-                    Return False
-                End If
-            End If
-
-            'init
-            _IterationCount = 0
-            _populations.Clear()
-
-            'error manage reset
-            ErrorManage.Clear()
-
-            'Set initialize value
+        Public Overridable Function Init(Optional ByVal anyPoint() As Double = Nothing, Optional ByVal isReuseBestResult As Boolean = False) As Boolean
             Try
+                'check
+                If ObjectiveFunction Is Nothing Then
+                    ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT, "Not exist ObjectiveFunction")
+                    Return False
+                End If
+
+                'Bound check
+                If UseBounds = True Then
+                    If UpperBounds Is Nothing OrElse LowerBounds Is Nothing Then
+                        ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT, "Bounds setting error")
+                        Return False
+                    End If
+                    If ObjectiveFunction.NumberOfVariable <> UpperBounds.Length Then
+                        ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT, "Bounds setting error")
+                        Return False
+                    End If
+                    If ObjectiveFunction.NumberOfVariable <> LowerBounds.Length Then
+                        ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT, "Bounds setting error")
+                        Return False
+                    End If
+                End If
+
+                'reuse
+                Dim best As Point = Nothing
+                If isReuseBestResult = True AndAlso _populations.Count > 0 Then
+                    best = Me.Result
+                End If
+
+                'init
+                _IterationCount = 0
+                _populations.Clear()
+
+                'error manage reset
+                ErrorManage.Clear()
+
                 'adaptive population size
                 If UseAdaptivePopulationSize = True Then
                     PopulationSize = CInt(50 * Math.Log(ObjectiveFunction.NumberOfVariable) + 15)
@@ -123,6 +128,16 @@ Namespace Optimization
                     _criterionIndex = CInt(PopulationSize * CriterionRatio)
                 End If
 
+                'reuse
+                If isReuseBestResult = True AndAlso best IsNot Nothing Then
+                    _populations(0) = best
+                End If
+
+                'set anypoint
+                If anyPoint IsNot Nothing Then
+                    _populations(0) = New Point(ObjectiveFunction, anyPoint)
+                End If
+
                 'Sort Evaluate
                 _populations.Sort()
             Catch ex As Exception
@@ -132,53 +147,53 @@ Namespace Optimization
             Return True
         End Function
 
-        ''' <summary>
-        ''' Initialize optimizer with any point 
-        ''' </summary>
-        ''' <param name="anyPoint"></param>
-        ''' <returns></returns>
-        Public Function Init(ByVal anyPoint() As Double) As Boolean
-            If anyPoint Is Nothing Then
-                ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT)
-                Return False
-            End If
+        '''' <summary>
+        '''' Initialize optimizer with any point 
+        '''' </summary>
+        '''' <param name="anyPoint"></param>
+        '''' <returns></returns>
+        'Public Function Init(ByVal anyPoint() As Double) As Boolean
+        '    If anyPoint Is Nothing Then
+        '        ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT)
+        '        Return False
+        '    End If
 
-            If ObjectiveFunction.NumberOfVariable <> anyPoint.Length Then
-                ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT)
-                Return False
-            End If
+        '    If ObjectiveFunction.NumberOfVariable <> anyPoint.Length Then
+        '        ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT)
+        '        Return False
+        '    End If
 
-            Dim flg As Boolean = Init()
-            If flg = True Then
-                _populations(0) = New Point(ObjectiveFunction, anyPoint) 'replace
-            End If
-            Return flg
-        End Function
+        '    Dim flg As Boolean = Init()
+        '    If flg = True Then
+        '        _populations(0) = New Point(ObjectiveFunction, anyPoint) 'replace
+        '    End If
+        '    Return flg
+        'End Function
 
-        ''' <summary>
-        ''' Initialize optimizer with best result (Initialize leave best result. This method Is an Elite strategy.)
-        ''' </summary>
-        ''' <param name="isReuseBestResult">Reuse best result</param>
-        ''' <returns></returns>
-        Public Function Init(ByVal isReuseBestResult As Boolean) As Boolean
-            'false
-            If isReuseBestResult = False Then
-                Return Init()
-            End If
+        '''' <summary>
+        '''' Initialize optimizer with best result (Initialize leave best result. This method Is an Elite strategy.)
+        '''' </summary>
+        '''' <param name="isReuseBestResult">Reuse best result</param>
+        '''' <returns></returns>
+        'Public Function Init(ByVal isReuseBestResult As Boolean) As Boolean
+        '    'false
+        '    If isReuseBestResult = False Then
+        '        Return Init()
+        '    End If
 
-            'not init
-            If _populations.Count = 0 Then
-                Return Init()
-            End If
+        '    'not init
+        '    If _populations.Count = 0 Then
+        '        Return Init()
+        '    End If
 
-            'reuse
-            Dim best = Util.Util.GetBestPoint(_populations)
-            Dim flg = Init(False)
-            If flg = True Then
-                _populations(0) = best
-            End If
-            Return flg
-        End Function
+        '    'reuse
+        '    Dim best = Util.Util.GetBestPoint(_populations)
+        '    Dim flg = Init(False)
+        '    If flg = True Then
+        '        _populations(0) = best
+        '    End If
+        '    Return flg
+        'End Function
 
         ''' <summary>
         ''' Do Iteration
@@ -288,11 +303,9 @@ Namespace Optimization
         ''' <param name="temp"></param>
         ''' <remarks></remarks>
         Protected Sub LimitSolutionSpace(ByRef temp As Point)
-            If UseBounds = False Then
-                Return
+            If UseBounds = True Then
+                LimitSolutionSpace(DirectCast(temp, MathUtil.EasyVector))
             End If
-
-            LimitSolutionSpace(DirectCast(temp, MathUtil.EasyVector))
             temp.ReEvaluate()
         End Sub
 

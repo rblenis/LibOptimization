@@ -39,7 +39,7 @@ Namespace Optimization.DerivativeFree
         ''' Initialize
         ''' </summary>
         ''' <returns></returns>
-        Public Overrides Function Init() As Boolean
+        Public Overrides Function Init(Optional ByVal anyPoint() As Double = Nothing, Optional ByVal isReuseBestResult As Boolean = False) As Boolean
             'Check number of variable
             If ObjectiveFunction.NumberOfVariable < 2 Then
                 ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT, "NumberOfVariable is 1")

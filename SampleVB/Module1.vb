@@ -141,7 +141,7 @@ Module Module1
             Util.DebugValue(optimization)
 
             '2nd try reuse
-            optimization.Init(True)
+            optimization.Init(isReuseBestResult:=True)
             While (optimization.DoIteration(100) = False)
                 Util.DebugValue(optimization, ai_isOutValue:=False)
             End While
