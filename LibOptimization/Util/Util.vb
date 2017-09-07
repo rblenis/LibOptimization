@@ -443,10 +443,56 @@ Namespace Util
         ''' <summary>
         ''' Overflow check for debug
         ''' </summary>
+        ''' <param name="v"></param>
+        ''' <returns></returns>
+        Public Shared Function CheckOverflow(ByVal v As Double) As Boolean
+            If Double.IsInfinity(v) = True Then
+                Return True
+            End If
+            If Double.IsNaN(v) = True Then
+                Return True
+            End If
+            If Double.IsNegativeInfinity(v) = True Then
+                Return True
+            End If
+            If Double.IsPositiveInfinity(v) = True Then
+                Return True
+            End If
+
+            Return False
+        End Function
+
+        ''' <summary>
+        ''' Overflow check for debug
+        ''' </summary>
         ''' <param name="p"></param>
         ''' <returns></returns>
-        Public Shared Function CheckOverflow(ByVal p As List(Of Point)) As Boolean
-            For Each temp In p
+        Public Shared Function CheckOverflow(ByVal p As Point) As Boolean
+            For Each v In p
+                If Double.IsInfinity(v) = True Then
+                    Return True
+                End If
+                If Double.IsNaN(v) = True Then
+                    Return True
+                End If
+                If Double.IsNegativeInfinity(v) = True Then
+                    Return True
+                End If
+                If Double.IsPositiveInfinity(v) = True Then
+                    Return True
+                End If
+            Next
+
+            Return False
+        End Function
+
+        ''' <summary>
+        ''' Overflow check for debug
+        ''' </summary>
+        ''' <param name="listP"></param>
+        ''' <returns></returns>
+        Public Shared Function CheckOverflow(ByVal listP As List(Of Point)) As Boolean
+            For Each temp In listP
                 For Each v In temp
                     If Double.IsInfinity(v) = True Then
                         Return True

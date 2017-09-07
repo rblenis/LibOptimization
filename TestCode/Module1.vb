@@ -26,14 +26,19 @@ Module Module1
         'End With
 
         With Nothing
-            Dim optimization As New Optimization.DerivativeFree.ReadlCodedGA.RealGAREX()
-            optimization.ObjectiveFunction = New BenchSphere(2)
-            'optimization.UseCriterion = True
-            'optimization.CriterionRatio = 0.3 'default 0.7
-            optimization.UseCriterion = False
-            optimization.Init()
-            optimization.DoIteration()
-            Util.DebugValue(optimization)
+            While True
+                Dim optimization As New Optimization.DerivativeFree.ReadlCodedGA.RealGAUNDX()
+                optimization.ObjectiveFunction = New BenchSphere(2)
+                optimization.UseCriterion = False
+                optimization.Iteration = 15000
+                'optimization.AlternationStrategy = LibOptimization.Optimization.DerivativeFree.ReadlCodedGA.RealGAUNDX.EnumAlternatioType.MGG
+                optimization.Init()
+                Util.DebugValue(optimization, ai_isOutValue:=False)
+                While (optimization.DoIteration(100) = False)
+                    Util.DebugValue(optimization, ai_isOutValue:=False)
+                End While
+                Util.DebugValue(optimization)
+            End While
         End With
     End Sub
 
