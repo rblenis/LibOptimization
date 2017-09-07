@@ -465,13 +465,5 @@ Namespace Util
 
             Return False
         End Function
-
-        ''' <summary>
-        ''' Debug mode
-        ''' </summary>
-        ''' <param name="flag"></param>
-        Public Shared Sub SetDebugMode(ByVal flag As Boolean)
-            'fix random permutation
-        End Sub
     End Class
 End Namespace
