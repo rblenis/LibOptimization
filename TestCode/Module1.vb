@@ -14,7 +14,7 @@ Module Module1
                 optimization.UseCriterion = True
                 optimization.Iteration = 15000
                 'optimization.AlternationStrategy = LibOptimization.Optimization.DerivativeFree.ReadlCodedGA.RealGAUNDX.EnumAlternatioType.MGG
-                optimization.Init({10, 10})
+                optimization.Init({100000000000.0, 10})
                 Util.DebugValue(optimization, ai_isOutValue:=False)
                 While (optimization.DoIteration(1) = False)
                     Util.DebugValue(optimization, ai_isOutValue:=False)

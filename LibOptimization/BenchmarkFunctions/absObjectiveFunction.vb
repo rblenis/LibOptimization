@@ -47,10 +47,10 @@
         ''' Numerical derivertive
         ''' </summary>
         ''' <param name="x"></param>
+        ''' <param name="h"></param>
         ''' <returns></returns>
-        Function NumericDerivertive(ByVal x As List(Of Double)) As List(Of Double)
+        Function NumericDerivertive(ByVal x As List(Of Double), Optional ByVal h As Double = 0.0000000001) As List(Of Double)
             Dim df As New List(Of Double)
-            Dim h As Double = 0.00000011920929
             For i As Integer = 0 To NumberOfVariable() - 1
                 '中心差分
                 Dim tempX1 = x.ToList()
