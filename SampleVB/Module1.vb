@@ -1,6 +1,7 @@
 ﻿Imports LibOptimization
 Imports LibOptimization.Optimization
 Imports LibOptimization.Util
+Imports LibOptimization.ErrorManage
 Imports LibOptimization.BenchmarkFunction
 
 Module Module1
@@ -21,11 +22,23 @@ Module Module1
             'Instantiation optimization class and set objective function.
             Dim optimization As New Optimization.DerivativeFree.DifferentialEvolution.DE_best_1_bin()
             optimization.ObjectiveFunction = New BenchSphere(2)
+
             'Initialize starting value
             optimization.Init()
+            If ErrorManage.IsRecentError() = True Then
+                Console.WriteLine(ErrorManage.GetRecentError())
+                Return
+            End If
+
             'Do optimization
             optimization.DoIteration()
-            Util.DebugValue(optimization)
+            If ErrorManage.IsRecentError() = True Then
+                Console.WriteLine(ErrorManage.GetRecentError())
+                Return
+            End If
+
+            'Get reuslt
+            Console.WriteLine(optimization.Result.ToString())
         End With
 
         'set inital position and inital value range
@@ -37,7 +50,7 @@ Module Module1
             optimization.InitialValueRange = 3
 
             'init
-            optimization.Init()
+            optimization.Init({1, 1})
             If ErrorManage.IsRecentError() = True Then
                 Console.WriteLine(ErrorManage.GetRecentError())
                 Return

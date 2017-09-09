@@ -1,4 +1,4 @@
-﻿Namespace Util
+﻿Namespace ErrorManage
     ''' <summary>
     ''' Error manage class(Singleton)
     ''' </summary>

@@ -1,6 +1,7 @@
 ﻿Imports LibOptimization
 Imports LibOptimization.BenchmarkFunction
 Imports LibOptimization.Util
+Imports LibOptimization.ErrorManage
 
 Module Module1
 
@@ -24,6 +25,31 @@ Module Module1
         '    opt.DoIteration()
         '    Util.DebugValue(opt)
         'End With
+
+        With Nothing
+            Dim optimization As New Optimization.DerivativeFree.DifferentialEvolution.DE_best_1_bin()
+            optimization.ObjectiveFunction = New BenchSphere(2)
+
+            'Initial value is generated in the range of -3 to 3.
+            optimization.InitialValueRange = 3
+
+            'init
+            optimization.Init({1, 1})
+            If ErrorManage.IsRecentError() = True Then
+                Console.WriteLine(ErrorManage.GetRecentError())
+                Return
+            End If
+
+            'do optimization
+            optimization.DoIteration()
+            If ErrorManage.IsRecentError() = True Then
+                Console.WriteLine(ErrorManage.GetRecentError())
+                Return
+            End If
+
+            'get result
+            Util.DebugValue(optimization)
+        End With
 
         With Nothing
             While True

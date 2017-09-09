@@ -6,6 +6,7 @@ Imports LibOptimization.MathUtil
 Imports LibOptimization.Optimization
 Imports LibOptimization.BenchmarkFunction
 Imports LibOptimization.Util
+Imports LibOptimization.ErrorManage
 
 <TestClass()> Public Class UnitTestLibOptimization
 

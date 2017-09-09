@@ -1,5 +1,6 @@
 ﻿Imports LibOptimization.Optimization
 Imports LibOptimization.MathUtil
+Imports System.Text
 
 Namespace Optimization
     ''' <summary>
@@ -161,7 +162,7 @@ Namespace Optimization
         End Sub
 
         ''' <summary>
-        ''' Copy clsPoint
+        ''' Copy Point
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
@@ -170,7 +171,7 @@ Namespace Optimization
         End Function
 
         ''' <summary>
-        ''' Copy clsPoint
+        ''' Copy Point
         ''' </summary>
         ''' <param name="ai_point"></param>
         ''' <remarks></remarks>
@@ -180,5 +181,29 @@ Namespace Optimization
             Next
             _evaluateValue = ai_point.Eval
         End Sub
+
+        ''' <summary>
+        ''' Override ToString
+        ''' </summary>
+        ''' <returns></returns>
+        Public Overrides Function ToString() As String
+            If Me.Count = 0 Then
+                Return ""
+            End If
+
+            Dim str = New StringBuilder()
+            str.Append("Eval:")
+            str.Append(vbCrLf)
+            str.Append(String.Format("{0}", Eval))
+            str.Append(vbCrLf)
+            str.Append("Variables:")
+            str.Append(vbCrLf)
+            For Each var In Me
+                str.Append(String.Format("{0}", var))
+                str.Append(vbCrLf)
+            Next
+
+            Return str.ToString()
+        End Function
     End Class
 End Namespace

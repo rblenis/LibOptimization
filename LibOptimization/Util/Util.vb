@@ -511,5 +511,32 @@ Namespace Util
 
             Return False
         End Function
+
+        ''' <summary>
+        ''' Set initial point
+        ''' </summary>
+        ''' <param name="population"></param>
+        ''' <param name="initialPosition"></param>
+        ''' <param name="density"></param>
+        Public Shared Sub SetInitialPoint(ByVal population As List(Of Point), ByVal initialPosition() As Double, ByVal density As Double)
+            If population IsNot Nothing AndAlso population.Count > 0 Then
+                Dim func = population(0).GetFunc()
+                If initialPosition IsNot Nothing AndAlso initialPosition.Length = func.NumberOfVariable Then
+                    Dim index As Integer = CInt(population.Count * density)
+                    If index < 1 Then
+                        index = 1
+                    End If
+                    If index >= CInt(population.Count * 0.9) Then
+                        index = CInt(population.Count * 0.8)
+                    End If
+                    For i As Integer = 0 To index - 1
+                        For j As Integer = 0 To func.NumberOfVariable - 1
+                            population(i)(j) = initialPosition(j)
+                        Next
+                        population(i).ReEvaluate()
+                    Next
+                End If
+            End If
+        End Sub
     End Class
 End Namespace

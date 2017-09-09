@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using LibOptimization.Optimization;
 using LibOptimization.Util;
+using LibOptimization.ErrorManage;
 
 namespace SampleCSharp
 {
@@ -17,24 +18,28 @@ namespace SampleCSharp
                 var func = new RosenBrock();
 
                 //Set Function
-                var opt = new LibOptimization.Optimization.DerivativeFree.NelderMead();
-                opt.ObjectiveFunction = func;
-                opt.Init();
+                var optimization = new LibOptimization.Optimization.DerivativeFree.NelderMead();
+                optimization.ObjectiveFunction = func;
+                optimization.Init();
 
-                //Optimization
-                opt.DoIteration();
-
-                //Check Error
-                if( ErrorManage.IsRecentError()==true)
+                //Initialize starting value
+                optimization.Init();
+                if (ErrorManage.IsRecentError() == true)
                 {
                     Console.WriteLine(ErrorManage.GetRecentError());
                     return;
                 }
-                else
+
+                //Do optimization
+                optimization.DoIteration();
+                if (ErrorManage.IsRecentError() == true)
                 {
-                    //Get Result
-                    Util.DebugValue(opt);
+                    Console.WriteLine(ErrorManage.GetRecentError());
+                    return;
                 }
+
+                //Get reuslt
+                Console.WriteLine(optimization.Result.ToString());
             }
         }
     }

@@ -70,22 +70,22 @@ Namespace Optimization
             Try
                 'check
                 If ObjectiveFunction Is Nothing Then
-                    ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT, "Not exist ObjectiveFunction")
+                    ErrorManage.ErrorManage.SetError(ErrorManage.ErrorManage.ErrorType.ERR_INIT, "Not exist ObjectiveFunction")
                     Return False
                 End If
 
                 'Bound check
                 If UseBounds = True Then
                     If UpperBounds Is Nothing OrElse LowerBounds Is Nothing Then
-                        ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT, "Bounds setting error")
+                        ErrorManage.ErrorManage.SetError(ErrorManage.ErrorManage.ErrorType.ERR_INIT, "Bounds setting error")
                         Return False
                     End If
                     If ObjectiveFunction.NumberOfVariable <> UpperBounds.Length Then
-                        ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT, "Bounds setting error")
+                        ErrorManage.ErrorManage.SetError(ErrorManage.ErrorManage.ErrorType.ERR_INIT, "Bounds setting error")
                         Return False
                     End If
                     If ObjectiveFunction.NumberOfVariable <> LowerBounds.Length Then
-                        ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT, "Bounds setting error")
+                        ErrorManage.ErrorManage.SetError(ErrorManage.ErrorManage.ErrorType.ERR_INIT, "Bounds setting error")
                         Return False
                     End If
                 End If
@@ -101,7 +101,7 @@ Namespace Optimization
                 _populations.Clear()
 
                 'error manage reset
-                ErrorManage.Clear()
+                ErrorManage.ErrorManage.Clear()
 
                 'adaptive population size
                 If UseAdaptivePopulationSize = True Then
@@ -128,20 +128,25 @@ Namespace Optimization
                     _criterionIndex = CInt(PopulationSize * CriterionRatio)
                 End If
 
+                'set anypoint
+                If anyPoint IsNot Nothing Then
+                    If ObjectiveFunction.NumberOfVariable <> anyPoint.Length Then
+                        ErrorManage.ErrorManage.SetError(ErrorManage.ErrorManage.ErrorType.ERR_INIT, "Variable number of objective function and number of dimensions of anyPoint are different.")
+                        Return False
+                    End If
+                    Util.Util.SetInitialPoint(_populations, anyPoint, 0.1)
+                End If
+
+                'Sort Evaluate
+                _populations.Sort()
+
                 'reuse
                 If isReuseBestResult = True AndAlso best IsNot Nothing Then
                     _populations(0) = best
                 End If
 
-                'set anypoint
-                If anyPoint IsNot Nothing Then
-                    _populations(0) = New Point(ObjectiveFunction, anyPoint)
-                End If
-
-                'Sort Evaluate
-                _populations.Sort()
             Catch ex As Exception
-                ErrorManage.SetError(ErrorManage.ErrorType.ERR_INIT, ex.Message)
+                ErrorManage.ErrorManage.SetError(ErrorManage.ErrorManage.ErrorType.ERR_INIT, ex.Message)
             End Try
 
             Return True
