@@ -21,7 +21,7 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
     Public Class RealGAREX : Inherits absOptimization
 #Region "Member(Coefficient of GA)"
         ''' <summary>Parent size for cross over(Default:n+1)</summary>
-        Public Property ParentSize As Integer = 100 'REX(phi, n+k) -> n+1<n+k<PopultionSize, phi is random mode. n is number of variable.
+        Private Property ParentSize As Integer = 100 'REX(phi, n+k) -> n+1<n+k<PopultionSize, phi is random mode. n is number of variable.
 
         ''' <summary>Children Size(Default:100)</summary>
         Public Property ChildrenSize As Integer = 100
@@ -37,39 +37,14 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
 
 #Region "Public"
         ''' <summary>
-        ''' Init optimizer
-        ''' </summary>
-        ''' <param name="anyParentsize">parent size(0 is default. n+1)</param>
-        ''' <returns></returns>
-        Public Overloads Function Init(Optional ByVal anyParentsize As Integer = 0) As Boolean
-            'set user parentsize
-            If anyParentsize <= 0 Then
-                Me.ParentSize = ObjectiveFunction.NumberOfVariable + 1
-            Else
-                Me.ParentSize = anyParentsize
-            End If
-
-            If Me.ParentSize >= PopulationSize Then
-                Me.ParentSize = PopulationSize - 1
-            End If
-
-            'Init
-            Dim flg = MyBase.Init()
-
-            'When Adaptation flag is True, ChildrenSize is also to set adaptation
-            If UseAdaptivePopulationSize = True Then
-                ChildrenSize = CInt(PopulationSize * 0.75)
-            End If
-
-            Return flg
-        End Function
-
-        ''' <summary>
         ''' Do optimization
         ''' </summary>
         ''' <param name="ai_iteration"></param>
         ''' <returns></returns>
         Public Overrides Function DoIteration(Optional ByVal ai_iteration As Integer = 0) As Boolean
+            'set parent
+            Me.ParentSize = ObjectiveFunction.NumberOfVariable + 1
+
             'Do Iterate
             ai_iteration = If(ai_iteration = 0, Iteration - 1, ai_iteration - 1)
             For iterate As Integer = 0 To ai_iteration

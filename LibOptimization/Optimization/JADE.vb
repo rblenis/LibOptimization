@@ -35,7 +35,7 @@ Namespace Optimization.DerivativeFree.DifferentialEvolution
         ''' <returns></returns>
         Public Overrides Function Init(Optional ByVal anyPoint() As Double = Nothing, Optional ByVal isReuseBestResult As Boolean = False) As Boolean
             'initialize
-            If MyBase.Init() = False Then
+            If MyBase.Init(anyPoint, isReuseBestResult) = False Then
                 Return False
             End If
 

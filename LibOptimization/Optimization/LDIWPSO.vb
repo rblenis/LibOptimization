@@ -40,7 +40,7 @@ Namespace Optimization.DerivativeFree.ParticleSwarmOptmization
         ''' </summary>
         ''' <returns></returns>
         Public Overrides Function Init(Optional ByVal anyPoint() As Double = Nothing, Optional ByVal isReuseBestResult As Boolean = False) As Boolean
-            If MyBase.Init() = False Then
+            If MyBase.Init(anyPoint, isReuseBestResult) = False Then
                 Return False
             End If
 

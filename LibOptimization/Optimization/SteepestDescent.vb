@@ -34,9 +34,8 @@ Namespace Optimization.RequireDerivative
         Public Overrides Function Init(Optional ByVal anyPoint() As Double = Nothing, Optional ByVal isReuseBestResult As Boolean = False) As Boolean
             MyBase.PopulationSize = 1
             MyBase.UseAdaptivePopulationSize = False
-            MyBase.UseCriterion = False
 
-            If MyBase.Init() = False Then
+            If MyBase.Init(anyPoint, isReuseBestResult) = False Then
                 Return False
             End If
 
@@ -60,7 +59,7 @@ Namespace Optimization.RequireDerivative
                     gradient.RawVector = ObjectiveFunction.Gradient(vector1)
 
                     'Check conversion1
-                    If gradient.NormL1() < EPS Then
+                    If UseCriterion = True AndAlso gradient.NormL1() < EPS Then
                         Return True
                     End If
 
@@ -73,7 +72,7 @@ Namespace Optimization.RequireDerivative
                     'Check conversion2
                     Dim diff = vector2 - vector1
                     vector1 = vector2
-                    If diff.NormL2() = 0 Then
+                    If UseCriterion = True AndAlso diff.NormL2() = 0 Then
                         Return True
                     End If
 

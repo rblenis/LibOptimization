@@ -47,7 +47,7 @@ Namespace Optimization.DerivativeFree
             MyBase.UseAdaptivePopulationSize = False
             MyBase.UseCriterion = False
 
-            If MyBase.Init() = False Then
+            If MyBase.Init(anyPoint, isReuseBestResult) = False Then
                 Return False
             End If
 

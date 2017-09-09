@@ -80,10 +80,12 @@
     <Compile Include="BenchmarkFunctions\BenchPowell.vb" />
     <Compile Include="BenchmarkFunctions\BenchRastrigin.vb" />
     <Compile Include="BenchmarkFunctions\BenchRidge.vb" />
+    <Compile Include="BenchmarkFunctions\BenchRosenblockNumericalDerivertive.vb" />
     <Compile Include="BenchmarkFunctions\BenchRosenblock.vb" />
     <Compile Include="BenchmarkFunctions\BenchSchaffer.vb" />
     <Compile Include="BenchmarkFunctions\BenchSchwefel.vb" />
     <Compile Include="BenchmarkFunctions\BenchShubertsFunction.vb" />
+    <Compile Include="BenchmarkFunctions\BenchSphereNumericalDerivertive.vb" />
     <Compile Include="BenchmarkFunctions\BenchSphere.vb" />
     <Compile Include="Optimization\AIWPSO.vb" />
     <Compile Include="Optimization\LDIWPSO.vb" />

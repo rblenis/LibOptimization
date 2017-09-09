@@ -31,14 +31,16 @@ Namespace Optimization.DerivativeFree.ReadlCodedGA
         ''' <returns></returns>
         Public Overrides Function Init(Optional ByVal anyPoint() As Double = Nothing, Optional ByVal isReuseBestResult As Boolean = False) As Boolean
             'Init
-            Dim flg = MyBase.Init()
+            If MyBase.Init(anyPoint, isReuseBestResult) = False Then
+                Return False
+            End If
 
             'When Adaptation flag is True, ChildrenSize is also to set adaptation
             If UseAdaptivePopulationSize = True Then
                 ChildrenSize = CInt(PopulationSize * 0.75)
             End If
 
-            Return flg
+            Return True
         End Function
 
         ''' <summary>
