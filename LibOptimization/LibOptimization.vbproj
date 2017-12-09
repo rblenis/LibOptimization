@@ -88,6 +88,7 @@
     <Compile Include="BenchmarkFunctions\BenchSphereNumericalDerivertive.vb" />
     <Compile Include="BenchmarkFunctions\BenchSphere.vb" />
     <Compile Include="Optimization\AIWPSO.vb" />
+    <Compile Include="Optimization\ES_1_1.vb" />
     <Compile Include="Optimization\LDIWPSO.vb" />
     <Compile Include="Optimization\CRIWPSO.vb" />
     <Compile Include="Optimization\CDIWPSO.vb" />

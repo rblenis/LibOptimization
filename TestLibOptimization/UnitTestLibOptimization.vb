@@ -401,6 +401,19 @@ Imports LibOptimization.ErrorManage
         Me.CheckOptUsingSphere(opt)
     End Sub
 
+    <TestMethod()> Public Sub TestOptimizationES()
+        Dim opt = New LibOptimization.Optimization.DerivativeFree.EvolutionStrategy.ES_1_1()
+        opt.ObjectiveFunction = New BenchSphere(2)
+
+        'check init
+        opt.Init()
+        Dim errorFlg = False
+        errorFlg = ErrorManage.IsRecentError()
+        Assert.IsFalse(errorFlg)
+
+        Me.CheckOptUsingSphere(opt)
+    End Sub
+
     <TestMethod()> Public Sub TestOptimizationJADE()
         Dim opt = New LibOptimization.Optimization.DerivativeFree.DifferentialEvolution.JADE()
         opt.ObjectiveFunction = New BenchSphere(2)
